@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# other
+desktop.ini
+*.docx
+*.pdf
+.vscode
