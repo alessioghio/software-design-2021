@@ -23,12 +23,12 @@ class test(db.Model):
     __tablename__ = 'feedback'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), unique=True)
-    peopleNum = db.Column(db.Integer)
+    peoplenum = db.Column(db.Integer)
     message = db.Column(db.Text())
     
-    def __init__(self, name, peopleNum, message):
+    def __init__(self, name, peoplenum, message):
         self.name = name
-        self.peopleNum = peopleNum
+        self.peoplenum = peoplenum
         self.message = message
 
 @app.route('/')
@@ -39,10 +39,10 @@ def index():
 def submit():
     if request.method == 'POST':
         name = request.form['Name']
-        peopleNum = request.form['People']
+        peoplenum = request.form['People']
         message = request.form['Message']
         if db.session.query(test).filter(test.name == name).count() == 0:
-            data = test(name, peopleNum, message)
+            data = test(name, peoplenum, message)
             db.session.add(data)
             db.session.commit()
         return render_template('index.html')
