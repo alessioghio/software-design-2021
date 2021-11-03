@@ -2,8 +2,10 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-ENV = 'prod'
+ENV = 'dev'
 
 password = "password"
 database = "test"
@@ -33,7 +35,7 @@ class test(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
