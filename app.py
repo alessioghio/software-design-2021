@@ -1,14 +1,16 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
+# Developermust create a file named dbCredentials.py and insert the local name 
+# of database and password. This file is included in the .gitignore so people's
+# credentials are not mixed
+from dbCredentials import database, password
+
 app = Flask(__name__)
 app.config["DEBUG"] = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 ENV = 'dev'
-
-password = "password"
-database = "test"
 
 if ENV == 'dev':
     app.debug = True

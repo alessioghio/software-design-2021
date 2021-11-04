@@ -42,13 +42,18 @@ button {
 <body>    
     <center> <h1> Login </h1> </center>   
     <form>  
-        <div class="container">   
+        <div class="container">
+            <label>Nombre : </label>   
+            <input type="text" placeholder="Ingresar nombre" name="userName" required>
+            <label>Apellido : </label>   
+            <input type="text" placeholder="Ingresar apellido" name="userLastName" required>
+            <label>Correo electrónico : </label>   
+            <input type="text" placeholder="Ingresar correo electrónico" name="email" required>
             <label>Usuario : </label>   
-            <input type="text" placeholder="Enter Username" name="username" required>  
+            <input type="text" placeholder="Ingresar usuario" name="account" required>
             <label>Contraseña : </label>   
-            <input type="password" placeholder="Enter Password" name="password" required>  
-            <button type="submit">Login</button>
-            <center><a href="register.html"> Registrarse </a></center>
+            <input type="password" placeholder="Ingresar contraseña" name="passkey" required>  
+            <button type="submit">Registrar</button>
         </div>   
     </form>     
 </body>     
