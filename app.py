@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, redirect, url_for
+from models import *
 
 # Developermust create a file named dbCredentials.py and insert the local name 
 # of database and password. This file is included in the .gitignore so people's
@@ -21,35 +21,70 @@ else:
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
-
-class test(db.Model):
-    __tablename__ = 'feedback'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), unique=True)
-    peoplenum = db.Column(db.Integer)
-    message = db.Column(db.Text())
-    
-    def __init__(self, name, peoplenum, message):
-        self.name = name
-        self.peoplenum = peoplenum
-        self.message = message
+db.init_app(app)
 
 @app.route('/')
+@app.route('/login')
 def index():
-    return render_template('login.html')
+    return render_template('loginDummy.html')
 
-@app.route('/submit', methods=['POST'])
-def submit():
+@app.route('/register')
+def register():
+    return render_template('registerDummy.html')
+
+@app.route('/succes')
+def success():
+    return render_template('successDummy.html')
+
+@app.route('/error')
+def error():
+    return render_template('errorDummy.html')
+
+@app.route('/registerRequest', methods=['POST'])
+def registerRequest():
     if request.method == 'POST':
-        name = request.form['Name']
-        peoplenum = request.form['People']
-        message = request.form['Message']
-        if db.session.query(test).filter(test.name == name).count() == 0:
-            data = test(name, peoplenum, message)
+        name = request.form['name']
+        lastName = request.form['lastName']
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        usernameExists = db.session.query(Administrator).filter(Administrator.username == username).count() > 0
+        if not(usernameExists):
+            data = Administrator(name, lastName, email, username, password)
             db.session.add(data)
             db.session.commit()
-        return render_template('index.html')
+        return redirect(url_for('login'))
+
+@app.route('/loginRequest', methods=['POST'])
+def loginRequest():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Check wether is an admin or client user
+        adminQuery = db.session.query(Administrator)
+        # clientQuery = db.session.query(client)
+        adminFilter = adminQuery.filter(Administrator.username == username)
+        # clientFilter = adminQuery.filter(client.username == username)
+        clientFilter = 0
+        if adminFilter.count() == 1:
+            isAdmin = True
+        elif clientFilter == 1:
+            isAdmin = False
+        else:
+            isAdmin = None # Username was not found
+        # Check password
+        if isAdmin is None:
+            return redirect(url_for('error'))
+        elif isAdmin:
+            passwordFilter = adminQuery.filter(Administrator.password == password)
+        else:
+            # passwordFilter = adminQuery.filter(client.password == password)
+            pass
+        isPasswordCorrect = passwordFilter.count() == 1
+        if isPasswordCorrect:
+            return redirect(url_for('success'))
+        else:
+            return redirect(url_for('error'))
 
 if __name__ == '__main__':
     app.run()
