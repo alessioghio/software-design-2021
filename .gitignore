@@ -137,3 +137,4 @@ desktop.ini
 *.pdf
 *.zip
 Labs/
+dbCredentials.py
