@@ -51,9 +51,9 @@ def registerRequest():
             db.session.commit()
         return redirect(url_for('login'))
 
-@app.route('/loginRequest', methods=['POST'])
+@app.route('/loginRequest', methods=['GET'])
 def loginRequest():
-    if request.method == 'POST':
+    if request.method == 'GET':
         username = request.form['username']
         password = request.form['password']
         # Check wether is an admin or client user
@@ -76,6 +76,11 @@ def loginRequest():
         else:
             passwordFilter = clientQuery.filter(Client.password == password)
         isPasswordCorrect = passwordFilter.count() == 1
+        # CONFLICT NO ACEPTAR
+        dummy = 1
+        a = dummy
+        laVidaEsDura = a - 10
+        # CONFLICT NO ACEPTAR
         if isPasswordCorrect:
             return redirect(url_for('success'))
         else:
