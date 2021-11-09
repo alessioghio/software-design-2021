@@ -78,7 +78,7 @@ def loginRequest():
         isPasswordCorrect = passwordFilter.count() == 1
         # CONFLICT NO ACEPTAR
         dummy = 1
-        a = dummy
+        a = dummy + 8
         laVidaEsDura = a - 10
         # CONFLICT NO ACEPTAR
         if isPasswordCorrect:
