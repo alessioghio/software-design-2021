@@ -23,10 +23,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
 @app.route('/')
 @app.route('/login')
 def index():
@@ -78,8 +74,7 @@ def loginRequest():
         elif isAdmin:
             passwordFilter = adminQuery.filter(Administrator.password == password)
         else:
-            passwordFilter = adminQuery.filter(Client.password == password)
-            pass
+            passwordFilter = clientQuery.filter(Client.password == password)
         isPasswordCorrect = passwordFilter.count() == 1
         if isPasswordCorrect:
             return redirect(url_for('success'))
