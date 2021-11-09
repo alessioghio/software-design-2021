@@ -33,9 +33,13 @@ class test(db.Model):
         self.peoplenum = peoplenum
         self.message = message
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html')    
 
 @app.route('/submit', methods=['POST'])
 def submit():
