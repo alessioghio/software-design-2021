@@ -62,9 +62,9 @@ def loginRequest():
         password = request.form['password']
         # Check wether is an admin or client user
         adminQuery = db.session.query(Administrator)
-        # clientQuery = db.session.query(client)
+        clientQuery = db.session.query(Client)
         adminFilter = adminQuery.filter(Administrator.username == username)
-        # clientFilter = adminQuery.filter(client.username == username)
+        clientFilter = adminQuery.filter(Client.username == username)
         clientFilter = 0
         if adminFilter.count() == 1:
             isAdmin = True
@@ -78,7 +78,7 @@ def loginRequest():
         elif isAdmin:
             passwordFilter = adminQuery.filter(Administrator.password == password)
         else:
-            # passwordFilter = adminQuery.filter(client.password == password)
+            passwordFilter = adminQuery.filter(Client.password == password)
             pass
         isPasswordCorrect = passwordFilter.count() == 1
         if isPasswordCorrect:
