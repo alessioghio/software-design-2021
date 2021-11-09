@@ -76,11 +76,6 @@ def loginRequest():
         else:
             passwordFilter = clientQuery.filter(Client.password == password)
         isPasswordCorrect = passwordFilter.count() == 1
-        # CONFLICT NO ACEPTAR
-        dummy = 1
-        a = dummy
-        laVidaEsDura = a - 10
-        # CONFLICT NO ACEPTAR
         if isPasswordCorrect:
             return redirect(url_for('success'))
         else:
