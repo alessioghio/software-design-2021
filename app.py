@@ -32,7 +32,7 @@ def index():
 def register():
     return render_template('registerDummy.html')
 
-@app.route('/succes')
+@app.route('/success')
 def success():
     return render_template('successDummy.html')
 

@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS public."user"
     "lastName" character varying(100) COLLATE pg_catalog."default" NOT NULL,
     email character varying(100) COLLATE pg_catalog."default" NOT NULL,
     username character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(30) COLLATE pg_catalog."default" NOT NULL
+    password character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    id bigint NOT NULL DEFAULT nextval('user_id_seq'::regclass),
+    CONSTRAINT user_pkey PRIMARY KEY (id)
 )
 
 CREATE TABLE IF NOT EXISTS public.transaction
@@ -61,7 +63,7 @@ CREATE TABLE IF NOT EXISTS public.recipe
 
 CREATE TABLE IF NOT EXISTS public.client
 (
-    id bigint NOT NULL DEFAULT nextval('client_id_seq'::regclass),
+    -- Inherited from table public."user": id bigint NOT NULL DEFAULT nextval('client_id_seq'::regclass),
     "shoppingCart_id" bigint,
     -- Inherited from table public."user": name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     -- Inherited from table public."user": "lastName" character varying(100) COLLATE pg_catalog."default" NOT NULL,
@@ -79,7 +81,7 @@ CREATE TABLE IF NOT EXISTS public.client
 
 CREATE TABLE IF NOT EXISTS public.administrator
 (
-    id bigint NOT NULL DEFAULT nextval('administrator_id_seq'::regclass),
+    -- Inherited from table public."user": id bigint NOT NULL DEFAULT nextval('administrator_id_seq'::regclass),
     -- Inherited from table public."user": name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     -- Inherited from table public."user": "lastName" character varying(100) COLLATE pg_catalog."default" NOT NULL,
     -- Inherited from table public."user": email character varying(100) COLLATE pg_catalog."default" NOT NULL,
