@@ -23,14 +23,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 @app.route('/')
 @app.route('/login')
 def index():
-    return render_template('loginDummy.html')
-
-@app.route('/register')
-def register():
-    return render_template('registerDummy.html')
+    return render_template('loginDummy.html')    
 
 @app.route('/success')
 def success():
