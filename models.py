@@ -46,6 +46,7 @@ class Supply(db.Model):
         self.name = name
         self.price = price
         # self.unidad = unidad
+        # self.unidad = unidad
         self.quantity = quantity
         self.category = category
         self.visibility = visibility
