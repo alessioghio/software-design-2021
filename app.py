@@ -51,9 +51,9 @@ def registerRequest():
             db.session.commit()
         return redirect(url_for('login'))
 
-@app.route('/loginRequest', methods=['GET'])
+@app.route('/loginRequest', methods=['POST'])
 def loginRequest():
-    if request.method == 'GET':
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         # Check wether is an admin or client user
