@@ -50,3 +50,13 @@ class Supply(db.Model):
         self.quantity = quantity
         self.category = category
         self.visibility = visibility
+
+class recipe(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    name = db.Column(db.VARCHAR(100))
+    quantity = db.Column(db.Integer)
+    supply_id = db.Column(db.BigInteger)
+    def __init__(self, idshoppingCart, date, idProduct):
+        self.idshoppingCart = idshoppingCart
+        self.date = date
+        self.idProduct = idProduct
