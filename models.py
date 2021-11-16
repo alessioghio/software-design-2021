@@ -1,4 +1,5 @@
 from sqlalchemy import Column, BigInteger, VARCHAR, DateTime, ForeignKey
+from sqlalchemy.sql.sqltypes import NUMERIC, Boolean, Date, Integer
 from database import Manager
 
 class Administrator(Manager.Base):
@@ -36,3 +37,35 @@ class ShoppingCart(Manager.Base):
     datetime = Column(DateTime, nullable=False)
     client_id = Column(VARCHAR(100), ForeignKey("client.id"), unique=True)
     supply_id = Column(VARCHAR(100), ForeignKey("client.id"))
+
+class Supply(Manager.Base):
+    __tablename__ = 'supply'
+    id = Column(BigInteger, nullable=False, primary_key=True)
+    name = Column(VARCHAR(100), nullable=False)
+    price = Column(NUMERIC, nullable=False)
+    quantity = Column(Integer, nullable=False)
+    category = Column(VARCHAR(100), nullable=False)
+    visivility = Column(Boolean, nullable=False)
+
+class Recipe(Manager.Base):
+    __tablename__ = 'recipe'
+    id = Column(BigInteger, nullable=False)
+    name = Column(VARCHAR(100))
+    quantity = Column(Integer)
+    supply_id = Column(BigInteger)
+
+class Transaction(Manager.Base):
+    __tablename__ = 'transaction'
+    id = Column(BigInteger, nullable=False)
+    datetime = Column(Date, nullable=False)
+    unit = Column(VARCHAR(5), nullable=False)
+    quantity = Column(Integer, nullable=False)
+    supply_id = Column(BigInteger)
+    recipe_id = Column(BigInteger)
+    admin_id = Column(BigInteger)
+
+class AdminURL(Manager.Base):
+    __tablename__ = 'adminURL'
+    id = Column(BigInteger, nullable=False)
+    name = Column(VARCHAR(100))
+    url = Column(VARCHAR(200))
