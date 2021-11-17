@@ -23,16 +23,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
 @app.route('/')
 @app.route('/login')
 def index():
     return render_template('loginDummy.html')    
 
-@app.route('/succes')
+@app.route('/success')
 def success():
     return render_template('successDummy.html')
 
@@ -62,9 +58,9 @@ def loginRequest():
         password = request.form['password']
         # Check wether is an admin or client user
         adminQuery = db.session.query(Administrator)
-        # clientQuery = db.session.query(client)
+        clientQuery = db.session.query(Client)
         adminFilter = adminQuery.filter(Administrator.username == username)
-        # clientFilter = adminQuery.filter(client.username == username)
+        clientFilter = adminQuery.filter(Client.username == username)
         clientFilter = 0
         if adminFilter.count() == 1:
             isAdmin = True
@@ -78,8 +74,7 @@ def loginRequest():
         elif isAdmin:
             passwordFilter = adminQuery.filter(Administrator.password == password)
         else:
-            # passwordFilter = adminQuery.filter(client.password == password)
-            pass
+            passwordFilter = clientQuery.filter(Client.password == password)
         isPasswordCorrect = passwordFilter.count() == 1
         if isPasswordCorrect:
             return redirect(url_for('success'))
