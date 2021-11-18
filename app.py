@@ -38,11 +38,11 @@ def success():
 
 @app.route('/home-pizza')
 def home():
-    return render_template('home-pizza.html')    
+    return render_template('home-pizza.html')  
 
-@app.route('/index')
-def index():
-    return render_template('index.html')
+@app.route('/profile-stocker')
+def profileAdmin():
+    return render_template('profile-stocker.html')  
 
 @app.route('/error')
 def error():
