@@ -13,8 +13,8 @@ else:
     # Using a production configuration
     app.config.from_object('config.ProdConfig')
 
-db = Manager()
-engine = db.createEngine(ENV)
+#db = Manager()
+#engine = db.createEngine(ENV)
 
 @app.route('/')
 def index():
@@ -35,6 +35,14 @@ def registerClient():
 @app.route('/success')
 def success():
     return render_template('successDummy.html')
+
+@app.route('/home-pizza')
+def home():
+    return render_template('home-pizza.html')  
+
+@app.route('/profile-stocker')
+def profileAdmin():
+    return render_template('profile-stocker.html')  
 
 @app.route('/error')
 def error():

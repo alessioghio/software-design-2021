@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Global Talent House - hub for creative minds</title>
+    <title> </title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta name="author" content="Vrinda Maru Kansal">
@@ -41,50 +41,57 @@
     </div>
     <!-- End Search Overlay Menu -->
 
-        <!-- Header -->
+    <!-- Site Wraper -->
+    <div class="wrapper">
+
         <header id="header" class="header shadow">
             <div class="header-inner">
-
-                <!-- Logo -->
                 <div class="logo">
-                    <a href="home-pizza.html">
-                        <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                        <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                    <a href="index">
+                        <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
+                        <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                     </a>
                 </div>
-                <!-- End Logo -->
 
-                <!-- Rightside Menu (Search icon) -->
-                <div class="side-menu-btn">
+                <!-- <div class="side-menu-btn"> 
                     <ul>
-                        <!-- Search Icon -->
                         <li class="">
                             <a class="search-overlay-menu-btn header-icon"><i class="fa fa-search"></i></a>
                         </li>
-                        <!-- End Search Icon -->
                     </ul>
-                </div>
-                <!-- End Rightside Menu -->
+                </div> -->
 
-                <!-- Mobile Navbar Icon -->
                 <div class="nav-mobile nav-bar-icon">
                     <span></span>
                 </div>
-                <!-- End Mobile Navbar Icon -->
 
-        <!-- Navbar Navigation -->
-        <div class="nav-menu">
-            <ul class="nav-menu-inner">                        
-                <li>
-                    <a class="menu-has-sub" href="home-pizza.html">Catálogo</a>
-                </li>
-                    <a class="btn btn-md btn-black join-btn" href="login-pizza.html">Accede</a>                            
-                </li>
-            </ul>
-        </div>
-        <!-- End Navbar Navigation -->
+                <div class="nav-menu">
+                    <ul class="nav-menu-inner">
+                        <li>
+                            <a class="menu-has-sub">Emprendimientos powered by STOCKER <i class="fa fa-angle-down"></i></a>
+                            <ul class="sub-dropdown dropdown">
+                                <li>
+                                    <a href="home-pizza">Pizza Raúl</a>
+                                </li>
+                                <li>
+                                    <a href="#">Cevichería Raúl</a>
+                                </li>
+                                <li>
+                                    <a href="#">Postres Raúl</a>
+                                </li>
+                                <li>
+                                    <a href="profile-stocker">Profile</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="btn btn-md btn-black join-btn" href="login">Accede</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </header>
-        <!-- End Header -->
+
 
         <!-- CONTENT --------------------------------------------------------------------------------->
         {% block content%}
