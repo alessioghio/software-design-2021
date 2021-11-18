@@ -97,5 +97,10 @@ def user():
     else:
         return redirect(url_for('error'))
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('loginDummy.html')
+
 if __name__ == '__main__':
     app.run()
