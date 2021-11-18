@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -23,6 +23,12 @@
     <link href="../static/css/plugin/animate.css" rel="stylesheet" type="text/css" />
     <link href="../static/css/jquery-ui.css" rel="stylesheet" type="text/css" />
 
+    <script>
+        $(function(){
+        $("#header").load("header.html"); 
+        $("#footer").load("footer.html"); 
+        });
+    </script>
 
 </head>
 
@@ -48,53 +54,7 @@
     <!-- Site Wraper -->
     <div class="wrapper">
 
-        <!-- Header -->
-        <header id="header" class="header shadow">
-            <div class="header-inner">
-
-                <!-- Logo -->
-                <div class="logo">
-                    <a href="home-pizza.html">
-                        <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                        <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                    </a>
-                </div>
-                <!-- End Logo -->
-
-                <!-- Rightside Menu (Search icon) -->
-                <div class="side-menu-btn">
-                    <ul>
-                        <!-- Search Icon -->
-                        <li class="">
-                            <a class="search-overlay-menu-btn header-icon"><i class="fa fa-search"></i></a>
-                        </li>
-                        <!-- End Search Icon -->
-                    </ul>
-                </div>
-                <!-- End Rightside Menu -->
-
-                <!-- Mobile Navbar Icon -->
-                <div class="nav-mobile nav-bar-icon">
-                    <span></span>
-                </div>
-                <!-- End Mobile Navbar Icon -->
-
-        <!-- Navbar Navigation -->
-        <div class="nav-menu">
-            <ul class="nav-menu-inner">                        
-                <li>
-                    <a class="menu-has-sub" href="home-pizza.html"> Catálogo </a>
-                    
-                </li>
-                    <a class="btn btn-md btn-black join-btn" href="login-pizza.html">Accede</a>                            
-                </li>
-            </ul>
-        </div>
-        <!-- End Navbar Navigation -->
-
-            </div>
-        </header>
-        <!-- End Header -->
+        
 
         <!-- CONTENT --------------------------------------------------------------------------------->
         <!-- Intro Section -->
@@ -103,7 +63,7 @@
                 <div class="row title">
                     <h2 class="h2">Accede</h2>
                     <div class="page-breadcrumb">
-                        <a href="home-pizza.html">Inicio</a>/<span>Login</span>
+                        <a href="index.html">Inicio</a>/<span>Login</span>
                     </div>
                 </div>
             </div>
@@ -126,7 +86,7 @@
                                     <label for="login-pass">Contraseña</label>
                                     <input type="password" required="" placeholder="Ingresa tu contraseña" name="login-pass" id="login-pass" class="input-sm form-full" aria-required="true">
                                 </div>
-                                <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="home-pizza.html" >Ingresar</button>
+                                <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="profile-stocker.html">Ingresar</button>
                                 <a class="float-right">¿Te olvidaste tu contraseña?</a>
                             </form>
                         </div>
@@ -135,7 +95,9 @@
                         <div class="border-box">
                             <h4>Regístrate con nosotros</h4>
                             <p> No te arrepentirás xd.</p>
-							<a class="btn btn-md btn-black join-btn" href="create-account-pizza.html">Registrarse</a>  
+							<a class="btn btn-md btn-black join-btn" href="#">Registrarse como administrador</a>
+                            <p></p>
+                            <a class="btn btn-md btn-black join-btn" href="#">Registrarse como usuario</a>  
                         </div>
                     </div>
                 </div>
@@ -145,44 +107,7 @@
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
 
-           <!-- FOOTER -->
-        <footer class="footer pt-60">
-            <div class="container">
-                <!--Footer Info -->
-                <div class="row footer-info mb-30">
-                    <div class="col-md-6 col-sm-12 col-xs-12 mb-sm-30 text-sm-left">
-                        <p class="mb-xs-0">Powered by STOCKER.</p>
-                        <ul class="link-small">
-                            <li><a href="mailto:yourname@domain.com"><i class="fa fa-envelope-o left"></i>stocker@infostocker.com</a></li>
-                            <li><a><i class="fa fa-phone left"></i>948 577 658</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6 col-sm-12 col-xs-12 text-right text-sm-left">
-                        <ul class="link">
-                            <li><a href="privacy-policy.html">Políticas de privacidad</a></li>
-                            <li><a href="terms-and-conditions.html">T&C</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact-us.html">Contacto</a></li>
-                        </ul>
-						<div class="spacer-30"></div>
-						<ul class="social">
-                            <li><a target="_blank" href="https://www.twitter.com/"><i class="fa fa-twitter"></i></a></li>
-                            <li><a target="_blank" href="https://instagram.com/"><i class="fa fa-instagram"></i></a></li>
-                            <li><a target="_blank" href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
-                            <li><a target="_blank" href="https://youtube.com/"><i class="fa fa-youtube"></i></a></li>
-                            <li><a target="_blank" href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- End Footer Info -->
-            </div>
-
-            <hr />
-
-        
-
-        </footer>
-        <!-- END FOOTER -->
+           
 
         <!-- Scroll Top -->
         <a class="scroll-top">
@@ -218,4 +143,3 @@
     <script src="../static/js/navigation.js" type="text/javascript"></script>
 </body>
 </html>
-
