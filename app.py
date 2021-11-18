@@ -80,7 +80,7 @@ def loginRequest():
                 session["client"] = username
             return redirect(url_for('user'))
         else:
-            return redirect(url_for('error')) 
+            return redirect(url_for('error'))
 
 @app.route('/user')
 def user():
@@ -96,8 +96,14 @@ def user():
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    return render_template('loginDummy.html')
+    if "admin" in session:
+        session.pop('admin', None)
+    elif "client" in session:
+        session.pop('client', None)
+    else:
+        return redirect(url_for('error'))
+    
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run()
