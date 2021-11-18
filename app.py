@@ -85,15 +85,22 @@ def loginRequest():
         else:
             return redirect(url_for('error'))
 
+@app.route('/user/admin')
+def adminProfile():
+    return render_template('profile-stocker.html')
+
+@app.route('/user/client')
+def clientProfile():
+    return render_template('profile-pizza.html')
+
 @app.route('/user')
 def user():
-    username = ""
     if "admin" in session:
         username = session["admin"]
-        return f"<h1> admin {username} </h1>"
+        return redirect(url_for('adminProfile'))
     elif "client" in session:
         username = session["client"]
-        return f"<h1> client {username} </h1>"
+        return redirect(url_for('clientProfile'))
     else:
         return redirect(url_for('error'))
 

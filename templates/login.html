@@ -54,7 +54,7 @@
 
                 <!-- Logo -->
                 <div class="logo">
-                    <a href="index.html">
+                    <a href="/">
                         <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
                         <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                     </a>
@@ -65,7 +65,7 @@
                 <div class="side-menu-btn">
                     <ul>
                         <!-- Search Icon -->
-                        <li class="">
+                        <li class="/">
                             <a class="search-overlay-menu-btn header-icon"><i class="fa fa-search"></i></a>
                         </li>
                         <!-- End Search Icon -->
@@ -98,7 +98,7 @@
                             </ul>
                             <!-- End Dropdown -->
                         </li>
-                            <a class="btn btn-md btn-black join-btn" href="index.html">Home</a>                            
+                            <a class="btn btn-md btn-black join-btn" href="/">Home</a>                            
                         </li>
                     </ul>
                 </div>
@@ -115,7 +115,7 @@
                 <div class="row title">
                     <h2 class="h2">Accede</h2>
                     <div class="page-breadcrumb">
-                        <a href="index.html">Inicio</a>/<span>Login</span>
+                        <a href="/">Inicio</a>/<span>Login</span>
                     </div>
                 </div>
             </div>
@@ -129,14 +129,14 @@
                     <div class="col-md-6">
                         <div class="border-box">
                             <h4>¿Ya tienes una cuenta?</h4>
-                            <form>
+                            <form action="/loginRequest" method="POST">
                                 <div class="form-field-wrapper">
-                                    <label for="login-email">Email</label>
-                                    <input type="email" required="" placeholder="Ingresa tu correo" name="login-email" id="login-email" class="input-sm form-full" aria-required="true">
+                                    <label for="login-email">Usuario</label>
+                                    <input type="text" required="" placeholder="Ingresa tu usuario" name="username" id="login-email" class="input-sm form-full" aria-required="true">
                                 </div>
                                 <div class="form-field-wrapper">
                                     <label for="login-pass">Contraseña</label>
-                                    <input type="password" required="" placeholder="Ingresa tu contraseña" name="login-pass" id="login-pass" class="input-sm form-full" aria-required="true">
+                                    <input type="password" required="" placeholder="Ingresa tu contraseña" name="password" id="login-pass" class="input-sm form-full" aria-required="true">
                                 </div>
                                 <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="profile-stocker.html">Ingresar</button>
                                 <a class="float-right">¿Te olvidaste tu contraseña?</a>
