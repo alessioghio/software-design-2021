@@ -41,14 +41,19 @@ button {
 </head>    
 <body>    
     <center> <h1> Login </h1> </center>   
-    <form action="/loginRequest" method="POST">  
-        <div class="container">   
+    <form action="/registerRequestAdmin" method="POST">  
+        <div class="container">
+            <label>Nombre : </label>   
+            <input type="text" placeholder="Ingresar nombre" name="name" required>
+            <label>Apellido : </label>   
+            <input type="text" placeholder="Ingresar apellido" name="lastName" required>
+            <label>Correo electrónico : </label>   
+            <input type="text" placeholder="Ingresar correo electrónico" name="email" required>
             <label>Usuario : </label>   
-            <input type="text" placeholder="Ingresar usuario" name="username" required>  
+            <input type="text" placeholder="Ingresar usuario" name="username" required>
             <label>Contraseña : </label>   
             <input type="password" placeholder="Ingresar contraseña" name="password" required>  
-            <button type="submit">Login</button>
-            <center><a href="registerAdmin"> Registrarse como emprendedor</a>  <a href="registerClient"> Registrarse como cliente</a></center>
+            <button type="submit">Registrar</button>
         </div>   
     </form>     
 </body>     

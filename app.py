@@ -1,32 +1,36 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from models import *
-
-# Developermust create a file named dbCredentials.py and insert the local name 
-# of database and password. This file is included in the .gitignore so people's
-# credentials are not mixed
-from dbCredentials import database, password
+from utils import *
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 ENV = 'dev'
 
 if ENV == 'dev':
-    app.debug = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{password}@localhost/{database}"
+    # Using a development configuration
+    app.config.from_object('config.DevConfig')
 else:
-    app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://rxaguhpxsprsvl:4cb9cf7c51e01ba4615f4b1ba2efc27e593cbd07fe751b0109b63d73d6ee5433@ec2-18-214-214-252.compute-1.amazonaws.com:5432/dc5lmvlefddiu5"
+    # Using a production configuration
+    app.config.from_object('config.ProdConfig')
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db.init_app(app)
+db = Manager()
+engine = db.createEngine(ENV)
 
 @app.route('/')
-@app.route('/login')
 def index():
-    return render_template('loginDummy.html')    
+    return render_template('index.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/registerAdmin')
+def registerAdmin():
+    return render_template('registerAdmin.html')
+
+@app.route('/registerClient')
+def registerClient():
+    return render_template('registerClient.html')
 
 @app.route('/success')
 def success():
@@ -36,50 +40,67 @@ def success():
 def error():
     return render_template('errorDummy.html')
 
-@app.route('/registerRequest', methods=['POST'])
-def registerRequest():
+@app.route('/registerRequestAdmin', methods=['POST'])
+def registerRequestAdmin():
     if request.method == 'POST':
-        name = request.form['name']
-        lastName = request.form['lastName']
-        email = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
-        usernameExists = db.session.query(Administrator).filter(Administrator.username == username).count() > 0
+        db_session = db.getSession(engine)
+        name, lastName, email, username, password = getRegisterData()
+        usernameExists = db_session.query(Administrator).filter(Administrator.username == username).count() > 0
         if not(usernameExists):
-            data = Administrator(name, lastName, email, username, password)
-            db.session.add(data)
-            db.session.commit()
+            userType="Admin"
+            data = Administrator(name=name, lastName=lastName, email=email, 
+                                username=username, password=password, userType=userType)
+            db_session.add(data)
+            db_session.commit()
         return redirect(url_for('login'))
+
+@app.route('/registerRequestClient', methods=['POST'])
+def registerRequestClient():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name, lastName, email, username, password = getRegisterData()
+        usernameExists = db_session.query(Client).filter(Client.username == username).count() > 0
+        if not(usernameExists):
+            userType="Client"
+            data = Client(name=name, lastName=lastName, email=email, 
+                        username=username, password=password, userType=userType)        
+            db_session.add(data)
+            db_session.commit()
+            return redirect(url_for('login'))
+        return redirect(url_for('error'))
 
 @app.route('/loginRequest', methods=['POST'])
 def loginRequest():
     if request.method == 'POST':
+        db_session = db.getSession(engine)
         username = request.form['username']
         password = request.form['password']
-        # Check wether is an admin or client user
-        adminQuery = db.session.query(Administrator)
-        clientQuery = db.session.query(Client)
-        adminFilter = adminQuery.filter(Administrator.username == username)
-        clientFilter = adminQuery.filter(Client.username == username)
-        clientFilter = 0
-        if adminFilter.count() == 1:
-            isAdmin = True
-        elif clientFilter == 1:
-            isAdmin = False
+        isAdmin = validateLoginCredentials(db_session, username, password)
+        if isAdmin is not None:
+            if isAdmin:
+                session["admin"] = username
+            else:
+                session["client"] = username
+            return redirect(url_for('user'))
         else:
-            isAdmin = None # Username was not found
-        # Check password
-        if isAdmin is None:
-            return redirect(url_for('error'))
-        elif isAdmin:
-            passwordFilter = adminQuery.filter(Administrator.password == password)
-        else:
-            passwordFilter = clientQuery.filter(Client.password == password)
-        isPasswordCorrect = passwordFilter.count() == 1
-        if isPasswordCorrect:
-            return redirect(url_for('success'))
-        else:
-            return redirect(url_for('error'))
+            return redirect(url_for('error')) 
+
+@app.route('/user')
+def user():
+    username = ""
+    if "admin" in session:
+        username = session["admin"]
+        return f"<h1> admin {username} </h1>"
+    elif "client" in session:
+        username = session["client"]
+        return f"<h1> client {username} </h1>"
+    else:
+        return redirect(url_for('error'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('loginDummy.html')
 
 if __name__ == '__main__':
     app.run()
