@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Global Talent House - hub for creative minds</title>
+    <title>STOCKER</title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta name="author" content="Vrinda Maru Kansal">
@@ -10,9 +10,9 @@
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 
     <!-- Favicone Icon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <link rel="icon" type="image/png" href="img/favicon.png">
-    <link rel="apple-touch-icon" href="img/favicon.png">
+    <link rel="shortcut icon" type="../static/image/x-icon" href="../static/img/favicon.ico">
+    <link rel="icon" type="image/png" href="../static/img/favicon.png">
+    <link rel="apple-touch-icon" href="../static/img/favicon.png">
 
     <!-- CSS -->
     <link href="../static/css/style.css" rel="stylesheet" type="text/css" />
@@ -22,7 +22,8 @@
     <link href="../static/css/plugin/sidebar-menu.css" rel="stylesheet" type="text/css" />
     <link href="../static/css/plugin/animate.css" rel="stylesheet" type="text/css" />
     <link href="../static/css/jquery-ui.css" rel="stylesheet" type="text/css" />
-	<link href="../static/css/plugin/smoothproducts.css" rel="stylesheet" />	
+
+
 </head>
 
 <body>
@@ -44,7 +45,6 @@
         </form>
     </div>
     <!-- End Search Overlay Menu -->
-
     <!-- Site Wraper -->
     <div class="wrapper">
 
@@ -54,9 +54,9 @@
 
                 <!-- Logo -->
                 <div class="logo">
-                    <a href="home-pizza.html">
-                        <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                        <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                    <a href="index.html">
+                        <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
+                        <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                     </a>
                 </div>
                 <!-- End Logo -->
@@ -79,18 +79,30 @@
                 </div>
                 <!-- End Mobile Navbar Icon -->
 
-        <!-- Navbar Navigation -->
-        <div class="nav-menu">
-            <ul class="nav-menu-inner">                        
-                <li>
-                    <a class="menu-has-sub" href="home-pizza.html"> Catálogo </a>
-                    
-                </li>
-                    <a class="btn btn-md btn-black join-btn" href="login-pizza.html">Accede</a>                            
-                </li>
-            </ul>
-        </div>
-        <!-- End Navbar Navigation -->
+                <!-- Navbar Navigation -->
+                <div class="nav-menu">
+                    <ul class="nav-menu-inner">                        
+                        <li>
+                            <a class="menu-has-sub">Emprendimientos powered by STOCKER <i class="fa fa-angle-down"></i></a>
+							<!-- Dropdown -->
+                            <ul class="sub-dropdown dropdown">
+								<li>
+                                    <a href="upcoming-competitions.html">Pizza Raúl</a>
+                                </li>
+                                <li>
+                                    <a href="events-calendar.html">Cevichería Raúl</a>
+                                </li>
+								<li>
+                                    <a href="past-events.html">Postres Raúl</a>
+                                </li>
+                            </ul>
+                            <!-- End Dropdown -->
+                        </li>
+                            <a class="btn btn-md btn-black join-btn" href="index.html">Home</a>                            
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Navbar Navigation -->
 
             </div>
         </header>
@@ -101,72 +113,56 @@
         <section class="inner-intro dark-bg overlay-dark">
             <div class="container">
                 <div class="row title">
-                    <h2 class="h2">Accede al catálogo</h2>
+                    <h2 class="h2">Accede</h2>
                     <div class="page-breadcrumb">
-                        <a>Ingresa para poder realizar compras.</a>
+                        <a href="index.html">Inicio</a>/<span>Login</span>
                     </div>
                 </div>
             </div>
         </section>
-        <div class="clearfix"></div>
         <!-- End Intro Section -->
-
-
-        <!-- Options Section -->
-        <section class="ptb-30 ptb-sm-30">
-			<div class="container text-center">
-                <div class="mtb-30">					
-						<h3>Crear una cuenta</h3>
-						<div class="spacer-30"></div>
-						<div class="row">
-						<div class="form-field-wrapper col-sm-6 ">
-							<input class="input-sm form-full" id="form-first-name" type="text" name="form-first-name" placeholder="Nombre*" required>
-						</div>							
-						<div class="form-field-wrapper col-sm-6">
-							<input class="input-sm form-full" id="form-last-name" type="text" name="form-last-name" placeholder="Apellido*" required>
-						</div>			
-						</div>
-						<div class="row">
-						<div class="form-field-wrapper col-sm-6">
-							<input class="input-sm form-full" id="form-email" type="email" name="form-email" placeholder="Correo*" required>
-						</div>	
-						<div class="form-field-wrapper col-sm-6">
-							<input class="input-sm form-full" id="form-contact" type="number" name="form-contact" placeholder="Teléfono*" required>
-						</div>					
-						</div>
-						<div class="row">
-						<div class="form-field-wrapper col-sm-6">
-							<input class="input-sm form-full" id="form-password" type="password" name="form-password" placeholder="Contraseña*" required>
-						</div>
-						<div class="form-field-wrapper col-sm-6">
-							<input class="input-sm form-full" id="form-confirm-password" type="password" name="form-confirm-password" placeholder="Confirmar contraseña*" required>
-						</div>
-						</div>									
-						
-						<div class="row">
-						<div class="form-field-wrapper">
-							<span><input class="input-sm" id="form-accept-terms" type="checkbox" name="form-accept-terms" value="accept-terms">He leído y acepto los <a href="#"> Términos y Condiciones</a></span><br>
-						</div>
-						</div>				
-						<div class="form-field-wrapper mt-15">
-							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Crear cuenta</button>
-						</div>
-					</form>
-					<!-- END create account FORM -->	
-				</div>
-			</div>
+        
+        <!-- Login Section -->
+        <section id="Pricing" class="ptb-60 ptb-sm-30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="border-box">
+                            <h4>¿Ya tienes una cuenta?</h4>
+                            <form>
+                                <div class="form-field-wrapper">
+                                    <label for="login-email">Email</label>
+                                    <input type="email" required="" placeholder="Ingresa tu correo" name="login-email" id="login-email" class="input-sm form-full" aria-required="true">
+                                </div>
+                                <div class="form-field-wrapper">
+                                    <label for="login-pass">Contraseña</label>
+                                    <input type="password" required="" placeholder="Ingresa tu contraseña" name="login-pass" id="login-pass" class="input-sm form-full" aria-required="true">
+                                </div>
+                                <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="profile-stocker.html">Ingresar</button>
+                                <a class="float-right">¿Te olvidaste tu contraseña?</a>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border-box">
+                            <h4>Regístrate con nosotros</h4>
+                            <p> Como cliente.</p>
+							<a class="btn btn-md btn-black join-btn" href="registerClient">Registrarse</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
-        <!-- End Options Section -->
+        <!-- End Login Section -->
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
 
-          <!-- FOOTER -->
-          <footer class="footer pt-60">
+           <!-- FOOTER -->
+        <footer class="footer pt-60">
             <div class="container">
                 <!--Footer Info -->
                 <div class="row footer-info mb-30">
                     <div class="col-md-6 col-sm-12 col-xs-12 mb-sm-30 text-sm-left">
-                        <p class="mb-xs-0">Powered by STOCKER.</p>
                         <ul class="link-small">
                             <li><a href="mailto:yourname@domain.com"><i class="fa fa-envelope-o left"></i>stocker@infostocker.com</a></li>
                             <li><a><i class="fa fa-phone left"></i>948 577 658</a></li>
@@ -220,17 +216,16 @@
     <script src="../static/js/plugin/jquery.viewportchecker.js" type="text/javascript"></script>
     <script src="../static/js/plugin/jquery.stellar.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/wow.min.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.colorbox-min.js" type="text/javascript"></script>	
+    <script src="../static/js/plugin/jquery.colorbox-min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/owl.carousel.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/isotope.pkgd.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/masonry.pkgd.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/imagesloaded.pkgd.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/jquery.fs.tipper.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/mediaelement-and-player.min.js"></script>
+    <script src="../static/js/plugin/jquery.validate.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/sidebar-menu.js" type="text/javascript"></script>
     <script src="../static/js/theme.js" type="text/javascript"></script>
-    <script src="../static/js/navigation.js" type="text/javascript"></script>	
-	<script src="../static/js/jquery.bootstrap-duallistbox.js"></script>	
-	<script>var demo1 = $('[name=category]').bootstrapDualListbox();</script>
+    <script src="../static/js/navigation.js" type="text/javascript"></script>
 </body>
 </html>

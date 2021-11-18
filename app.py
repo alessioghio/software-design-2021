@@ -17,17 +17,20 @@ db = Manager()
 engine = db.createEngine(ENV)
 
 @app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/login')
 def login():
-    return render_template('loginDummy.html')
+    return render_template('login.html')
 
 @app.route('/registerAdmin')
 def registerAdmin():
-    return render_template('registerDummyAdmin.html')
+    return render_template('registerAdmin.html')
 
 @app.route('/registerClient')
 def registerClient():
-    return render_template('registerDummyClient.html')
+    return render_template('registerClient.html')
 
 @app.route('/success')
 def success():
