@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from models import *
 from utils import *
 
@@ -94,7 +94,8 @@ def loginRequest():
                 session["client"] = username
             return redirect(url_for('user'))
         else:
-            return redirect(url_for('error'))
+            #flash('Username or password incorrect.')
+            return redirect(url_for('login'))
 
 @app.route('/user/admin')
 def adminProfile():
