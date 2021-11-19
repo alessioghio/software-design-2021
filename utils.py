@@ -14,7 +14,7 @@ def validateLoginCredentials(db_session, username, password):
     adminQuery = db_session.query(Administrator)
     clientQuery = db_session.query(Client)
     adminFilter = adminQuery.filter(Administrator.username == username)
-    clientFilter = adminQuery.filter(Client.username == username)
+    clientFilter = clientQuery.filter(Client.username == username)
     isAdmin = None # Username not found as default
     passwordFilter = None # Predefine passwordFilter variable
     # Check type of user

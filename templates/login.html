@@ -32,6 +32,13 @@
                                     <label for="login-pass">Contraseña</label>
                                     <input type="password" required="" placeholder="Ingresa tu contraseña" name="password" id="login-pass" class="input-sm form-full" aria-required="true">
                                 </div>
+                                {% with messages = get_flashed_messages() %}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {{ message }}<br>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
                                 <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="profile-stocker.html">Ingresar</button>
                                 <a class="float-right">¿Te olvidaste tu contraseña?</a>
                             </form>

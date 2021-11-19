@@ -25,7 +25,10 @@ def index():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    if "admin" in session or "client" in session:
+        return redirect(url_for('user'))
+    else:
+        return render_template('login.html')
 
 @app.route('/registerAdmin')
 def registerAdmin():
@@ -39,6 +42,8 @@ def registerClient():
 def success():
     return render_template('successDummy.html')
 
+# ----- DEBUG ------ #
+
 @app.route('/home-pizza')
 def home():
     return render_template('home-pizza.html')  
@@ -46,6 +51,8 @@ def home():
 @app.route('/profile-stocker')
 def profileAdmin():
     return render_template('profile-stocker.html')  
+
+# ------------------ #
 
 @app.route('/error')
 def error():
@@ -94,7 +101,7 @@ def loginRequest():
                 session["client"] = username
             return redirect(url_for('user'))
         else:
-            #flash('Username or password incorrect.')
+            flash('Usuario o contraseña incorrectas.')
             return redirect(url_for('login'))
 
 @app.route('/user/admin')
@@ -108,10 +115,10 @@ def clientProfile():
 @app.route('/user')
 def user():
     if "admin" in session:
-        username = session["admin"]
+        # username = session["admin"]
         return redirect(url_for('adminProfile'))
     elif "client" in session:
-        username = session["client"]
+        # username = session["client"]
         return redirect(url_for('clientProfile'))
     else:
         return redirect(url_for('error'))
@@ -124,7 +131,6 @@ def logout():
         session.pop('client', None)
     else:
         return redirect(url_for('error'))
-    
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
