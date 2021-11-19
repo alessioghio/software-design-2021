@@ -13,12 +13,15 @@ else:
     # Using a production configuration
     app.config.from_object('config.ProdConfig')
 
-#db = Manager()
-#engine = db.createEngine(ENV)
+db = Manager()
+engine = db.createEngine(ENV)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    sessionExists = False
+    if "admin" in session or "client" in session:
+        sessionExists = True
+    return render_template('index.html', sessionExists=sessionExists)
 
 @app.route('/login')
 def login():
