@@ -1,0 +1,84 @@
+<!-- Options Section -->
+<section class="ptb-60 ptb-sm-30">
+    <div class="container text-center">
+        <div class="row mb-60">
+            <div class="col-sm-6 mb-xs-15"><button class="btn btn-md btn-black" type="submit" id="form-fb" name="submit">SIGNUP USING FACEBOOK</button>
+            </div>
+            <div class="col-sm-6"><button class="btn btn-md btn-black" type="submit" id="form-twitter" name="submit">SIGNUP USING TWITTER</button>
+            </div>
+        </div>
+        <hr class="mb-15">
+        <h3>OR</h3>
+        <hr>
+        <div class="mtb-30">
+            <!-- Create Account FORM -->
+            <form class="registration-form" id="registration" role="form">
+                <!-- IF MAIL SENT SUCCESSFULLY -->
+                <h6 class="successContent">
+                    <i class="fa fa-check left" style="color: #5cb45d;"></i>Please click the link received on
+                    your email to confirm your account.
+                </h6>
+                <!-- END IF MAIL SENT SUCCESSFULLY -->
+
+                <!-- MAIL SENDING UNSUCCESSFULL -->
+                <h6 class="errorContent">
+                    <i class="fa fa-exclamation-circle left" style="color: #e1534f;"></i>There was a problem validating the form please check!
+                </h6>
+                <!-- END MAIL SENDING UNSUCCESSFULL -->
+                <h3>Create Account</h3>
+                <div class="spacer-30"></div>
+                <div class="row">
+                <div class="form-field-wrapper col-sm-6 ">
+                    <input class="input-sm form-full" id="form-first-name" type="text" name="form-first-name" placeholder="First Name*" required>
+                </div>							
+                <div class="form-field-wrapper col-sm-6">
+                    <input class="input-sm form-full" id="form-last-name" type="text" name="form-last-name" placeholder="Last Name*" required>
+                </div>			
+                </div>
+                <div class="row">
+                <div class="form-field-wrapper col-sm-6">
+                    <input class="input-sm form-full" id="form-email" type="email" name="form-email" placeholder="Email*" required>
+                </div>	
+                <div class="form-field-wrapper col-sm-6">
+                    <input class="input-sm form-full" id="form-contact" type="number" name="form-contact" placeholder="Contact Number*" required>
+                </div>					
+                </div>
+                <div class="row">
+                <div class="form-field-wrapper col-sm-6">
+                    <input class="input-sm form-full" id="form-password" type="password" name="form-password" placeholder="Password*" required>
+                </div>
+                <div class="form-field-wrapper col-sm-6">
+                    <input class="input-sm form-full" id="form-confirm-password" type="password" name="form-confirm-password" placeholder="Password*" required>
+                </div>
+                </div>									
+                <div class="row">
+                <div class="form-field-wrapper col-sm-12">										
+                    <h6 class="mtb-15 text-left">I AM...</h6>
+                    <select class="input-sm form-full" multiple="multiple" size="10" id="form-category" name="category" required>
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3" selected="selected">Option 3</option>
+                    <option value="option4">Option 4</option>
+                    <option value="option5">Option 5</option>
+                    <option value="option6" selected="selected">Option 6</option>
+                    <option value="option7">Option 7</option>
+                    <option value="option8">Option 8</option>
+                    <option value="option9">Option 9</option>
+                    <option value="option0">Option 10</option>
+                    </select>
+                </div>
+                </div>
+                <div class="row">
+                <div class="form-field-wrapper">
+                    <span><input class="input-sm" id="form-accept-terms" type="checkbox" name="form-accept-terms" value="accept-terms">I have read and accept <a href="terms-and-conditions.html"> Terms And Conditions</a></span><br>
+                </div>
+                </div>				
+                <div class="form-field-wrapper mt-15">
+                    <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Create Account</button>
+                </div>
+            </form>
+            <!-- END create account FORM -->	
+        </div>
+    </div>
+</section>
+<!-- End Options Section -->
