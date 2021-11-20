@@ -134,5 +134,59 @@ def logout():
     flash('Sesión cerrada.')
     return redirect(url_for('login'))
 
+
+# ------ DASHBOARD ADMIN ------ #
+from dao.DAOAdmin import DAOAdmin
+app.secret_key = 'mysecretkey'
+db = DAOAdmin()
+
+@app.route('/user/admin/updatestock')
+def index():
+    data = db.read(None)
+    return render_template('/admintemp/index.html', data=data)
+
+@app.route('/user/admin/updatestock/add')
+def add_usuario():
+    return render_template('/admintemp/add.html')
+
+@app.route('/user/admin/updatestock/addproduct', methods = ['POST', 'GET'])
+def addusuario():
+    if request.method == 'POST' and request.form['save']:
+        if db.insert(request.form):
+            flash("Nuevo producto creado")
+        else:
+            flash("ERROR al crear producto")
+
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/user/admin/updatestock/delete/<int:id>')
+def delete(id):
+    data = db.read(id);
+
+    if len(data) == 0:
+        return redirect(url_for('index'))
+    else:
+        session['delete'] = id
+        return render_template('admintemp/delete.html', data = data)
+
+@app.route('/user/admin/updatestock/deleteproduct', methods = ['POST'])
+def deleteusuario():
+    if request.method == 'POST' and request.form['delete']:
+
+        if db.delete(session['delete']):
+            flash('Usuario eliminado')
+        else:
+            flash('ERROR al eliminar')
+        session.pop('delete', None)
+
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
+
+# ----------------------------- #
+
+
 if __name__ == '__main__':
     app.run()
