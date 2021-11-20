@@ -48,6 +48,14 @@ def profileAdmin():
 def error():
     return render_template('errorDummy.html')
 
+@app.route('/newProduct')
+def newProd():
+    return render_template('newProduct.html')    
+
+@app.route('/newStock')
+def newStock():
+    return render_template('newStock.html')  
+
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
     if request.method == 'POST':
