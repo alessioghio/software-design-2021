@@ -17,7 +17,7 @@
         <div class="clearfix"></div>
         <!-- End Intro Section -->
 
-        <form role="search" id="searchform" action="/registerRequestClient" method="POST">
+        <form role="search" id="searchform" action="/registerRequestAdmin" method="POST">
             <!-- Options Section -->
             <section class="ptb-30 ptb-sm-30">
                 <div class="container text-center">
@@ -53,6 +53,13 @@
                             <div class="form-field-wrapper">
                                 <span><input class="input-sm" id="form-accept-terms" type="checkbox" name="form-accept-terms" value="accept-terms">He leído y acepto los <a href="#"> Términos y Condiciones</a></span><br>
                             </div>
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        {{ message }}<br>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
                             </div>				
                             <div class="form-field-wrapper mt-15">
                                 <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Crear cuenta</button>

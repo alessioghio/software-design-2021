@@ -32,3 +32,8 @@ def validateLoginCredentials(db_session, username, password):
         return isAdmin
     else:
         return None
+    
+def userExists(db_session, table, username, email):
+    usernameExists = db_session.query(table).filter(table.username == username).count() > 0
+    emailExists = db_session.query(table).filter(table.email == email).count() > 0
+    return usernameExists or emailExists
