@@ -138,6 +138,7 @@ def logout():
         session.pop('client', None)
     else:
         return redirect(url_for('error'))
+    flash('Sesión cerrada.')
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
