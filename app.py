@@ -2,7 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from models import *
 from utils import *
 
+from dash_application import create_dash_application # Llamar a la función que crea la página dash
+
 app = Flask(__name__)
+create_dash_application(app)
+
 
 ENV = 'dev'
 

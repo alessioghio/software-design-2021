@@ -9,6 +9,8 @@ psycopg2 = "*"
 flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
+dash = "*"
+pandas = "*"
 
 [dev-packages]
 
