@@ -47,7 +47,7 @@
         <header id="header" class="header shadow">
             <div class="header-inner">
                 <div class="logo">
-                    <a href="index">
+                    <a href="/">
                         <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
                         <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                     </a>
@@ -85,7 +85,12 @@
                             </ul>
                         </li>
                         <li>
+                            {% if sessionExists %}
+                            <a class="btn btn-md btn-black join-btn" href="user">Perfil</a>
+                            {% else %}
                             <a class="btn btn-md btn-black join-btn" href="login">Accede</a>
+                            {% endif %}
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -139,7 +144,6 @@
         </a>
         <!-- End Scroll Top -->
 
-    </div>
     <!-- Site Wraper End -->
 
     <!-- JS -->
