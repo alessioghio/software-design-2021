@@ -46,11 +46,26 @@
 
         <header id="header" class="header shadow">
             <div class="header-inner">
-                <div class="logo">
-                    <a href="index">
+                <div class="logo">                    
+                    {% if sessionExists %}    
+                        {% if sessionAdmin %}
+                            <a href="/">
+                            <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
+                            <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
+                            </a>
+                        {% else %}    
+                            <a href="/">
+                            <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                            <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="/">    
                         <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
                         <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
-                    </a>
+                        </a>
+                    {% endif %}          
+                    
                 </div>
 
                 <!-- <div class="side-menu-btn"> 
@@ -68,6 +83,35 @@
                 <div class="nav-menu">
                     <ul class="nav-menu-inner">
                         <li>
+                            {% if sessionExists %}
+                                {% if sessionAdmin %}                                
+                                <li>
+                                    <a class="" href="#">Dashboard</a>
+                                </li>    
+                                <li>
+                                    <a class="" href="profile-stocker">Perfil</a>
+                                </li>
+                                <li>
+                                    <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
+                                </li>
+                                
+                                
+
+                                {% else %}                                
+                                <li>
+                                    <a class="" href="#">Catálogo</a>
+                                </li>
+                                <li>
+                                    <a class="" href="profile-pizza">Perfil</a>
+                                </li>
+                                <li>
+                                    <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
+                                </li>
+                                
+
+                                {% endif %}
+                            
+                            {% else %}
                             <a class="menu-has-sub">Emprendimientos powered by STOCKER <i class="fa fa-angle-down"></i></a>
                             <ul class="sub-dropdown dropdown">
                                 <li>
@@ -78,15 +122,15 @@
                                 </li>
                                 <li>
                                     <a href="#">Postres Raúl</a>
-                                </li>
-                                <li>
-                                    <a href="profile-stocker">Profile</a>
-                                </li>
+                                </li>                                
                             </ul>
-                        </li>
-                        <li>
+                            <li>
                             <a class="btn btn-md btn-black join-btn" href="login">Accede</a>
-                        </li>
+                            </li>
+                            
+                            {% endif %}
+
+                        </li>                        
                     </ul>
                 </div>
             </div>
@@ -139,7 +183,6 @@
         </a>
         <!-- End Scroll Top -->
 
-    </div>
     <!-- Site Wraper End -->
 
     <!-- JS -->

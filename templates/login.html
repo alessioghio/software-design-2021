@@ -9,7 +9,7 @@
                 <div class="row title">
                     <h2 class="h2">Accede</h2>
                     <div class="page-breadcrumb">
-                        <a href="index.html">Inicio</a>/<span>Login</span>
+                        <a href="/">Inicio</a>/<span>Login</span>
                     </div>
                 </div>
             </div>
@@ -23,16 +23,23 @@
                     <div class="col-md-6">
                         <div class="border-box">
                             <h4>¿Ya tienes una cuenta?</h4>
-                            <form>
+                            <form action="/loginRequest" method="POST">
                                 <div class="form-field-wrapper">
-                                    <label for="login-email">Email</label>
-                                    <input type="email" required="" placeholder="Ingresa tu correo" name="login-email" id="login-email" class="input-sm form-full" aria-required="true">
+                                    <label for="login-email">Usuario</label>
+                                    <input type="text" required="" placeholder="Ingresa tu usuario" name="username" id="login-email" class="input-sm form-full" aria-required="true">
                                 </div>
                                 <div class="form-field-wrapper">
                                     <label for="login-pass">Contraseña</label>
-                                    <input type="password" required="" placeholder="Ingresa tu contraseña" name="login-pass" id="login-pass" class="input-sm form-full" aria-required="true">
+                                    <input type="password" required="" placeholder="Ingresa tu contraseña" name="password" id="login-pass" class="input-sm form-full" aria-required="true">
                                 </div>
-                                <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="profile-stocker">Ingresar</button>
+                                {% with messages = get_flashed_messages() %}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {{ message }}<br>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+                                <button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="profile-stocker.html">Ingresar</button>
                                 <a class="float-right">¿Te olvidaste tu contraseña?</a>
                             </form>
                         </div>

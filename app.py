@@ -1,5 +1,5 @@
 import dash
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from dash_application import create_dash_application
 from models import *
 from utils import *
@@ -20,16 +20,35 @@ else:
     # Using a production configuration
     app.config.from_object('config.ProdConfig')
 
-#db = Manager()
-#engine = db.createEngine(ENV)
+db = Manager()
+engine = db.createEngine(ENV)
+
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    sessionExists = False
+    if "admin" in session or "client" in session:
+        sessionExists = True
+    return render_template('index.html', sessionExists=sessionExists) 
+
+@app.route('/')
+def sessions():    
+    sessionAdmin = False
+    sessionClient = False
+    if "admin" in session:
+        sessionAdmin = True   
+        if "client" in session:
+            sessionClient = True
+        return render_template('index.html', sessionClient=sessionClient)  
+    return render_template('index.html', sessionAdmin=sessionAdmin)      
+
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    if "admin" in session or "client" in session:
+        return redirect(url_for('user'))
+    else:
+        return render_template('login.html')
 
 @app.route('/registerAdmin')
 def registerAdmin():
@@ -43,17 +62,27 @@ def registerClient():
 def success():
     return render_template('successDummy.html')
 
+# ----- DEBUG ------ #
+
 @app.route('/home-pizza')
 def home():
     return render_template('home-pizza.html')  
 
-@app.route('/profile-stocker')
-def profileAdmin():
-    return render_template('profile-stocker.html')  
+
+
+# ------------------ #
 
 @app.route('/error')
 def error():
     return render_template('errorDummy.html')
+
+@app.route('/user/newProduct')
+def newProd():
+    return render_template('newProduct.html')    
+
+@app.route('/user/newStock')
+def newStock():
+    return render_template('newStock.html')  
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
@@ -98,24 +127,37 @@ def loginRequest():
                 session["client"] = username
             return redirect(url_for('user'))
         else:
-            return redirect(url_for('error')) 
+            flash('Usuario o contraseña incorrectas.')
+            return redirect(url_for('login'))
+
+@app.route('/user/admin')
+def adminProfile():
+    return render_template('profile-stocker.html')
+
+@app.route('/user/client')
+def clientProfile():
+    return render_template('profile-pizza.html')
 
 @app.route('/user')
 def user():
-    username = ""
     if "admin" in session:
-        username = session["admin"]
-        return f"<h1> admin {username} </h1>"
+        # username = session["admin"]
+        return redirect(url_for('adminProfile'))
     elif "client" in session:
-        username = session["client"]
-        return f"<h1> client {username} </h1>"
+        # username = session["client"]
+        return redirect(url_for('clientProfile'))
     else:
         return redirect(url_for('error'))
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    return render_template('loginDummy.html')
+    if "admin" in session:
+        session.pop('admin', None)
+    elif "client" in session:
+        session.pop('client', None)
+    else:
+        return redirect(url_for('error'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run()
