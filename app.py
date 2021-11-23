@@ -75,7 +75,15 @@ def newProd():
 
 @app.route('/user/newStock')
 def newStock():
-    return render_template('newStock.html')  
+    return render_template('newStock.html')
+
+@app.route('/user/newUpdate')
+def newUpdate():
+    return render_template('newUpdate.html')
+
+@app.route('/profileAdmin')
+def profileAdmin():
+    return render_template('profile-stocker.html')
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
