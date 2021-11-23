@@ -9,6 +9,19 @@ def getRegisterData():
     password = request.form['password']
     return name, lastName, email, username, password
 
+def getUpdateData():
+    id = request.form['id']
+    name = request.form['name']
+    price = request.form['price']
+    price = float(price)
+    quantity = request.form['quantity']
+    quantity = int(quantity)
+    unit = request.form['unit']
+    category = request.form['category']
+    visibility = request.form['visibility']
+    visibility = True if visibility == "True" else False
+    return id, name, price, quantity, unit, category, visibility
+
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
     adminQuery = db_session.query(Administrator)

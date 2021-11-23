@@ -1,6 +1,7 @@
 from sqlalchemy import Column, BigInteger, VARCHAR, DateTime, ForeignKey
 from sqlalchemy.sql.sqltypes import NUMERIC, Boolean, Date, Integer
 from database import Manager
+import json
 
 class Administrator(Manager.Base):
     __tablename__ = 'administrator'
@@ -48,6 +49,7 @@ class Supply(Manager.Base):
     name = Column(VARCHAR(100), nullable=False)
     price = Column(NUMERIC, nullable=False)
     quantity = Column(Integer, nullable=False)
+    unit = Column(VARCHAR(5), nullable=False)
     category = Column(VARCHAR(100), nullable=False)
     visibility = Column(Boolean, nullable=False)
 

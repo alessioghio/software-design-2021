@@ -143,50 +143,28 @@ def logout():
 
 @app.route('/user/updateStock')
 def update():
-    # data = db.read(None)
-    return render_template('update.html')
+    db_session = db.getSession(engine)
+    supplyQuery = db_session.query(Supply)
+    data = supplyQuery.all()
+    return render_template('update.html', data=data)
 
-# @app.route('/user/admin/updatestock/add')
-# def add_usuario():
-#     return render_template('/admintemp/add.html')
-
-# @app.route('/user/admin/updatestock/addproduct', methods = ['POST', 'GET'])
-# def addusuario():
-#     if request.method == 'POST' and request.form['save']:
-#         if db.insert(request.form):
-#             flash("Nuevo producto creado")
-#         else:
-#             flash("ERROR al crear producto")
-
-#         return redirect(url_for('index'))
-#     else:
-#         return redirect(url_for('index'))
-
-# @app.route('/user/admin/updatestock/delete/<int:id>')
-# def delete(id):
-#     data = db.read(id);
-
-#     if len(data) == 0:
-#         return redirect(url_for('index'))
-#     else:
-#         session['delete'] = id
-#         return render_template('admintemp/delete.html', data = data)
-
-# @app.route('/user/admin/updatestock/deleteproduct', methods = ['POST'])
-# def deleteusuario():
-#     if request.method == 'POST' and request.form['delete']:
-
-#         if db.delete(session['delete']):
-#             flash('Usuario eliminado')
-#         else:
-#             flash('ERROR al eliminar')
-#         session.pop('delete', None)
-
-#         return redirect(url_for('index'))
-#     else:
-#         return redirect(url_for('index'))
-
-# ----------------------------- #
+@app.route('/user/updateRequest', methods=['POST'])
+def updateRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        id, name, price, quantity, unit, category, visibility = getUpdateData()
+        print(type(price))
+        db_session.query(Supply).\
+            filter(Supply.id == id).\
+            update({"name": name,
+                    "price": price,
+                    "quantity": quantity,
+                    "unit": unit,
+                    "category": category,
+                    "visibility": visibility})
+        db_session.commit()
+        flash('Información actualizada.')
+        return redirect(url_for('update'))
 
 
 if __name__ == '__main__':
