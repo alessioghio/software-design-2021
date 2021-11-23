@@ -5,11 +5,13 @@ import plotly.express as px
 import pandas as pd
 import os
 
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+
+df = pd.read_csv('databases_testing/database_supply.csv')
+# df = pd.DataFrame({
+#     "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
+#     "Amount": [4, 1, 2, 2, 4, 5],
+#     "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
+# })
 
 
 assets_path = os.getcwd() + '/static'
@@ -151,7 +153,7 @@ def build_graphics():
     return html.Div(id="fullpage",
         children=[
             dcc.Graph(
-                id='example-graph',
-                figure=px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+                id='tabla_supply',
+                figure=px.bar(df, x="name", y="quantity", color="category ", barmode="group")
             )
         ])

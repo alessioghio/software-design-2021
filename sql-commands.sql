@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS public.supply
     id bigint NOT NULL DEFAULT nextval('supply_id_seq'::regclass),
     name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     price numeric NOT NULL,
+    unit character varying(5) COLLATE pg_catalog."default" NOT NULL,
     quantity integer NOT NULL,
     category character varying(100) COLLATE pg_catalog."default" NOT NULL,
     visibility boolean NOT NULL,
