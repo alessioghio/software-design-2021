@@ -36,7 +36,7 @@ class ShoppingCart(Manager.Base):
     id = Column(BigInteger, primary_key=True)
     datetime = Column(DateTime, nullable=False)
     client_id = Column(VARCHAR(100), ForeignKey("client.id"), unique=True)
-    supply_id = Column(VARCHAR(100), ForeignKey("client.id"))
+    supply_id = Column(VARCHAR(100), ForeignKey("supply.id"))
 
     def __repr__(self):
         return "<ShoppingCart(datetime=%s, client_id=%s, supply_id=%s)>".format(
