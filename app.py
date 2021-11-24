@@ -70,6 +70,16 @@ def newStock():
     sessionType = "adminSession"
     return render_template('newStock.html', sessionType=sessionType)  
 
+@app.route('/user/newUpdate')
+def newUpdate():
+    sessionType = "adminSession"
+    return render_template('newUpdate.html', sessionType=sessionType)      
+
+@app.route('/user/newRecipe')
+def newRecipe():
+    sessionType = "adminSession"
+    return render_template('newRecipe.html', sessionType=sessionType)      
+
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
     if request.method == 'POST':

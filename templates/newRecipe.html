@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <!-- CONTENT --------------------------------------------------------------------------------->
+
+<!-- Intro Section -->
+<section class="inner-intro dark-bg overlay-dark">
+    <div class="container">
+        <div class="row title">
+            <h2 class="h2">Nueva receta</h2>
+            <!-- <p>Registraloh.</p> -->            
+        </div>
+    </div>
+</section>
+<div class="clearfix"></div>
+<!-- End Intro Section -->
+
+        <!-- Options Section -->
+        <section class="ptb-60 ptb-sm-30">
+			<div class="container text-left">
+                <div class="mb-30">				
+					<h2> Receta </h2>		
+
+                    <div class="form-field-wrapper">
+                        <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre del producto" required>
+                    </div>    
+
+                    <div class="filter-form">
+                        <!-- Filters FORM -->
+                   <form class="filters-form" id="filters" role="form">
+                       <div class="accordion mb-15">
+                           <div class="accordion-section">
+                               <h6 class="accordion-title black">Elegir insumos</h6>
+                               <div class="accordion-content">
+                                   <div class="form-field-wrapper">
+                                       <span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Papas">Papas</span><br>
+                                       <span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Limones">Limones<span><br>
+                                       <span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Chifles">Chifles<span><br>
+                                   </div>
+                               </div>
+                           </div>
+                           </div>
+                        
+                        <div class="form-field-wrapper">
+                            <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Unidades" required>
+                        </div>   
+
+                       <div class="form-field-wrapper">
+                           <input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Precio" required>
+                       </div>
+                       <div class="form-field-wrapper">
+                           <textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
+                       </div>
+                       <div class="form-field-wrapper">							
+                        <p> Añadir imagen </p>
+                        <form class="input-sm" action="/action_page.php">									
+                            <input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">									
+                          </form>
+                        </div>	
+                       
+                       <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
+                   </form>
+                   <!-- END Filters	 FORM -->
+                   </div>
+											
+				</div>			
+			</div>								
+        </section>
+		
+        <!-- End Options Section -->
+
+       
+
+        <!-- End CONTENT ------------------------------------------------------------------------------>
+
+{% endblock %}        
