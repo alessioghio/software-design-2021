@@ -16,12 +16,25 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
+
 @app.route('/')
 def index():
     sessionExists = False
     if "admin" in session or "client" in session:
         sessionExists = True
-    return render_template('index.html', sessionExists=sessionExists)
+    return render_template('index.html', sessionExists=sessionExists) 
+
+@app.route('/')
+def sessions():    
+    sessionAdmin = False
+    sessionClient = False
+    if "admin" in session:
+        sessionAdmin = True   
+        if "client" in session:
+            sessionClient = True
+        return render_template('index.html', sessionClient=sessionClient)  
+    return render_template('index.html', sessionAdmin=sessionAdmin)      
+
 
 @app.route('/login')
 def login():
@@ -48,15 +61,21 @@ def success():
 def home():
     return render_template('home-pizza.html')  
 
-@app.route('/profile-stocker')
-def profileAdmin():
-    return render_template('profile-stocker.html')  
+
 
 # ------------------ #
 
 @app.route('/error')
 def error():
     return render_template('errorDummy.html')
+
+@app.route('/user/newProduct')
+def newProd():
+    return render_template('newProduct.html')    
+
+@app.route('/user/newStock')
+def newStock():
+    return render_template('newStock.html')  
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
