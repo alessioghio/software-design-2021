@@ -7,14 +7,10 @@ import os
 
 
 df = pd.read_csv('databases_testing/database_supply.csv')
-# df = pd.DataFrame({
-#     "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-#     "Amount": [4, 1, 2, 2, 4, 5],
-#     "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-# })
 
 
-assets_path = os.getcwd() + '/static'
+
+assets_path = os.getcwd() #+ '/static'
 
 # Create dash app
 def create_dash_application(flask_app):
