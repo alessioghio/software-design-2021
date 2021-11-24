@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <!-- Flash Section -->
+    {% for message in get_flashed_messages()%}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ message }}
+        </div>
+    {% endfor%}
+    <!-- End Flash Section -->
+    <section class="content">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <center>
+                    <h3 class="box-title">Actualizar Stock</h3>
+                </center>
+            </div>
+            
+            {% for supply in data %}
+            <form class="form-horizontal" method="POST" action="/user/updateRequest">
+                
+                <input type="hidden" name="id" value={{supply.id}}>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nombre</label>
+
+                        <div class="col-sm-10">
+                            <input name="name" value={{supply.name}} type="text" class="form-control" placeholder="nombre"
+                                autocomplete="off" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Precio</label>
+
+                        <div class="col-sm-10">
+                            <input name="price" value={{supply.price}} type="text" class="form-control"
+                                placeholder="precio" autocomplete="off" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Cantidad</label>
+
+                        <div class="col-sm-10">
+                            <input name="quantity" value={{supply.quantity}} type="text" class="form-control"
+                                placeholder="cantidad" autocomplete="off" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Unidad</label>
+
+                        <div class="col-sm-10">
+                            <input name="unit" value={{supply.unit}} type="text" class="form-control"
+                                placeholder="unidad" autocomplete="off" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Categoría</label>
+
+                        <div class="col-sm-10">
+                            <input name="category" value={{supply.category}} type="text" class="form-control"
+                                placeholder="categoría" autocomplete="off" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Visibilidad</label>
+
+                        <div class="col-sm-10">
+                            <input name="visibility" value={{supply.visibility}} type="text" class="form-control"
+                                placeholder="visibilidad" autocomplete="off" required>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="box-footer">
+                    <input name="update" type="submit" class="btn btn-info pull-right" value="Actualizar">
+                </div>
+                
+            </form>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}

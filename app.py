@@ -82,29 +82,36 @@ def registerRequestAdmin():
     if request.method == 'POST':
         db_session = db.getSession(engine)
         name, lastName, email, username, password = getRegisterData()
-        usernameExists = db_session.query(Administrator).filter(Administrator.username == username).count() > 0
-        if not(usernameExists):
+        clientUserExists = userExists(db_session, Client, username, email)
+        adminUserExists = userExists(db_session, Administrator, username, email)
+        if clientUserExists or adminUserExists:
+            flash('Usuario o correo ya existen.')
+            return redirect(url_for('registerAdmin'))
+        if not(adminUserExists):
             userType="Admin"
             data = Administrator(name=name, lastName=lastName, email=email, 
                                 username=username, password=password, userType=userType)
             db_session.add(data)
             db_session.commit()
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
 
 @app.route('/registerRequestClient', methods=['POST'])
 def registerRequestClient():
     if request.method == 'POST':
         db_session = db.getSession(engine)
         name, lastName, email, username, password = getRegisterData()
-        usernameExists = db_session.query(Client).filter(Client.username == username).count() > 0
-        if not(usernameExists):
+        clientUserExists = userExists(db_session, Client, username, email)
+        adminUserExists = userExists(db_session, Administrator, username, email)
+        if clientUserExists or adminUserExists:
+            flash('Usuario o correo ya existen.')
+            return redirect(url_for('registerAdmin'))
+        if not(clientUserExists):
             userType="Client"
             data = Client(name=name, lastName=lastName, email=email, 
                         username=username, password=password, userType=userType)        
             db_session.add(data)
             db_session.commit()
             return redirect(url_for('login'))
-        return redirect(url_for('error'))
 
 @app.route('/loginRequest', methods=['POST'])
 def loginRequest():
@@ -150,7 +157,34 @@ def logout():
         session.pop('client', None)
     else:
         return redirect(url_for('error'))
+    flash('Sesión cerrada.')
     return redirect(url_for('login'))
+
+@app.route('/user/updateStock')
+def update():
+    db_session = db.getSession(engine)
+    supplyQuery = db_session.query(Supply)
+    data = supplyQuery.all()
+    return render_template('update.html', data=data)
+
+@app.route('/user/updateRequest', methods=['POST'])
+def updateRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        id, name, price, quantity, unit, category, visibility = getUpdateData()
+        print(type(price))
+        db_session.query(Supply).\
+            filter(Supply.id == id).\
+            update({"name": name,
+                    "price": price,
+                    "quantity": quantity,
+                    "unit": unit,
+                    "category": category,
+                    "visibility": visibility})
+        db_session.commit()
+        flash('Información actualizada.')
+        return redirect(url_for('update'))
+
 
 if __name__ == '__main__':
     app.run()

@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS public.supply
     name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     price numeric NOT NULL,
     quantity integer NOT NULL,
+    unit character varying(5) COLLATE pg_catalog."default" NOT NULL,
     category character varying(100) COLLATE pg_catalog."default" NOT NULL,
     visibility boolean NOT NULL,
     CONSTRAINT "PK_supply" PRIMARY KEY (id)
