@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <!-- CONTENT --------------------------------------------------------------------------------->
+
+<!-- Intro Section -->
+<section class="inner-intro dark-bg overlay-dark">
+    <div class="container">
+        <div class="row title">
+            <h2 class="h2">Nuevo producto</h2>
+            <p>Registraloh.</p>            
+        </div>
+    </div>
+</section>
+<div class="clearfix"></div>
+<!-- End Intro Section -->
+
+        <!-- Options Section -->
+        <section class="ptb-60 ptb-sm-30">
+			<div class="container">
+                <div class="row text-left">
+					<div class="col-md-9 col-sm-8">                        
+                        <div class="spacer-15"></div>
+							<!-- Opportunity FORM -->
+							<form class="contact-form" id="opportunity" role="form">
+					
+						
+								<div class="form-field-wrapper">
+									<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre" required>
+								</div>
+								
+								<div class="form-field-wrapper">
+									<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
+								</div>
+
+								<div class="form-field-wrapper">
+									<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Unidades" required>
+								</div>
+
+								<div class="form-field-wrapper">
+									<input class="input-sm form-full" id="form-phone" type="number" name="form-phone" placeholder="Cantidad">
+								</div>					
+														
+
+								<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
+							</form>
+							<!-- END Contact FORM -->
+						</div>	
+				</div>
+			</div>
+        </section>
+        <!-- End Options Section -->
+
+       
+
+        <!-- End CONTENT ------------------------------------------------------------------------------>
+
+{% endblock %}        
