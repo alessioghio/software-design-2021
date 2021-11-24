@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <!-- CONTENT --------------------------------------------------------------------------------->
+
+<!-- Intro Section -->
+<section class="inner-intro dark-bg overlay-dark">
+    <div class="container">
+        <div class="row title">
+            <h2 class="h2">Nuevo Insumo</h2>
+            <!-- <p>Registraloh.</p> -->
+        </div>
+    </div>
+</section>
+<div class="clearfix"></div>
+<!-- End Intro Section -->
+        <!-- Options Section -->
+        <section class="ptb-60 ptb-sm-30">
+			<div class="container text-left">
+                <div class="mb-30">				
+					<h2> Crear </h2>
+						<form action="/newProductRequest" method="POST" enctype="multipart/form-data">
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="text" name="name" placeholder="Nombre del producto" required>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="number" name="price" placeholder="Precio" required>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="text" name="unit" placeholder="Unidad" required>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="text" name="category" placeholder="Categoría" required>
+							</div>
+							<div class="form-field-wrapper">
+								<textarea class="form-full" rows="1" name="description" placeholder="Descripción"></textarea>
+							</div>
+							<div class="form-field-wrapper">							
+								<p> Añadir imagen </p>								
+									<input class="form-full" type="file" name="image" placeholder="Añadir imagen">									
+							</div>
+							<!-- Flash Section -->
+							{% for message in get_flashed_messages()%}
+								<div class="alert alert-info alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+									{{ message }}
+								</div>
+							{% endfor%}
+							<!-- End Flash Section -->
+							<button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="newProductRequest">Guardar</button>
+						</form>
+                        <!-- END Filters FORM -->
+				</div>			
+			</div>								
+        </section>
+		
+        <!-- End Options Section -->
+
+       
+
+        <!-- End CONTENT ------------------------------------------------------------------------------>
+
+{% endblock %}        

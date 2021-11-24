@@ -47,10 +47,22 @@
         <header id="header" class="header shadow">
             <div class="header-inner">
                 <div class="logo">
+                    {% if sessionType == "adminSession" %}
                     <a href="/">
                         <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
                         <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                     </a>
+                    {% elif sessionType == "clientSession" %}
+                    <a href="/">
+                        <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                        <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                    </a>
+                    {% else %}
+                    <a href="/">    
+                        <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
+                        <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
+                    </a>
+                    {% endif %}
                 </div>
 
                 <!-- <div class="side-menu-btn"> 
@@ -68,7 +80,28 @@
                 <div class="nav-menu">
                     <ul class="nav-menu-inner">
                         <li>
-                            <a class="menu-has-sub">Emprendimientos powered by STOCKER <i class="fa fa-angle-down"></i></a>
+                            {% if sessionType == "adminSession" %}                                
+                            <li>
+                                <a class="" href="#">Dashboard</a>
+                            </li>    
+                            <li>
+                                <a class="" href="/user">Perfil</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
+                            </li>
+                            {% elif sessionType == "clientSession" %}                                
+                            <li>
+                                <a class="" href="#">Catálogo</a>
+                            </li>
+                            <li>
+                                <a class="" href="/user">Perfil</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
+                            </li>
+                            {% else %}
+                            <a class="menu-has-sub">Emprendimientos powered by STOCKER<i class="fa fa-angle-down"></i></a>
                             <ul class="sub-dropdown dropdown">
                                 <li>
                                     <a href="home-pizza">Pizza Raúl</a>
@@ -78,20 +111,13 @@
                                 </li>
                                 <li>
                                     <a href="#">Postres Raúl</a>
-                                </li>
-                                <li>
-                                    <a href="profile-stocker">Profile</a>
-                                </li>
+                                </li>                                
                             </ul>
-                        </li>
-                        <li>
-                            {% if sessionExists %}
-                            <a class="btn btn-md btn-black join-btn" href="user">Perfil</a>
-                            {% else %}
-                            <a class="btn btn-md btn-black join-btn" href="login">Accede</a>
+                            <li>
+                            <a class="btn btn-md btn-black join-btn" href="/login">Accede</a>
+                            </li>
                             {% endif %}
-                            </a>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
             </div>

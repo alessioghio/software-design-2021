@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
+import os
 from models import *
 from utils import *
 
@@ -17,11 +19,13 @@ db = Manager()
 engine = db.createEngine(ENV)
 
 @app.route('/')
-def index():
-    sessionExists = False
-    if "admin" in session or "client" in session:
-        sessionExists = True
-    return render_template('index.html', sessionExists=sessionExists)
+def index():    
+    sessionType = "None"
+    if "admin" in session:
+        sessionType = "adminSession"   
+    elif "client" in session:
+        sessionType = "clientSession"
+    return render_template('index.html', sessionType=sessionType)
 
 @app.route('/login')
 def login():
@@ -48,15 +52,51 @@ def success():
 def home():
     return render_template('home-pizza.html')  
 
-@app.route('/profile-stocker')
-def profileAdmin():
-    return render_template('profile-stocker.html')  
-
 # ------------------ #
 
 @app.route('/error')
 def error():
     return render_template('errorDummy.html')
+
+@app.route('/user/sales')
+def sales():
+    return render_template('sales.html')    
+
+@app.route('/user/newProduct')
+def newProduct():
+    sessionType = "adminSession"
+    return render_template('newProduct.html', sessionType=sessionType)    
+
+@app.route('/newProductRequest', methods=['POST'])
+def newProductRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name, price, unit, category, description, image = getNewProductData()
+        print(image)
+        if nameExists(db_session, Supply, name):
+            flash('Insumo existente.')
+            return redirect(url_for('newProduct'))
+        else:
+            # Save into db
+            data = Supply(name=name, price=price, unit=unit, visibility=False,
+                        category=category, description=description)
+            db_session.add(data)
+            db_session.commit()
+            # Get id
+            supplyQuery = db_session.query(Supply)
+            supply = supplyQuery.filter(Supply.name == name).first()
+            filename = secure_filename(image.filename)
+            # get file extension
+            ext = filename.split(".")
+            ext = ext[-1]
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], f"{supply.id}.{ext}"))
+            flash('Insumo creado.')
+            return redirect(url_for('newProduct'))
+
+@app.route('/user/newStock')
+def newStock():
+    sessionType = "adminSession"
+    return render_template('newStock.html', sessionType=sessionType)  
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
@@ -113,11 +153,13 @@ def loginRequest():
 
 @app.route('/user/admin')
 def adminProfile():
-    return render_template('profile-stocker.html')
+    sessionType = "adminSession"
+    return render_template('profile-stocker.html', sessionType=sessionType)
 
 @app.route('/user/client')
 def clientProfile():
-    return render_template('profile-pizza.html')
+    sessionType = "clientSession"
+    return render_template('profile-pizza.html', sessionType=sessionType)
 
 @app.route('/user')
 def user():
