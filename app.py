@@ -1,13 +1,13 @@
 import dash
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from dash_application import create_dash_application
+from dash_app_folder.dash_application import create_dash_application
 from models import *
 from utils import *
 
-from dash_application import create_dash_application # Llamar a la función que crea la página dash
+# from dash_application import create_dash_application # Llamar a la función que crea la página dash
 
 app = Flask(__name__)
-dash_app = create_dash_application(app)
+
 
 
 
@@ -22,6 +22,9 @@ else:
 
 db = Manager()
 engine = db.createEngine(ENV)
+
+
+dash_app = create_dash_application(app,engine)
 
 @app.route('/')
 def index():    
