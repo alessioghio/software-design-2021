@@ -4,6 +4,7 @@ class Config:
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    UPLOAD_FOLDER = 'static/productsImages'
 
 class ProdConfig(Config):
     FLASK_ENV = 'production'
