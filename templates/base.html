@@ -83,36 +83,28 @@
                 <div class="nav-menu">
                     <ul class="nav-menu-inner">
                         <li>
-                            {% if sessionExists %}
-                                {% if sessionAdmin %}                                
-                                <li>
-                                    <a class="" href="#">Dashboard</a>
-                                </li>    
-                                <li>
-                                    <a class="" href="profile-stocker">Perfil</a>
-                                </li>
-                                <li>
-                                    <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
-                                </li>
-                                
-                                
-
-                                {% else %}                                
-                                <li>
-                                    <a class="" href="#">Catálogo</a>
-                                </li>
-                                <li>
-                                    <a class="" href="profile-pizza">Perfil</a>
-                                </li>
-                                <li>
-                                    <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
-                                </li>
-                                
-
-                                {% endif %}
-                            
+                            {% if sessionType == "adminSession" %}                                
+                            <li>
+                                <a class="" href="#">Dashboard</a>
+                            </li>    
+                            <li>
+                                <a class="" href="/user">Perfil</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
+                            </li>
+                            {% elif sessionType == "clientSession" %}                                
+                            <li>
+                                <a class="" href="#">Catálogo</a>
+                            </li>
+                            <li>
+                                <a class="" href="/user">Perfil</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
+                            </li>
                             {% else %}
-                            <a class="menu-has-sub">Emprendimientos powered by STOCKER <i class="fa fa-angle-down"></i></a>
+                            <a class="menu-has-sub">Emprendimientos powered by STOCKER<i class="fa fa-angle-down"></i></a>
                             <ul class="sub-dropdown dropdown">
                                 <li>
                                     <a href="home-pizza">Pizza Raúl</a>
@@ -125,9 +117,8 @@
                                 </li>                                
                             </ul>
                             <li>
-                            <a class="btn btn-md btn-black join-btn" href="login">Accede</a>
+                            <a class="btn btn-md btn-black join-btn" href="/login">Accede</a>
                             </li>
-                            
                             {% endif %}
 
                         </li>                        

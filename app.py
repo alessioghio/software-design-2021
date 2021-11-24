@@ -16,25 +16,14 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
-
 @app.route('/')
-def index():
-    sessionExists = False
-    if "admin" in session or "client" in session:
-        sessionExists = True
-    return render_template('index.html', sessionExists=sessionExists) 
-
-@app.route('/')
-def sessions():    
-    sessionAdmin = False
-    sessionClient = False
+def index():    
+    sessionType = "None"
     if "admin" in session:
-        sessionAdmin = True   
-        if "client" in session:
-            sessionClient = True
-        return render_template('index.html', sessionClient=sessionClient)  
-    return render_template('index.html', sessionAdmin=sessionAdmin)      
-
+        sessionType = "adminSession"   
+    elif "client" in session:
+        sessionType = "clientSession"
+    return render_template('index.html', sessionType=sessionType)
 
 @app.route('/login')
 def login():
@@ -61,21 +50,25 @@ def success():
 def home():
     return render_template('home-pizza.html')  
 
-
-
 # ------------------ #
 
 @app.route('/error')
 def error():
     return render_template('errorDummy.html')
 
+@app.route('/user/sales')
+def sales():
+    return render_template('sales.html')    
+
 @app.route('/user/newProduct')
 def newProd():
-    return render_template('newProduct.html')    
+    sessionType = "adminSession"
+    return render_template('newProduct.html', sessionType=sessionType)    
 
 @app.route('/user/newStock')
 def newStock():
-    return render_template('newStock.html')  
+    sessionType = "adminSession"
+    return render_template('newStock.html', sessionType=sessionType)  
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
@@ -132,11 +125,13 @@ def loginRequest():
 
 @app.route('/user/admin')
 def adminProfile():
-    return render_template('profile-stocker.html')
+    sessionType = "adminSession"
+    return render_template('profile-stocker.html', sessionType=sessionType)
 
 @app.route('/user/client')
 def clientProfile():
-    return render_template('profile-pizza.html')
+    sessionType = "clientSession"
+    return render_template('profile-pizza.html', sessionType=sessionType)
 
 @app.route('/user')
 def user():
