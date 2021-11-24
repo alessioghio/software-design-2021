@@ -25,22 +25,33 @@
         <section class="ptb-60 ptb-sm-30">
 			<div class="container text-left">
                 <div class="mb-30">				
-					<h2> Modificar </h2>						
+					<h2> Modificar </h2>		
+						<!-- Flash Section -->
+						{% for message in get_flashed_messages()%}
+						<div class="alert alert-info alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{{ message }}
+						</div>
+						{% endfor%}
+						<!-- End Flash Section -->	
+
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" id="filters" role="form">
+                        <form class="filters-form" id="filters" role="form" method="POST" action="/user/updateRequest">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
 									<div class="accordion-content">
 										<div class="form-field-wrapper">
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Papas">Papas</span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Limones">Limones<span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Chifles">Chifles<span><br>
+											{% for supply in data %}
+											<!--<input type="hidden" name="id" value={{supply.id}}>-->
+											<span><input class="input-sm" id="category" type="radio" name="form-category" value="{{supply.id}}">{{supply.name}}</span><br>
+											{% endfor %}
 										</div>
 									</div>
 								</div>
-								</div>
+							</div>
+								
                             <div class="form-field-wrapper">
                                 <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nuevo nombre" required>
                             </div>
@@ -53,12 +64,12 @@
 							<div class="form-field-wrapper">
 								<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Cambiar descripción"></textarea>
 							</div>						
-							<div class="form-field-wrapper">							
+							<!--<div class="form-field-wrapper">							
 								<p> Seleccionar nueva imagen </p>
 								<form class="input-sm" action="/action_page.php">									
 									<input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">									
 								  </form>
-							</div>
+							</div>-->
 							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Actualizar</button>
 						</form>
                         <!-- END Filters	 FORM -->
