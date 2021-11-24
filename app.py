@@ -69,6 +69,10 @@ def home():
 def error():
     return render_template('errorDummy.html')
 
+@app.route('/user/sales')
+def sales():
+    return render_template('sales.html')    
+
 @app.route('/user/newProduct')
 def newProd():
     return render_template('newProduct.html')    
