@@ -18,38 +18,38 @@
 
         <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
-			<div class="container">
-                <div class="row text-left">
-					<div class="col-md-9 col-sm-8">                        
-                        <div class="spacer-15"></div>
-							<!-- Opportunity FORM -->
-							<form class="contact-form" id="opportunity" role="form">
-					
+			<div class="container text-left">
+                <div class="mb-30">				
+					<h2> Crear </h2>						
 						
-								<div class="form-field-wrapper">
-									<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre" required>
-								</div>
-								
-								<div class="form-field-wrapper">
-									<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
-								</div>
-
-								<div class="form-field-wrapper">
-									<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Unidades" required>
-								</div>
-
-								<div class="form-field-wrapper">
-									<input class="input-sm form-full" id="form-phone" type="number" name="form-phone" placeholder="Cantidad">
-								</div>					
-														
-
-								<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
-							</form>
-							<!-- END Contact FORM -->
-						</div>	
-				</div>
-			</div>
+							 <!-- Filters FORM -->
+						<form class="contact-form" id="opportunity" role="form">
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre del producto" required>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Cantidad" required>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" id="form-submit" type="text" name="form-submit" placeholder="Unidades" required>
+							</div>
+							<div class="form-field-wrapper">
+								<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
+							</div>
+							<div class="form-field-wrapper">							
+								<p> Añadir imagen </p>
+								<form class="input-sm" action="/action_page.php">									
+									<input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">									
+								  </form>
+							</div>					
+							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
+						</form>
+                        <!-- END Filters	 FORM -->
+											
+				</div>			
+			</div>								
         </section>
+		
         <!-- End Options Section -->
 
        

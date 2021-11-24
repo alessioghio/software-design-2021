@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+  <section class="content-header">
+    {% for message in get_flashed_messages()%}
+    <div class="alert alert-info alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      {{ message }}
+    </div>
+    {% endfor%}
+  </section>
+
+  <section class="content">
+    <div class="box box-primary">
+      <div class="box-header">
+        <a href="/usuario/add">
+          <center>
+            <button type="button" class="btn btn-primary btn-flat">
+              <span class="glyphicon glyphicon-plus"></span> Nuevo Usuario
+            </button>
+          </center>
+        </a>
+      </div>
+
+      <div class="box-body">
+        <table id="dataphone" class="table table-bordered table-striped">
+          <thead align="center">
+            <tr>
+              <th>Nombre</th>
+              <th>Telefono</th>
+              <th>Email</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% if data|length == 0 %}
+            <tr>
+              <td>No Data</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% else %}
+            <tr>
+              {% for row in data %}
+              <td>{{ row[1] }}</td>
+              <td>{{ row[2] }}</td>
+              <td>{{ row[3] }}</td>
+              <td align="center">
+                <a href="/usuario/update/{{ row[0]}}">
+                  <button type="button" class="btn btn-sm btn-warning btn-flat" title="Update"><span
+                      class="glyphicon glyphicon-pencil"></span></button>
+                </a>
+                <a href="/usuario/delete/{{ row[0]}}">
+                  <button type="button" class="btn btn-sm btn-danger btn-flat" title="Delete"><span
+                      class="glyphicon glyphicon-remove"></span></button>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% endif%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% endblock %}
