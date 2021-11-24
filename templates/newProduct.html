@@ -8,93 +8,59 @@
 <section class="inner-intro dark-bg overlay-dark">
     <div class="container">
         <div class="row title">
+<<<<<<< HEAD
             <h2 class="h2">Nuevo insumo</h2>
             <!-- <p>Registraloh.</p> -->           
+=======
+            <h2 class="h2">Nuevo Insumo</h2>
+            <!-- <p>Registraloh.</p> -->
+>>>>>>> main
         </div>
     </div>
 </section>
 <div class="clearfix"></div>
 <!-- End Intro Section -->
-
-        <!-- Contact Section -->
+        <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
-            <div class="container">
-                <div class="row">
-				<div class="col-md-6 pb-60">
+			<div class="container text-left">
+                <div class="mb-30">				
 					<h2> Crear </h2>
-                        <!-- Contact FORM -->
-                        <form class="contact-form" id="contact" role="form">
-                            <div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre del producto" required>
+						<form action="/newProductRequest" method="POST" enctype="multipart/form-data">
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="text" name="name" placeholder="Nombre del producto" required>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="number" name="price" placeholder="Precio" required>
 							</div>
 
 
 
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Crear categoría" required>
-							</div>
-					
-
-
-
-                            <div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-submit" type="text" name="form-submit" placeholder="Unidades" required>
+								<input class="input-sm form-full" type="text" name="unit" placeholder="Unidad" required>
 							</div>
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Precio" required>
+								<input class="input-sm form-full" type="text" name="category" placeholder="Categoría" required>
 							</div>
 							<div class="form-field-wrapper">
-								<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
+								<textarea class="form-full" rows="1" name="description" placeholder="Descripción"></textarea>
 							</div>
-												
-							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
-
-
-
-
-                
-                            </form>
-                        <!-- END Contact FORM -->
-					</div>
-                    <div class="col-md-5 col-md-offset-1 contact">
-                        	
-						<div class="form-field-wrapper">							
-							<p> Añadir imagen </p>
-							<form class="input-sm" action="/action_page.php">									
-								<input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">									
-							</form>
-						</div>				
-						
-						<div class="form-field-wrapper">
-							<span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Visibilidad">¿Mostrar en el catálogo?</span><br>
-						</div>
-							
-								<div class="accordion mb-15">
-									<div class="accordion-section">
-										<h6 class="accordion-title black">Elegir categoría</h6>
-										<div class="accordion-content">
-											<div class="form-field-wrapper">
-												<span><input class="input-sm" id="category" type="text" name="form-category" placeholder="Nueva categoría"></span><br>
-												<span><input class="input-sm" id="category" type="radio" name="form-category" value="Fruta">Fruta<span><br>
-												<span><input class="input-sm" id="category" type="radio" name="form-category" value="Verdura">Verdura<span><br>
-											</div>
-										</div>
-									</div>
-									</div>
-								
-							
-
-
-
-						
-                        <!-- <div class="contact-box-left mb-45">
-
-                            
-                        </div> -->
-                    </div>
-                    
-                </div>
-            </div>
+							<div class="form-field-wrapper">							
+								<p> Añadir imagen </p>								
+									<input class="form-full" type="file" name="image" placeholder="Añadir imagen" required>									
+							</div>
+							<!-- Flash Section -->
+							{% for message in get_flashed_messages()%}
+								<div class="alert alert-info alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+									{{ message }}
+								</div>
+							{% endfor%}
+							<!-- End Flash Section -->
+							<button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="newProductRequest">Guardar</button>
+						</form>
+                        <!-- END Filters FORM -->
+				</div>			
+			</div>								
         </section>
         <!-- Contact Section -->
 

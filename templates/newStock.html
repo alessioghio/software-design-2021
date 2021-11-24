@@ -28,23 +28,31 @@
 					<h2> Ingresar </h2>						
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" id="filters" role="form">
+                        <form action="/newStockRequest" method="POST">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
 									<div class="accordion-content">
 										<div class="form-field-wrapper">
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Papas">Papas</span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Limones">Limones<span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Chifles">Chifles<span><br>
+											{% for supply in supplies %}
+												<span><input class="input-sm" type="radio" name="name" value={{supply.name}}>{{supply.name}}</span><br>
+											{% endfor %}
 										</div>
 									</div>
 								</div>
 								</div>
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Cantidad" required>
-							</div>													
-							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
+								<input class="input-sm form-full" type="number" name="quantity" placeholder="Cantidad" required>
+							</div>
+							<!-- Flash Section -->
+							{% for message in get_flashed_messages()%}
+								<div class="alert alert-info alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+									{{ message }}
+								</div>
+							{% endfor%}
+							<!-- End Flash Section -->
+							<button class="btn btn-md btn-black" type="submit" name="submit" href="newStockRequest">Guardar</button>
 						</form>
                         <!-- END Filters	 FORM -->
 						</div>					

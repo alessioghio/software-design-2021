@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
+import os
 from models import *
 from utils import *
 
@@ -61,14 +63,66 @@ def sales():
     return render_template('sales.html')    
 
 @app.route('/user/newProduct')
-def newProd():
+def newProduct():
     sessionType = "adminSession"
     return render_template('newProduct.html', sessionType=sessionType)    
 
+@app.route('/newProductRequest', methods=['POST'])
+def newProductRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name, price, unit, category, description, image = getNewProductData()
+        print(image)
+        if nameExists(db_session, Supply, name):
+            flash('Insumo existente.')
+            return redirect(url_for('newProduct'))
+        else:
+            # Save into db
+            data = Supply(name=name, price=price, unit=unit, visibility=False,
+                        category=category, description=description)
+            db_session.add(data)
+            db_session.commit()
+            # Get id
+            supplyQuery = db_session.query(Supply)
+            supply = supplyQuery.filter(Supply.name == name).first()
+            filename = secure_filename(image.filename)
+            # get file extension
+            ext = filename.split(".")
+            ext = ext[-1]
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], f"{supply.id}.{ext}"))
+            flash('Insumo creado.')
+            return redirect(url_for('newProduct'))
+
 @app.route('/user/newStock')
 def newStock():
+    db_session = db.getSession(engine)
+    supplyQuery = db_session.query(Supply)
+    supplies = supplyQuery.all()
     sessionType = "adminSession"
-    return render_template('newStock.html', sessionType=sessionType)  
+    return render_template('newStock.html', sessionType=sessionType, supplies=supplies)  
+
+@app.route('/newStockRequest', methods=['POST'])
+def newStockRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name = request.form['name']
+        quantity = request.form['quantity']
+        quantity = int(quantity)
+        # Get previous amount
+        supplyQuery = db_session.query(Supply)
+        supply = supplyQuery.filter(Supply.name == name).first()
+        print(supply.name)
+        print(supply.quantity)
+        print(supply.id)
+        prevQuantity = supply.quantity if supply.quantity is not None else 0
+        # update
+        quantity += prevQuantity
+        db_session.query(Supply).\
+            filter(Supply.id == supply.id).\
+            update({"quantity": quantity})
+        db_session.commit()
+        flash('Stock agregado.')
+        return redirect(url_for('newStock'))
 
 @app.route('/user/newUpdate')
 def newUpdate():
@@ -177,7 +231,6 @@ def updateRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
         id, name, price, quantity, unit, category, visibility = getUpdateData()
-        print(type(price))
         db_session.query(Supply).\
             filter(Supply.id == id).\
             update({"name": name,

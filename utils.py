@@ -9,6 +9,16 @@ def getRegisterData():
     password = request.form['password']
     return name, lastName, email, username, password
 
+def getNewProductData():
+    name = request.form['name']
+    price = request.form['price']
+    price = float(price)
+    unit = request.form['unit']
+    category = request.form['category']
+    description = request.form['description']
+    image = request.files['image']
+    return name, price, unit, category, description, image
+
 def getUpdateData():
     id = request.form['id']
     name = request.form['name']
@@ -20,7 +30,8 @@ def getUpdateData():
     category = request.form['category']
     visibility = request.form['visibility']
     visibility = True if visibility == "True" else False
-    return id, name, price, quantity, unit, category, visibility
+    description = request.form['description']
+    return id, name, price, quantity, unit, category, visibility, description
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
@@ -50,3 +61,6 @@ def userExists(db_session, table, username, email):
     usernameExists = db_session.query(table).filter(table.username == username).count() > 0
     emailExists = db_session.query(table).filter(table.email == email).count() > 0
     return usernameExists or emailExists
+
+def nameExists(db_session, table, name):
+    return db_session.query(table).filter(table.name == name).count() > 0
