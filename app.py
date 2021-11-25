@@ -95,8 +95,34 @@ def newProductRequest():
 
 @app.route('/user/newStock')
 def newStock():
+    db_session = db.getSession(engine)
+    supplyQuery = db_session.query(Supply)
+    supplies = supplyQuery.all()
     sessionType = "adminSession"
-    return render_template('newStock.html', sessionType=sessionType)  
+    return render_template('newStock.html', sessionType=sessionType, supplies=supplies)  
+
+@app.route('/newStockRequest', methods=['POST'])
+def newStockRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name = request.form['name']
+        quantity = request.form['quantity']
+        quantity = int(quantity)
+        # Get previous amount
+        supplyQuery = db_session.query(Supply)
+        supply = supplyQuery.filter(Supply.name == name).first()
+        print(supply.name)
+        print(supply.quantity)
+        print(supply.id)
+        prevQuantity = supply.quantity if supply.quantity is not None else 0
+        # update
+        quantity += prevQuantity
+        db_session.query(Supply).\
+            filter(Supply.id == supply.id).\
+            update({"quantity": quantity})
+        db_session.commit()
+        flash('Stock agregado.')
+        return redirect(url_for('newStock'))
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
