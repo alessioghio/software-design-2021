@@ -31,7 +31,7 @@ def getUpdateData():
     visibility = request.form['visibility']
     visibility = True if visibility == "True" else False
     description = request.form['description']
-    return id, name, price, quantity, unit, category, visibility, description
+    return id, name, price, quantity, unit, category, description, visibility
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user

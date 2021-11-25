@@ -220,7 +220,7 @@ def update():
 def updateRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        id, name, price, quantity, unit, category, visibility = getUpdateData()
+        id, name, price, quantity, unit, category, description, visibility = getUpdateData()
         db_session.query(Supply).\
             filter(Supply.id == id).\
             update({"name": name,
@@ -228,6 +228,7 @@ def updateRequest():
                     "quantity": quantity,
                     "unit": unit,
                     "category": category,
+                    "description": description,
                     "visibility": visibility})
         db_session.commit()
         flash('Información actualizada.')
