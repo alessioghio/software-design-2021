@@ -214,22 +214,34 @@ def update():
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
     data = supplyQuery.all()
-    return render_template('update.html', data=data)
+    return render_template('newUpdate.html', data=data)
 
 @app.route('/user/updateRequest', methods=['POST'])
 def updateRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
+<<<<<<< HEAD
         id, name, price, quantity, unit, category, description, visibility = getUpdateData()
+=======
+        id, name, quantity, description = getUpdateData()
+        #print(type(price))
+>>>>>>> 909bca9c7b2b4993b67ed2d29906269307a49d71
         db_session.query(Supply).\
             filter(Supply.id == id).\
             update({"name": name,
-                    "price": price,
+                    #"price": price,
                     "quantity": quantity,
+<<<<<<< HEAD
                     "unit": unit,
                     "category": category,
                     "description": description,
                     "visibility": visibility})
+=======
+                    #"unit": unit,
+                    #"category": category,
+                    #"visibility": visibility,
+                    "description": description})
+>>>>>>> 909bca9c7b2b4993b67ed2d29906269307a49d71
         db_session.commit()
         flash('Información actualizada.')
         return redirect(url_for('update'))
