@@ -46,17 +46,17 @@
 
         <header id="header" class="header shadow">
             <div class="header-inner">
-                <div class="logo">
-                    {% if sessionType == "adminSession" %}
-                    <a href="/">
-                        <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
-                        <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
-                    </a>
-                    {% elif sessionType == "clientSession" %}
-                    <a href="/">
-                        <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                        <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                    </a>
+                <div class="logo">                    
+                    {% if sessionType == "adminSession" %}                          
+                            <a href="/">
+                            <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
+                            <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
+                            </a>
+                    {% elif sessionType == "clientSession" %}        
+                            <a href="/">
+                            <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                            <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
+                            </a>                        
                     {% else %}
                     <a href="/">    
                         <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
@@ -82,7 +82,7 @@
                         <li>
                             {% if sessionType == "adminSession" %}                                
                             <li>
-                                <a class="" href="#">Dashboard</a>
+                                <a class="" href="/dash">Dashboard</a>
                             </li>    
                             <li>
                                 <a class="" href="/user">Perfil</a>

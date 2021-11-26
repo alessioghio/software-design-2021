@@ -25,16 +25,32 @@
 								<input class="input-sm form-full" type="text" name="name" placeholder="Nombre del producto" required>
 							</div>
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" type="number" name="price" placeholder="Precio" required>
-							</div>
-							<div class="form-field-wrapper">
 								<input class="input-sm form-full" type="text" name="unit" placeholder="Unidad" required>
 							</div>
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" type="text" name="category" placeholder="Categoría" required>
+								<input class="input-sm form-full" type="number" name="price" placeholder="Precio" required>
+							</div>							
+							<div class="form-field-wrapper">
+								
+									<div class="accordion-section">
+										<h6 class="accordion-title black">Categoría</h6>
+										<div class="accordion-content">
+											<div class="form-field-wrapper">												
+												<span><input class="text" type="text" name="text" placeholder="Nueva categoría"></span>
+												<button class="btn btn-md btn-black" type="submit" id="peque-submit" name="submit">Seleccionar nueva</button><br>		
+											</div>	
+											<div>
+												<span><input class="input-sm" type="radio" name="name" value=fruta>Fruta</span><br>												
+											</div>
+										</div>
+									</div>
+									
 							</div>
 							<div class="form-field-wrapper">
 								<textarea class="form-full" rows="1" name="description" placeholder="Descripción"></textarea>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm" type="checkbox" name="name" value=Visibilidad>¿Mostrar en el catálogo?</span>
 							</div>
 							<div class="form-field-wrapper">							
 								<p> Añadir imagen </p>								
@@ -54,8 +70,7 @@
 				</div>			
 			</div>								
         </section>
-		
-        <!-- End Options Section -->
+        <!-- Contact Section -->
 
        
 
