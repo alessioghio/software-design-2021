@@ -14,7 +14,7 @@ def create_dash_application(flask_app,engine):
     # - Necesita correr en un server de flask
     dash_app = dash.Dash(__name__, server = flask_app, url_base_pathname="/dash/",update_title=None)#, assets_folder= assets_path)
 
-    data_frame = pd.read_sql_query('select * from "supply"',con=engine)
+    data_frame = pd.read_sql_query('select * from "supply"', con=engine)
 
     dash_app.layout = html.Div(
         children=[
@@ -92,7 +92,7 @@ def build_wrapper():
                                             html.Ul(
                                                 className="nav-menu-inner",
                                                 children=[
-                                                    html.Li(children=[html.A("Profile",className="btn btn-md btn-black join-btn", href="../profile-stocker")]),
+                                                    html.Li(children=[html.A("Profile",className="btn btn-md btn-black join-btn", href="/user")]),
                                                     # html.Li(
                                                     #     children=[
                                                     #         html.A(

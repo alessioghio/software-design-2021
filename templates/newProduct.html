@@ -18,7 +18,15 @@
         <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
 			<div class="container text-left">
-                <div class="mb-30">				
+                <div class="mb-30">	
+					<!-- Flash Section -->
+					{% for message in get_flashed_messages()%}
+						<div class="alert alert-info alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{{ message }}
+						</div>
+					{% endfor%}
+					<!-- End Flash Section -->			
 					<h2> Crear </h2>
 						<form action="/newProductRequest" method="POST" enctype="multipart/form-data">
 							<div class="form-field-wrapper">
@@ -31,12 +39,11 @@
 								<input class="input-sm form-full" type="number" name="price" placeholder="Precio" required>
 							</div>							
 							<div class="form-field-wrapper">
-								
 									<div class="accordion-section">
 										<h6 class="accordion-title black">Categoría</h6>
 										<div class="accordion-content">
 											<div class="form-field-wrapper">												
-												<span><input class="text" type="text" name="text" placeholder="Nueva categoría"></span>
+												<span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span>
 												<button class="btn btn-md btn-black" type="submit" id="peque-submit" name="submit">Seleccionar nueva</button><br>		
 											</div>	
 											<div>
@@ -56,14 +63,6 @@
 								<p> Añadir imagen </p>								
 									<input class="form-full" type="file" name="image" placeholder="Añadir imagen" required>									
 							</div>
-							<!-- Flash Section -->
-							{% for message in get_flashed_messages()%}
-								<div class="alert alert-info alert-dismissible">
-									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-									{{ message }}
-								</div>
-							{% endfor%}
-							<!-- End Flash Section -->
 							<button name="submit" id="form-submit" type="submit" class="btn btn-md btn-black" href="newProductRequest">Guardar</button>
 						</form>
                         <!-- END Filters FORM -->

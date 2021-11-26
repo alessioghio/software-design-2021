@@ -66,10 +66,11 @@ CREATE TABLE IF NOT EXISTS public.client
 CREATE TABLE IF NOT EXISTS public.recipe
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
-    name character varying(100) COLLATE pg_catalog."default",
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     quantity integer,
     supply_id bigint,
     description character varying(500) COLLATE pg_catalog."default",
+    category character varying(100) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "PK_recipe" PRIMARY KEY (id)
 )
 

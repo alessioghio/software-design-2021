@@ -24,17 +24,16 @@
         <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
 			<div class="container text-left">
-                <div class="mb-30">				
-					<h2> Modificar </h2>		
-						<!-- Flash Section -->
-						{% for message in get_flashed_messages()%}
-						<div class="alert alert-info alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							{{ message }}
-						</div>
-						{% endfor%}
-						<!-- End Flash Section -->	
-
+                <div class="mb-30">
+					<!-- Flash Section -->
+					{% for message in get_flashed_messages()%}
+					<div class="alert alert-info alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						{{ message }}
+					</div>
+					{% endfor%}
+					<!-- End Flash Section -->	
+					<h2> Modificar </h2>
 						<div class="filter-form">
 							 <!-- Filters FORM -->
                         <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest">
@@ -43,7 +42,7 @@
 									<h6 class="accordion-title black">Elegir producto</h6>
 									<div class="accordion-content">
 										<div class="form-field-wrapper">
-											{% for supply in data %}
+											{% for supply in supplies %}
 											<!--<input type="hidden" name="id" value={{supply.id}}>-->
 											<span><input class="input-sm" id="category" type="radio" name="id" value="{{supply.id}}" required>{{supply.name}}</span><br>
 											{% endfor %}

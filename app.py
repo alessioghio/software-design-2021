@@ -69,7 +69,8 @@ def error():
 
 @app.route('/user/sales')
 def sales():
-    return render_template('sales.html')    
+    sessionType = "adminSession"
+    return render_template('sales.html', sessionType=sessionType)    
 
 @app.route('/user/newProduct')
 def newProduct():
@@ -131,12 +132,7 @@ def newStockRequest():
             update({"quantity": quantity})
         db_session.commit()
         flash('Stock agregado.')
-        return redirect(url_for('newStock'))
-
-@app.route('/user/newUpdate')
-def newUpdate():
-    sessionType = "adminSession"
-    return render_template('newUpdate.html', sessionType=sessionType)      
+        return redirect(url_for('newStock'))    
 
 @app.route('/user/newRecipe')
 def newRecipe():
@@ -232,9 +228,9 @@ def logout():
 def update():
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
-    data = supplyQuery.all()
+    supplies = supplyQuery.all()
     sessionType = "adminSession"
-    return render_template('newUpdate.html', data=data, sessionType=sessionType)
+    return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies)
 
 @app.route('/user/updateRequest', methods=['POST'])
 def updateRequest():
