@@ -230,7 +230,6 @@ def updateRequest():
         indices = [0, 1, 2, 3, 4, 5, 6]
         for idx, data, attribute in zip(indices, updateData, attributes):
             if data == "":
-                print(attribute)
                 updateData[idx] = supply.__getattribute__(attribute)
         name = updateData[0]
         price = updateData[1]
