@@ -37,7 +37,7 @@
 
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" id="filters" role="form" method="POST" action="/user/updateRequest">
+                        <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
@@ -45,7 +45,7 @@
 										<div class="form-field-wrapper">
 											{% for supply in data %}
 											<!--<input type="hidden" name="id" value={{supply.id}}>-->
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="{{supply.id}}">{{supply.name}}</span><br>
+											<span><input class="input-sm" id="category" type="radio" name="id" value="{{supply.id}}" required>{{supply.name}}</span><br>
 											{% endfor %}
 										</div>
 									</div>
@@ -53,24 +53,33 @@
 							</div>
 								
                             <div class="form-field-wrapper">
-                                <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nuevo nombre" required>
+                                <input class="input-sm form-full" type="text" name="name" placeholder="Nuevo nombre">
                             </div>
-                            <div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Fijar cantidad de stock actual" required>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="number" name="price" placeholder="Cambiar precio">
 							</div>
                             <div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-submit" type="text" name="form-submit" placeholder="Nuevas unidades" required>
+								<input class="input-sm form-full" type="number" name="quantity" placeholder="Cambiar cantidad">
+							</div>
+                            <div class="form-field-wrapper">
+								<input class="input-sm form-full" type="text" name="unit" placeholder="Cambiar unidad">
 							</div>
 							<div class="form-field-wrapper">
-								<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Cambiar descripción"></textarea>
-							</div>						
+								<input class="input-sm form-full" type="text" name="category" placeholder="Cambiar categoría">
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="text" name="visibility" placeholder="Cambiar visibilidad">
+							</div>	
+							<div class="form-field-wrapper">
+								<textarea class="form-full" rows="1" name="description" placeholder="Cambiar descripción"></textarea>
+							</div>				
 							<!--<div class="form-field-wrapper">							
 								<p> Seleccionar nueva imagen </p>
 								<form class="input-sm" action="/action_page.php">									
 									<input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">									
 								  </form>
 							</div>-->
-							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Actualizar</button>
+							<button class="btn btn-md btn-black" type="submit" name="submit" href="updateRequest">Actualizar</button>
 						</form>
                         <!-- END Filters	 FORM -->
 						</div>					

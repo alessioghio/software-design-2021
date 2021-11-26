@@ -20,18 +20,21 @@ def getNewProductData():
     return name, price, unit, category, description, image
 
 def getUpdateData():
-    id = request.form['form-category']
-    name = request.form['form-name']
-    #price = request.form['price']
-    #price = float(price)
-    quantity = request.form['form-submit']
-    quantity = int(quantity)+int(request.form['form-number'])
-    #unit = request.form['unit']
-    #category = request.form['category']
-    #visibility = request.form['visibility']
-    #visibility = True if visibility == "True" else False
-    description = request.form['form-remarks']
-    return id, name, quantity, description
+    id = request.form['id']
+    name = request.form['name']
+    price = request.form['price']
+    if price != "":
+        price = float(price)
+    quantity = request.form['quantity']
+    if quantity != "":
+        quantity = int(quantity)
+    unit = request.form['unit']
+    category = request.form['category']
+    visibility = request.form['visibility']
+    if visibility != "":
+        visibility = True if visibility == "True" else False
+    description = request.form['description']
+    return [id, name, price, quantity, unit, category, visibility, description]
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user

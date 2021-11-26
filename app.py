@@ -220,28 +220,33 @@ def update():
 def updateRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-<<<<<<< HEAD
-        id, name, price, quantity, unit, category, description, visibility = getUpdateData()
-=======
-        id, name, quantity, description = getUpdateData()
-        #print(type(price))
->>>>>>> 909bca9c7b2b4993b67ed2d29906269307a49d71
+        updateData = getUpdateData()
+        id = updateData[0]
+        updateData = updateData[1:]
+        supplyQuery = db_session.query(Supply)
+        supply = supplyQuery.filter(Supply.id == id).first()
+        attributes = ["name", "price", "quantity", "unit", "category", "visibility", "description"]
+        indices = [0, 1, 2, 3, 4, 5, 6]
+        for idx, data, attribute in zip(indices, updateData, attributes):
+            if data == "":
+                print(attribute)
+                updateData[idx] = supply.__getattribute__(attribute)
+        name = updateData[0]
+        price = updateData[1]
+        quantity = updateData[2]
+        unit = updateData[3]
+        category = updateData[4]
+        visibility = updateData[5]
+        description = updateData[6]
         db_session.query(Supply).\
             filter(Supply.id == id).\
             update({"name": name,
-                    #"price": price,
+                    "price": price,
                     "quantity": quantity,
-<<<<<<< HEAD
                     "unit": unit,
                     "category": category,
-                    "description": description,
-                    "visibility": visibility})
-=======
-                    #"unit": unit,
-                    #"category": category,
-                    #"visibility": visibility,
+                    "visibility": visibility,
                     "description": description})
->>>>>>> 909bca9c7b2b4993b67ed2d29906269307a49d71
         db_session.commit()
         flash('Información actualizada.')
         return redirect(url_for('update'))
