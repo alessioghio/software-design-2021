@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.utils import secure_filename
 import os
 from models import *
@@ -214,7 +214,8 @@ def update():
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
     data = supplyQuery.all()
-    return render_template('newUpdate.html', data=data)
+    sessionType = "adminSession"
+    return render_template('newUpdate.html', data=data, sessionType=sessionType)
 
 @app.route('/user/updateRequest', methods=['POST'])
 def updateRequest():
@@ -251,6 +252,23 @@ def updateRequest():
         flash('Información actualizada.')
         return redirect(url_for('update'))
 
+@app.route('/fillForm', methods=['POST'])
+def fillForm():
+    if request.method == "POST":
+        request.get_data()
+        id = request.data.decode('UTF-8') # Javascript return binary string
+        id = int(id[1:-1])
+        db_session = db.getSession(engine)
+        supplyQuery = db_session.query(Supply)
+        supply = supplyQuery.filter(Supply.id == id).first()
+        data = {"name": supply.name,
+                "price": supply.price,
+                "quantity": supply.quantity,
+                "category": supply.category,
+                "unit": supply.unit,
+                "visibility": supply.visibility,
+                "description": supply.description}
+        return jsonify(data)
 
 if __name__ == '__main__':
     app.run()
