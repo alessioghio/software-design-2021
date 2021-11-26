@@ -6,10 +6,6 @@ import pandas as pd
 import os
 
 
-# df = pd.read_csv('dash_app_folder/databases_testing/database_supply.csv')
-
-
-# assets_path = os.getcwd() + '../static'
 
 # Create dash app
 def create_dash_application(flask_app,engine):
@@ -18,22 +14,14 @@ def create_dash_application(flask_app,engine):
     # - Necesita correr en un server de flask
     dash_app = dash.Dash(__name__, server = flask_app, url_base_pathname="/dash/",update_title=None)#, assets_folder= assets_path)
 
-
     data_frame = pd.read_sql_query('select * from "supply"',con=engine)
 
-    
     dash_app.layout = html.Div(
         children=[
-        #build_preloader(),
-        build_search_overlay(),
-        build_wrapper(),
-        build_dashboardtitle(),
-        build_clearfix(),
-        build_graphics(data_frame),
-        #build_scroll()
-    ])
+        build_page(data_frame)
+    ],style={'marginBottom': 0, 'marginTop': 0})
 
-    return dash_app
+    return dash_app,data_frame
 
 def build_preloader():
     return html.Section(
@@ -150,25 +138,105 @@ def build_clearfix():
     return html.Div(className="clearfix")
 
 def build_graphics(data_frame): 
-    fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group", 
-                 labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
-
-    fig_2 = px.bar(data_frame, x="name", y="price", color="category", barmode="group", 
-                 labels={"name":"Productos","price":"Precio (S/.)","category":"Categoría"})
-
-    # fig.update_xaxes(title_text = "Productos")
-    # fig.update_yaxes(title_text = "Cantidad")
-    
-
+    fig_pie = build_pie(data_frame)
     return html.Div(id="fullpage",
         children=[
             dcc.Graph(
-                id='tabla_supply',
-                figure= fig),
-            dcc.Graph(
-                id= "tabla_precios",
-                figure= fig_2)
-            
-        ],style={'overflowY': 'scroll', 'height': 500})
+                id='tabla-supply'),
+            dcc.Graph(id='pie-supply',figure=fig_pie)
+                
+        ])
 
+def build_footer(): 
+    return html.Footer(
+        className="footer pt-60", 
+        children=[
+            html.Div(className="container",
+            children=[
+                html.Div(className="row footer-info mb-30",
+                    children=[
+                    # col-md-6
+                    html.Div(className="col-md-6 col-sm-12 col-xs-12 mb-sm-30 text-sm-left",
+                             children=[html.P("Powered by STOCKER",className="mb-xs-0"),
+                                       html.Ul(className="link-small",
+                                               children=[
+                                                   html.Li([html.A(href="mailto:yourname@domain.com",children=["stocker@infostocker.com",html.I(className="fa fa-envelope-o left")])]),
+                                                   html.Li([html.A([html.I(["948 577 658"],className="fa fa-phone left",)])])
+                                               ])
 
+                             ]),
+                    # col-md-6 col-sm-12
+                    html.Div(className="col-md-6 col-sm-12 col-xs-12 text-right text-sm-left",
+                             children=[
+                                 html.Ul(className="link",
+                                         children=[
+                                                html.Li([html.A(["Políticas de Privacidad"],href="privacy-policy.html")]),
+                                                html.Li([html.A(["T&C"],className="terms-and-conditions.html")]),
+                                                html.Li([html.A(["FAQ"],className="faq.html")]),
+                                                html.Li([html.A(["Contacto"],className="contact-us.html")])                                                
+                                                  ]),
+                                 html.Div(className="spacer-30"),
+                                 html.Ul(className="social",
+                                         children=[
+                                                html.Li([html.A([html.I(className="fa fa-twitter")],target="_blank",href="https://www.twitter.com/")]),
+                                                html.Li([html.A([html.I(className="fa fa-instagram")],target="_blank",href="https://instagram.com/")]),
+                                                html.Li([html.A([html.I(className="fa fa-facebook")],target="_blank",href="https://www.facebook.com/")]),
+                                                html.Li([html.A([html.I(className="fa fa-youtube")],target="_blank",href="https://youtube.com/")]),
+                                                html.Li([html.A([html.I(className="fa fa-linkedin")],target="_blank",href="https://www.linkedin.com/")])                                                 
+                                                  ])
+                             ])
+                    
+                    
+                    ])
+
+                ])
+            ]
+    )
+
+def build_scroll():
+    return html.A([html.I(className="fa fa-angle-double-up")],className="scroll-top")
+
+def build_page(data_frame):
+    return html.Div(children=[
+        #build_search_overlay(),
+        build_wrapper(),
+        build_dashboardtitle(),
+        build_clearfix(),
+        build_dash_graphics(data_frame),
+        build_footer(),
+        build_scroll()],style={'overflowY': 'scroll', 'height': '100vh'})#style={'overflowY': 'scroll', 'height': 720})
+
+def build_table(dataframe,max_rows = 4):
+    return html.Table([
+        html.Thead(
+            html.Tr([html.Th(col) for col in dataframe.columns])
+        ),
+        html.Tbody([
+            html.Tr([
+                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
+            ]) for i in range(min(len(dataframe), max_rows))
+        ])
+    ], className="table")
+
+def build_dropdown_supply():
+    return html.Div([
+        dcc.Dropdown(
+            id = 'category-supply',
+            options = [{'label':'Precio','value':'price'},{'label':'Cantidad','value':'quantity'}],
+            value = "price"
+        )
+    ],style={'padding-top':'50px'})
+
+def build_dash_graphics(data_frame): 
+    return html.Div([
+        build_dropdown_supply(),
+        build_graphics(data_frame),
+        build_table(data_frame)
+    ],style={'padding-left':'8%','padding-right':'8%','padding-top':'50px '})
+
+def build_pie(data_frame):
+    data_frame_edit = data_frame.groupby('category')['quantity'].count()
+    print(data_frame_edit)
+    fig_pie = px.pie(data_frame_edit,values='quantity')    
+    #dcc.Graph(id="pie-chart", fig=fig_pie)
+    return fig_pie

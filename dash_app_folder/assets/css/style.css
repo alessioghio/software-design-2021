@@ -2775,8 +2775,8 @@ header.header-dark.header-prepare .side-menu-btn ul li a {
 }
 
 .inner-intro {
-    background-color: #8d8d8d;
-    height: 100%;
+    background: color #000;;
+    height: 25%;
     display: block;
     position: relative;
 }
@@ -2801,14 +2801,14 @@ header.header-dark.header-prepare .side-menu-btn ul li a {
         }
 
 .full-intro .inner-intro .container .title h2 {
-    margin-top: 65px;
+    margin-top: 35px;
 }
 
 .inner-intro .container .title h2:after {            
 			border-bottom: 1px solid #fff;
 			display: table;
 			content: '';
-			width: 7em;
+			width: 4em;
 			margin: 0 auto;
 			padding-top: 10px;
 		}

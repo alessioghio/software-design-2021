@@ -3,8 +3,10 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from dash_app_folder.dash_application import create_dash_application
 from models import *
 from utils import *
-
+import plotly.express as px
 # from dash_application import create_dash_application # Llamar a la función que crea la página dash
+from dash.dependencies import Input, Output
+
 
 app = Flask(__name__)
 
@@ -24,7 +26,7 @@ db = Manager()
 engine = db.createEngine(ENV)
 
 
-dash_app = create_dash_application(app,engine)
+dash_app,data_frame = create_dash_application(app,engine)
 
 @app.route('/')
 def index():    
@@ -189,6 +191,19 @@ def updateRequest():
         db_session.commit()
         flash('Información actualizada.')
         return redirect(url_for('update'))
+
+@dash_app.callback(
+    Output('tabla-supply','figure'),
+    Input('category-supply','value')
+)
+def update_graph(category_supply):
+    if category_supply == 'price': 
+        fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group", 
+                labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
+    elif category_supply == 'quantity': 
+        fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group", 
+            labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
+    return fig
 
 
 if __name__ == '__main__':
