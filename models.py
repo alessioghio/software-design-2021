@@ -47,8 +47,9 @@ class Supply(Manager.Base):
     __tablename__ = 'supply'
     id = Column(BigInteger, nullable=False, primary_key=True)
     name = Column(VARCHAR(100), nullable=False)
+    description = Column(VARCHAR(500))
     price = Column(NUMERIC, nullable=False)
-    quantity = Column(Integer, nullable=False)
+    quantity = Column(Integer)
     unit = Column(VARCHAR(5), nullable=False)
     category = Column(VARCHAR(100), nullable=False)
     visibility = Column(Boolean, nullable=False)
@@ -61,6 +62,7 @@ class Recipe(Manager.Base):
     __tablename__ = 'recipe'
     id = Column(BigInteger, primary_key=True, nullable=False)
     name = Column(VARCHAR(100))
+    description = Column(VARCHAR(500))
     quantity = Column(Integer)
     supply_id = Column(BigInteger)
 

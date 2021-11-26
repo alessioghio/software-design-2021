@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS public.recipe
     name character varying(100) COLLATE pg_catalog."default",
     quantity integer,
     supply_id bigint,
+    description character varying(500) COLLATE pg_catalog."default",
     CONSTRAINT "PK_recipe" PRIMARY KEY (id)
 )
 
