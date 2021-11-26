@@ -236,7 +236,7 @@ def build_dash_graphics(data_frame):
 
 def build_pie(data_frame):
     data_frame_edit = data_frame.groupby('category')['quantity'].count()
-    print(data_frame_edit)
+    # print(data_frame_edit)
     fig_pie = px.pie(data_frame_edit,values='quantity')    
     #dcc.Graph(id="pie-chart", fig=fig_pie)
     return fig_pie
