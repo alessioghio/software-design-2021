@@ -81,6 +81,15 @@
                     <ul class="nav-menu-inner">
                         <li>
                             {% if sessionType == "adminSession" %}                                
+                            <a class="menu-has-sub">CATÁLOGO<i class="fa fa-angle-down"></i></a>
+                            <ul class="sub-dropdown dropdown">
+                                <li>
+                                    <a href="/user/productsAdmin">Insumos</a>
+                                </li>
+                                <li>
+                                    <a href="/user/recipesAdmin">Recetas</a>
+                                </li>                                
+                            </ul>
                             <li>
                                 <a class="" href="/dash">Dashboard</a>
                             </li>    

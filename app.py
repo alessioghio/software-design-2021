@@ -75,7 +75,17 @@ def sales():
 @app.route('/user/newProduct')
 def newProduct():
     sessionType = "adminSession"
-    return render_template('newProduct.html', sessionType=sessionType)    
+    return render_template('newProduct.html', sessionType=sessionType) 
+
+@app.route('/user/productsAdmin')
+def productsAdmin():
+    sessionType = "adminSession"
+    return render_template('productsAdmin.html', sessionType=sessionType)    
+
+@app.route('/user/recipesAdmin')
+def recipesAdmin():
+    sessionType = "adminSession"
+    return render_template('recipesAdmin.html', sessionType=sessionType)    
 
 @app.route('/newProductRequest', methods=['POST'])
 def newProductRequest():
