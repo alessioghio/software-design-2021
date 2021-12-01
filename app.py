@@ -152,15 +152,15 @@ def newStockRequest():
 def newRecipe():
     sessionType = "adminSession"
     db_session = db.getSession(engine)
-    recipeQuery = db_session.query(Recipe)
-    recipes = recipeQuery.filter(Recipe.admin_id == session["admin"]).all()
-    return render_template('newRecipe.html', sessionType=sessionType, recipes=recipes)
+    supplyQuery = db_session.query(Supply)
+    supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
+    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies)
 
 @app.route('/newRecipeRequest')
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        
+
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
