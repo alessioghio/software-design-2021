@@ -1,5 +1,7 @@
 import dash
+from sqlalchemy import and_
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+#from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 from werkzeug.utils import secure_filename
 import os
@@ -89,7 +91,7 @@ def newProductRequest():
         else:
             # Save into db
             data = Supply(name=name, price=price, unit=unit, visibility=False,
-                        category=category, description=description)
+                        category=category, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
             # Get id
@@ -107,9 +109,9 @@ def newProductRequest():
 def newStock():
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
-    supplies = supplyQuery.all()
+    supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
     sessionType = "adminSession"
-    return render_template('newStock.html', sessionType=sessionType, supplies=supplies)  
+    return render_template('newStock.html', sessionType=sessionType, supplies=supplies)
 
 @app.route('/newStockRequest', methods=['POST'])
 def newStockRequest():
@@ -126,17 +128,20 @@ def newStockRequest():
         print(supply.id)
         prevQuantity = supply.quantity if supply.quantity is not None else 0
         # update
-        quantity += prevQuantity
+        quantity += prevQuantity        
         db_session.query(Supply).\
             filter(Supply.id == supply.id).\
+            filter(Supply.admin_id == session["admin"]).\
             update({"quantity": quantity})
+        
         db_session.commit()
         flash('Stock agregado.')
-        return redirect(url_for('newStock'))    
+        return redirect(url_for('newStock'))
 
 @app.route('/user/newRecipe')
 def newRecipe():
     sessionType = "adminSession"
+    
     return render_template('newRecipe.html', sessionType=sessionType)      
 
 @app.route('/registerRequestAdmin', methods=['POST'])
@@ -184,9 +189,14 @@ def loginRequest():
         isAdmin = validateLoginCredentials(db_session, username, password)
         if isAdmin is not None:
             if isAdmin:
-                session["admin"] = username
+                idQuery = db_session.query(Administrator) 
+                admin = idQuery.filter(Administrator.username == username).first()
+                session["admin"] = admin.id
+                print(admin.id)
             else:
-                session["client"] = username
+                idQuery = db_session.query(Client)
+                client = idQuery.filter(Client.username == username).first()
+                session["client"] = client.id
             return redirect(url_for('user'))
         else:
             flash('Usuario o contraseña incorrectas.')
@@ -228,7 +238,7 @@ def logout():
 def update():
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
-    supplies = supplyQuery.all()
+    supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
     sessionType = "adminSession"
     return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies)
 
@@ -255,6 +265,7 @@ def updateRequest():
         description = updateData[6]
         db_session.query(Supply).\
             filter(Supply.id == id).\
+            filter(Supply.admin_id == session["admin"]).\
             update({"name": name,
                     "price": price,
                     "quantity": quantity,

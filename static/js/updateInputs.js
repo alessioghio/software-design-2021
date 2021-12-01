@@ -22,7 +22,7 @@ for (var i = 0; i < rad.length; i++) {
         if (this !== prev) {
             prev = this;
         }
-        // console.log(this.value)
+        console.log(this.value)
         let p = new Promise((resolve, reject) => {
             $.ajax({
                 url: "/fillForm",

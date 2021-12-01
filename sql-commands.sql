@@ -23,11 +23,17 @@ CREATE TABLE IF NOT EXISTS public.supply
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     price numeric NOT NULL,
-    unit character varying(5) COLLATE pg_catalog."default" NOT NULL,
     quantity integer NOT NULL,
     category character varying(100) COLLATE pg_catalog."default" NOT NULL,
     visibility boolean NOT NULL,
-    CONSTRAINT "PK_supply" PRIMARY KEY (id)
+    unit character varying(5) COLLATE pg_catalog."default" NOT NULL,
+    description character varying(500) COLLATE pg_catalog."default",
+    admin_id bigint,
+    CONSTRAINT "PK_supply" PRIMARY KEY (id),
+    CONSTRAINT admin_id FOREIGN KEY (admin_id)
+        REFERENCES public.administrator (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
 
 CREATE TABLE IF NOT EXISTS public."shoppingCart"
@@ -66,12 +72,15 @@ CREATE TABLE IF NOT EXISTS public.client
 CREATE TABLE IF NOT EXISTS public.recipe
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
-    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default",
     quantity integer,
     supply_id bigint,
-    description character varying(500) COLLATE pg_catalog."default",
-    category character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "PK_recipe" PRIMARY KEY (id)
+    admin_id bigint NOT NULL,
+    CONSTRAINT "PK_recipe" PRIMARY KEY (id),
+    CONSTRAINT admin_id FOREIGN KEY (admin_id)
+        REFERENCES public.administrator (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION   
 )
 
 

@@ -51,10 +51,10 @@ def validateLoginCredentials(db_session, username, password):
         isAdmin = False
     # Check password
     if isAdmin:
-        passwordFilter = adminQuery.filter(Administrator.password == password)
+        user = adminQuery.filter(Administrator.username == username).first()
     else:
-        passwordFilter = clientQuery.filter(Client.password == password)
-    isPasswordCorrect = passwordFilter.count() == 1
+        user = clientQuery.filter(Client.username == username).first()
+    isPasswordCorrect = user.password == password and user.username == username
     if isPasswordCorrect:
         return isAdmin
     else:
