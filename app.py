@@ -146,6 +146,12 @@ def newRecipe():
     recipes = recipeQuery.filter(Recipe.admin_id == session["admin"]).all()
     return render_template('newRecipe.html', sessionType=sessionType, recipes=recipes)
 
+@app.route('/newRecipeRequest')
+def newRecipeRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        
+
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
     if request.method == 'POST':

@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS public.recipe
     CONSTRAINT admin_id FOREIGN KEY (admin_id)
         REFERENCES public.administrator (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION   
+        ON DELETE NO ACTION
 )
 
 
