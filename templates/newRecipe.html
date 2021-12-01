@@ -23,7 +23,7 @@
 					<h2> Receta </h2>		
 
                     <div class="form-field-wrapper">
-                        <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre de la receta" required>
+                        <input class="input-sm form-full" id="form-name" type="text" name="recipe-name" placeholder="Nombre de la receta" required>
                     </div>    
 
                     <div class="filter-form">
@@ -34,25 +34,21 @@
                                <h6 class="accordion-title black">Elegir insumos</h6>
                                <div class="accordion-content">
                                    <div id="interlineado" class="space form-field-wrapper">
-                                       <span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Papas">Papas</span>
+                                       {% for supply in supplies %}
+                                       <span><input class="input-sm" id="category" type="checkbox" name="supply" value="{{supply.id}}">{{supply.name}}</span>
                                        <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
-
-                                       <span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Limones">Limones<span>
-                                       <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
-
-                                       <span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Chifles">Chifles<span>
-                                       <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
+                                        {% endfor %}
                                    </div>
                                </div>
                            </div>
                            </div>
                         
                         <div class="form-field-wrapper">
-                            <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Unidad" required>
+                            <input class="input-sm form-full" id="form-name" type="text" name="unit" placeholder="Unidad" required>
                         </div>   
 
                        <div class="form-field-wrapper">
-                           <input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Precio" required>
+                           <input class="input-sm form-full" id="form-number" type="number" name="price" placeholder="Precio" required>
                        </div>
                        <div class="form-field-wrapper">
                         <div class="accordion-section">
@@ -68,7 +64,7 @@
                         </div>
                 </div>
                        <div class="form-field-wrapper">
-                           <textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
+                           <textarea class="form-full" id="form-remarks" rows="1" name="description" placeholder="Descripción"></textarea>
                        </div>
                        <div class="form-field-wrapper">							
                         <p> Añadir imagen </p>
