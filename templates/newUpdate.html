@@ -62,25 +62,31 @@
 							</div>
 							<div class="form-field-wrapper">
 								<input class="input-sm form-full" type="number" name="quantity" placeholder="Cambiar cantidad">
-                                <div class="accordion-section">
-                                    <h6 class="accordion-title black">Categoría</h6>
-                                    <div class="accordion-content">
-                                        <div class="form-field-wrapper">												
-                                            <span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span>
-                                            <button class="btn btn-md btn-black" type="submit" id="peque-submit" name="submit">Seleccionar nueva</button><br>		
-                                        </div>	
-                                        <div>
-                                            <span><input class="input-sm" type="radio" name="name" value=fruta>Fruta</span><br>												
-                                        </div>
-                                    </div>
-                                </div>
+							</div>
+
+							<div class="accordion-section form-field-wrapper">
+								<h6 class="accordion-title black">Categoría</h6>
+								<div class="accordion-content">
+									<div class="form-field-wrapper">
+										<input class="input-sm" type="radio">											
+											<span><input class="text" type="text" name="text" placeholder="Nueva categoría"></span><br>
+									</div>
+									<div>
+										<span><input class="input-sm" type="radio" name="name" value=fruta>Verdura</span><br>												
+									</div>
+								</div>
+							</div>
                                 
-                            </div>
-							<div class="form-field-wrapper">
-								<input class="input-sm form-full" type="text" name="visibility" placeholder="Cambiar visibilidad">
-							</div>	
+                        														
 							<div class="form-field-wrapper">
 								<textarea class="form-full" rows="1" name="description" placeholder="Cambiar descripción"></textarea>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm" type="checkbox" name="name" value=Visibilidad>¿Mostrar en el catálogo?</span>
+							</div>
+							<div class="form-field-wrapper">							
+								<p> Añadir nueva imagen </p>								
+									<input class="form-full" type="file" name="image" placeholder="Añadir imagen" required>									
 							</div>				
 							<button class="btn btn-md btn-black" type="submit" name="submit" href="updateRequest">Actualizar</button>
 						</form>

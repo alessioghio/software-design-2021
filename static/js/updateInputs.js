@@ -15,6 +15,9 @@ function updateInputsValues(data){
 }
 
 var rad = document.filterForm.id;
+if(!(rad.constructor === Array)){
+    rad = [rad];
+}
 var prev = null;
 for (var i = 0; i < rad.length; i++) {
     rad[i].addEventListener('change', function() {
@@ -22,7 +25,7 @@ for (var i = 0; i < rad.length; i++) {
         if (this !== prev) {
             prev = this;
         }
-        console.log(this.value)
+        // console.log(this.value)
         let p = new Promise((resolve, reject) => {
             $.ajax({
                 url: "/fillForm",
