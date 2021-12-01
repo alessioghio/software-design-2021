@@ -67,3 +67,8 @@ def userExists(db_session, table, username, email):
 
 def nameExists(db_session, table, name):
     return db_session.query(table).filter(table.name == name).count() > 0
+
+def getAdminSupplies(db_session, adminId):
+    supplyQuery = db_session.query(Supply)
+    supplies = supplyQuery.filter(Supply.admin_id == adminId).all()
+    return supplies

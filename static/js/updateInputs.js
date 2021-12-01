@@ -5,8 +5,11 @@ function updateInputsValues(data){
         // console.log(value)
         // console.log("----")
         let input = document.getElementsByName(key);
+        // console.log(value)
         if (key == "description") {
             input[1].value = value;
+        } else if(key == "visibility"){
+            input[0].checked = value;
         } else{
             input[0].value = value;
         }

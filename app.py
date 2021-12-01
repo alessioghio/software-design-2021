@@ -81,8 +81,10 @@ def newProduct():
 
 @app.route('/user/productsAdmin')
 def productsAdmin():
+    db_session = db.getSession(engine)
+    supplies = getAdminSupplies(db_session, session["admin"])
     sessionType = "adminSession"
-    return render_template('productsAdmin.html', sessionType=sessionType)    
+    return render_template('productsAdmin.html', sessionType=sessionType, supplies=supplies, os=os)    
 
 @app.route('/user/recipesAdmin')
 def recipesAdmin():
@@ -249,8 +251,7 @@ def logout():
 @app.route('/user/updateStock')
 def update():
     db_session = db.getSession(engine)
-    supplyQuery = db_session.query(Supply)
-    supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
+    supplies = getAdminSupplies(db_session, session["admin"])
     sessionType = "adminSession"
     return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies)
 
