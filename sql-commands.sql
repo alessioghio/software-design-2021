@@ -76,11 +76,12 @@ CREATE TABLE IF NOT EXISTS public.recipe
     quantity integer,
     supply_id bigint,
     admin_id bigint NOT NULL,
+    description character varying(500) COLLATE pg_catalog."default",
     CONSTRAINT "PK_recipe" PRIMARY KEY (id),
     CONSTRAINT admin_id FOREIGN KEY (admin_id)
         REFERENCES public.administrator (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION   
+        ON DELETE NO ACTION
 )
 
 
