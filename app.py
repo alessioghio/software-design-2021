@@ -3,7 +3,6 @@ from sqlalchemy import and_
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
-from werkzeug.utils import secure_filename
 import os
 from models import *
 from utils import *
@@ -96,7 +95,6 @@ def newProductRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
         name, price, unit, category, description, image = getNewProductData()
-        print(image)
         if nameExists(db_session, Supply, name):
             flash('Insumo existente.')
             return redirect(url_for('newProduct'))
@@ -106,14 +104,9 @@ def newProductRequest():
                         category=category, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
-            # Get id
-            supplyQuery = db_session.query(Supply)
-            supply = supplyQuery.filter(Supply.name == name).first()
-            filename = secure_filename(image.filename)
-            # get file extension
-            ext = filename.split(".")
-            ext = ext[-1]
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], f"{supply.id}.{ext}"))
+            # Save image
+            imagePath = getProductImagePath(db_session, image, name)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
             flash('Insumo creado.')
             return redirect(url_for('newProduct'))
 
@@ -206,7 +199,6 @@ def loginRequest():
                 idQuery = db_session.query(Administrator) 
                 admin = idQuery.filter(Administrator.username == username).first()
                 session["admin"] = admin.id
-                print(admin.id)
             else:
                 idQuery = db_session.query(Client)
                 client = idQuery.filter(Client.username == username).first()
@@ -276,6 +268,7 @@ def updateRequest():
         category = updateData[4]
         visibility = updateData[5]
         description = updateData[6]
+        image = updateData[7]
         db_session.query(Supply).\
             filter(Supply.id == id).\
             filter(Supply.admin_id == session["admin"]).\
@@ -287,6 +280,10 @@ def updateRequest():
                     "visibility": visibility,
                     "description": description})
         db_session.commit()
+        # Save image
+        if secure_filename(image.filename) != "":
+            imagePath = getProductImagePath(db_session, image, name)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
         flash('Información actualizada.')
         return redirect(url_for('update'))
 

@@ -36,7 +36,7 @@
 					<h2> Modificar </h2>
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest">
+                        <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest" enctype="multipart/form-data">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
@@ -70,8 +70,8 @@
 									<div class="form-field-wrapper">
 										<input class="input-sm" type="checkbox">											
 											<span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span><br>
-											<span><input class="input-sm" type="radio" name="category" value=fruta>Fruta</span><br>
-											<span><input class="input-sm" type="radio" name="category" value=fruta>Verdura</span><br>
+											<span><input class="input-sm" type="radio" name="category" value=Frutas>Frutas</span><br>
+											<span><input class="input-sm" type="radio" name="category" value=Verduras>Verduras</span><br>
 									</div>        
 								</div>
 							</div>
@@ -85,7 +85,7 @@
 							</div>
 							<div class="form-field-wrapper">							
 								<p> Añadir nueva imagen </p>								
-									<input class="form-full" type="file" name="image" placeholder="Añadir imagen" required>									
+									<input class="form-full" type="file" name="image" placeholder="Añadir imagen">									
 							</div>				
 							<button class="btn btn-md btn-black" type="submit" name="submit" href="updateRequest">Actualizar</button>
 						</form>

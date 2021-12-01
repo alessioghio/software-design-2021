@@ -1,5 +1,7 @@
 from flask import request
 from models import *
+from werkzeug.utils import secure_filename
+import os
 
 def getRegisterData():
     name = request.form['name']
@@ -30,11 +32,10 @@ def getUpdateData():
         quantity = int(quantity)
     unit = request.form['unit']
     category = request.form['category']
-    visibility = request.form['visibility']
-    if visibility != "":
-        visibility = True if visibility == "True" else False
+    visibility = True if request.form.get('visibility') else False
     description = request.form['description']
-    return [id, name, price, quantity, unit, category, visibility, description]
+    image = request.files['image']
+    return [id, name, price, quantity, unit, category, visibility, description, image]
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
@@ -43,7 +44,6 @@ def validateLoginCredentials(db_session, username, password):
     adminFilter = adminQuery.filter(Administrator.username == username)
     clientFilter = clientQuery.filter(Client.username == username)
     isAdmin = None # Username not found as default
-    passwordFilter = None # Predefine passwordFilter variable
     # Check type of user
     if adminFilter.count() == 1:
         isAdmin = True
@@ -72,3 +72,14 @@ def getAdminSupplies(db_session, adminId):
     supplyQuery = db_session.query(Supply)
     supplies = supplyQuery.filter(Supply.admin_id == adminId).all()
     return supplies
+
+def getProductImagePath(db_session, image, name):
+    # Get id
+    supplyQuery = db_session.query(Supply)
+    supply = supplyQuery.filter(Supply.name == name).first()
+    filename = secure_filename(image.filename)
+    # get file extension
+    ext = filename.split(".")
+    ext = ext[-1]
+    return f"{supply.id}.{ext}"
+    

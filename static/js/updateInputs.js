@@ -18,7 +18,7 @@ function updateInputsValues(data){
 }
 
 var rad = document.filterForm.id;
-if(!(rad.constructor === Array)){
+if(!(rad.constructor === RadioNodeList)){
     rad = [rad];
 }
 var prev = null;
