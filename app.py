@@ -160,7 +160,7 @@ def newRecipe():
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-
+        
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():

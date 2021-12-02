@@ -36,6 +36,10 @@ def getUpdateData():
     description = request.form['description']
     return [id, name, price, quantity, unit, category, visibility, description]
 
+def getRecipeData():
+    id_supply = request.form["supply_id"]
+    return id_supply
+
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
     adminQuery = db_session.query(Administrator)
