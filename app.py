@@ -68,6 +68,11 @@ def home():
 def error():
     return render_template('errorDummy.html')
 
+@app.route('/user/catalogue')
+def catalogue():
+    sessionType = "clientSession"
+    return render_template('catalogue.html', sessionType=sessionType)
+
 @app.route('/user/sales')
 def sales():
     sessionType = "adminSession"
