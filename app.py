@@ -155,7 +155,9 @@ def newRecipe():
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        
+        name, price, category, description = getRecipeData()
+        # Insert data on db
+        data = Recipe(name=name, )
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():

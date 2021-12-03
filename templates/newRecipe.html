@@ -35,7 +35,7 @@
                                <div class="accordion-content">
                                    <div id="interlineado" class="space form-field-wrapper">
                                        {% for supply in supplies %}
-                                       <span><input class="input-sm" id="category" type="checkbox" name="supply" value="{{supply.id}}">{{supply.name}}</span>
+                                       <span><input class="input-sm" id="category" type="checkbox" name="supply_id" value="{{supply.id}}">{{supply.name}}</span>
                                        <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
                                         {% endfor %}
                                    </div>
@@ -45,7 +45,7 @@
                         
                         <div class="form-field-wrapper">
                             <input class="input-sm form-full" id="unit" type="text" name="unit" placeholder="Unidad" required>
-                        </div>   
+                        </div>
 
                        <div class="form-field-wrapper">
                            <input class="input-sm form-full" id="form-number" type="number" name="price" placeholder="Precio" required>
@@ -55,11 +55,12 @@
                             <h6 class="accordion-title black">Categoría</h6>
                             <div class="accordion-content">
                                 <div class="form-field-wrapper">
-                                    <input class="input-sm" type="checkbox">											
+                                    <input class="input-sm" type="radio">											
                                         <span><input class="text" type="text" name="text" placeholder="Nueva categoría"></span><br>
-                                        <span><input class="input-sm" type="radio" name="name" value=fruta>Fruta</span><br>
-                                        <span><input class="input-sm" type="radio" name="name" value=fruta>Verdura</span><br>
-                                </div>        
+                                </div>
+                                <div>
+                                    <span><input class="input-sm" type="radio" name="name" value=fruta>Verdura</span><br>												
+                                </div>
                             </div>
                         </div>
                 </div>
