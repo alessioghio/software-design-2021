@@ -47,13 +47,21 @@
                            </div>
                            </div>
                         
-                        <div class="form-field-wrapper">
-                            <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Unidad" required>
-                        </div>   
+                           <div class="form-field-wrapper">
+                            <div class="accordion-section">
+                                <h6 class="accordion-title black">Unidad</h6>
+                                <div class="accordion-content">
+                                    <div class="form-field-wrapper">                                         
+                                            <span><input class="input-sm" type="radio" name="name" value=unidad>UN</span><br>
+                                            <span><input class="input-sm" type="radio" name="name" value=peso>xKG</span><br>                                          
+                                </div>
+                            </div>
+                            </div>   
 
                        <div class="form-field-wrapper">
                            <input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Precio" required>
                        </div>
+
                        <div class="form-field-wrapper">
                         <div class="accordion-section">
                             <h6 class="accordion-title black">Categoría</h6>
@@ -66,7 +74,7 @@
                                 </div>        
                             </div>
                         </div>
-                </div>
+                        </div>
                        <div class="form-field-wrapper">
                            <textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
                        </div>
