@@ -10,10 +10,19 @@ function updateInputsValues(data){
             input[1].value = value;
         } else if(key == "visibility"){
             input[0].checked = value;
-        } else{
+        } else if(key == "category"){
+            var radios = document.filterForm.categoryRadio;
+            if(!(radios.constructor === RadioNodeList)){
+                radios = [radios];
+            }
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].value == value){
+                    radios[i].checked = true;
+                }
+            }
+        }else{
             input[0].value = value;
         }
-        
     }
 }
 
