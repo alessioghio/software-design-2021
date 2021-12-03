@@ -43,7 +43,7 @@ def getRecipeData():
     price = request.form["price"]
     category = request.form["category"]
     description = request.form["description"]
-    return name, id_supply, price, category
+    return name, id_supply, price, category, description
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user

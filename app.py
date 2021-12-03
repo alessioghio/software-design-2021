@@ -155,9 +155,17 @@ def newRecipe():
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, price, category, description = getRecipeData()
-        # Insert data on db
-        data = Recipe(name=name, )
+        name, id_supply, price, category, description = getRecipeData()
+        if nameExists(db_session, Recipe, name):
+            flash('Receta existente.')
+            return redirect(url_for('newRecipe'))
+        else:
+            # Insert data on db
+            data = Recipe(name=name, price=price, category=category, description=description)
+            db_session.add(data)
+            db_session.commit()
+            flash('Receta creada.')
+            return redirect(url_for('newRecipe'))
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():

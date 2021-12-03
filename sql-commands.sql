@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS public.recipe
     quantity integer,
     supply_id bigint,
     admin_id bigint NOT NULL,
+    price integer NOT NULL,
     description character varying(500) COLLATE pg_catalog."default",
     CONSTRAINT "PK_recipe" PRIMARY KEY (id),
     CONSTRAINT admin_id FOREIGN KEY (admin_id)
