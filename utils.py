@@ -42,6 +42,14 @@ def getUpdateData():
     image = request.files['image']
     return [id, name, price, quantity, unit, category, visibility, description, image]
 
+def getRecipeData():
+    name = request.form["recipe-name"]
+    id_supply = request.form["supply_id"]
+    price = request.form["price"]
+    category = request.form["category"]
+    description = request.form["description"]
+    return name, id_supply, price, category, description
+
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
     adminQuery = db_session.query(Administrator)
