@@ -3046,6 +3046,10 @@ fieldset[disabled] .checkbox label {
     width: 80px;
 }
 
+.input-box-m {
+    width: 125px;
+}
+
 .input-sm,
 .form-group-sm .form-control {
     padding: 5px 15px;
