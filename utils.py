@@ -37,13 +37,17 @@ def getUpdateData():
     image = request.files['image']
     return [id, name, price, quantity, unit, category, visibility, description, image]
 
-def getRecipeData():
+def getNewRecipeData():
     name = request.form["recipe-name"]
-    id_supply = request.form["supply_id"]
+    supply_id_list = request.form.getlist('supply_id')
     price = request.form["price"]
+    if price != "":
+        price = float(price)
     category = request.form["category"]
+    visibility = True if request.form.get('visibility') else False
     description = request.form["description"]
-    return name, id_supply, price, category, description
+    image = request.files['image']
+    return name, supply_id_list, price, category, visibility, description, image
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
@@ -90,4 +94,14 @@ def getProductImagePath(db_session, image, name):
     ext = filename.split(".")
     ext = ext[-1]
     return f"{supply.id}.{ext}"
+
+def getProductImagePath1(db_session, image, name):
+    # Get id
+    recipeQuery = db_session.query(Recipe)
+    recipe = recipeQuery.filter(Recipe.name == name).first()
+    filename = secure_filename(image.filename)
+    # get file extension
+    ext = filename.split(".")
+    ext = ext[-1]
+    return f"{recipe.id}.{ext}"
     

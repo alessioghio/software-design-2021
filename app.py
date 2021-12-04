@@ -155,15 +155,18 @@ def newRecipe():
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, id_supply, price, category, description = getRecipeData()
+        name, supply_id_list, price, category, visibility, description, image = getNewRecipeData()
         if nameExists(db_session, Recipe, name):
             flash('Receta existente.')
             return redirect(url_for('newRecipe'))
         else:
             # Insert data on db
-            data = Recipe(name=name, price=price, category=category, description=description)
+            data = Recipe(name=name, price=price, category=category, visibility=visibility, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
+            # Save image
+            imagePath = getProductImagePath1(db_session, image, name)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
             flash('Receta creada.')
             return redirect(url_for('newRecipe'))
 
