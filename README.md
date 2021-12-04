@@ -5,7 +5,6 @@
 * Tener [python](https://www.python.org/downloads/windows/) >= 3.9.1 instalado.
 * Tener [git](https://git-scm.com/downloads) instalado de manera local.
 * Tener [Postgres 14](https://www.postgresql.org/download/windows/) instalado (asegurarse que también se instale PgAdmin 4).
-* Para ejecutar el Dashboard: Tener instalado Dash y Pandas
 
 ## Pasos iniciales
 

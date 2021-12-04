@@ -27,11 +27,11 @@
 							</div>
 							<div class="form-field-wrapper">
 								<input class="input-sm form-full" id="form-state" type="text" name="form-state" placeholder="State">
-							</div>                                   
+							</div>
 							<div class="form-field-wrapper">
 								<input class="input-sm form-full" id="form-city" type="text" name="form-city" placeholder="City">
-							</div>							
-							
+							</div>
+
 							<div class="accordion mb-15">
                             <div class="accordion-section">
                                 <h6 class="accordion-title white">Categoría</h6>
@@ -40,12 +40,12 @@
 										<span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Fruta">Fruta</span><br>
 										<span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Verdura">Verdura<span><br>
 										<span><input class="input-sm" id="category" type="checkbox" name="form-category" value="Dulce">Dulce<span><br>
-										
+
 									</div>
 								</div>
                             </div>
 							</div>
-							
+
                         <button class="btn btn-md btn-white form-full" type="submit" id="form-submit" name="submit">Filtrar</button>
                         </form>
                         <!-- END Filters	 FORM -->
@@ -56,15 +56,15 @@
         <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
 			<div class="container text-left">
-                <div class="mb-30">	
+                <div class="mb-30">
 					<a id="menu-sidebar-list-icon" class="btn btn-md btn-black float-right float-none-xs"><i class="fa fa-filter"></i><span> Filtrar</span></a>
-					<h2> Lista de recetas </h2>	
+					<h2> Lista de recetas </h2>
 					<hr>
-				</div>	
-				
+				</div>
+
                 <div class="row mtb-30">
 					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
-						<a href="#"><img alt="1" src="../static/img/portfolio/ceviche.jpeg" class="item-container"></a>                           
+						<a href="#"><img alt="1" src="../static/img/portfolio/ceviche.jpeg" class="item-container"></a>
 					</div>
 					<div class="col-md-8 col-sm-8 col-xs-12">
 						<a href="#"><h6>Ceviche</h6></a>
@@ -73,14 +73,14 @@
                         <p>CATEGORÍA: Entrada</p>
                         <p>Utiliza x insumos.</p>
                         <a class="btn" href="/user/updateStock">Actualizar</a>
-						</p>								
+						</p>
 					</div>
-				</div>	
+				</div>
 				<hr>
 
                 <div class="row mtb-30">
 					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
-						<a href="#"><img alt="1" src="../static/img/portfolio/3.jpg" class="item-container"></a>                           
+						<a href="#"><img alt="1" src="../static/img/portfolio/3.jpg" class="item-container"></a>
 					</div>
 					<div class="col-md-8 col-sm-8 col-xs-12">
 						<a href="#"><h6>Camote</h6></a>
@@ -89,36 +89,21 @@
                         <p>CATEGORÍA: Tubérculo</p>
                         <p>Es un insumo.</p>
                         <a class="btn" href="/user/updateStock">Actualizar</a>
-						</p>								
+						</p>
 					</div>
 				</div>
 				<hr>
-				{% for element in elements %}
-				<div class="row mtb-30">
-					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
-						<a href="#"><img alt="1" src="../static/img/portfolio/3.jpg" class="item-container"></a>                           
-					</div>
-					<div class="col-md-8 col-sm-8 col-xs-12">
-						<a href="#"><h6>Camote</h6></a>
-						<p class="color">STOCK: 30</p>
-						<p>UNIDADES: kg</p>
-                        <p>CATEGORÍA: Tubérculo</p>
-                        <p>Es un insumo.</p>
-                        <a class="btn" href="/user/updateStock">Actualizar</a>
-						</p>								
-					</div>
-				</div>
-				<hr>
+
 
 
 				</div>
 			</div>
-								
+
         </section>
-		
+
         <!-- End Options Section -->
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
 
-        
+
         {% endblock %}

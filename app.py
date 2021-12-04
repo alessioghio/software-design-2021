@@ -29,10 +29,10 @@ engine = db.createEngine(ENV)
 dash_app,data_frame = create_dash_application(app,engine)
 
 @app.route('/')
-def index():    
+def index():
     sessionType = "None"
     if "admin" in session:
-        sessionType = "adminSession"   
+        sessionType = "adminSession"
     elif "client" in session:
         sessionType = "clientSession"
     return render_template('index.html', sessionType=sessionType)
@@ -60,7 +60,7 @@ def success():
 
 @app.route('/home-pizza')
 def home():
-    return render_template('home-pizza.html')  
+    return render_template('home-pizza.html')
 
 # ------------------ #
 
@@ -71,36 +71,40 @@ def error():
 @app.route('/user/sales')
 def sales():
     sessionType = "adminSession"
-    return render_template('sales.html', sessionType=sessionType)    
+    return render_template('sales.html', sessionType=sessionType)
 
 @app.route('/user/newProduct')
 def newProduct():
+    # Get all categories
+    db_session = db.getSession(engine)
+    supplies = getAdminSupplies(db_session, session["admin"])
+    categories = getUniqueCategories(supplies)
     sessionType = "adminSession"
-    return render_template('newProduct.html', sessionType=sessionType) 
+    return render_template('newProduct.html', sessionType=sessionType, categories=categories)
 
 @app.route('/user/productsAdmin')
 def productsAdmin():
     db_session = db.getSession(engine)
     supplies = getAdminSupplies(db_session, session["admin"])
     sessionType = "adminSession"
-    return render_template('productsAdmin.html', sessionType=sessionType, supplies=supplies, os=os)    
+    return render_template('productsAdmin.html', sessionType=sessionType, supplies=supplies, os=os)
 
 @app.route('/user/recipesAdmin')
 def recipesAdmin():
     sessionType = "adminSession"
-    return render_template('recipesAdmin.html', sessionType=sessionType)    
+    return render_template('recipesAdmin.html', sessionType=sessionType)
 
 @app.route('/newProductRequest', methods=['POST'])
 def newProductRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, price, unit, category, description, image = getNewProductData()
+        name, price, unit, category, description, visibility, image = getNewProductData()
         if nameExists(db_session, Supply, name):
             flash('Insumo existente.')
             return redirect(url_for('newProduct'))
         else:
             # Save into db
-            data = Supply(name=name, price=price, unit=unit, visibility=False,
+            data = Supply(name=name, price=price, unit=unit, visibility=visibility,
                         category=category, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
@@ -133,12 +137,12 @@ def newStockRequest():
         print(supply.id)
         prevQuantity = supply.quantity if supply.quantity is not None else 0
         # update
-        quantity += prevQuantity        
+        quantity += prevQuantity
         db_session.query(Supply).\
             filter(Supply.id == supply.id).\
             filter(Supply.admin_id == session["admin"]).\
             update({"quantity": quantity})
-        
+
         db_session.commit()
         flash('Stock agregado.')
         return redirect(url_for('newStock'))
@@ -182,7 +186,7 @@ def registerRequestAdmin():
             return redirect(url_for('registerAdmin'))
         if not(adminUserExists):
             userType="Admin"
-            data = Administrator(name=name, lastName=lastName, email=email, 
+            data = Administrator(name=name, lastName=lastName, email=email,
                                 username=username, password=password, userType=userType)
             db_session.add(data)
             db_session.commit()
@@ -200,8 +204,8 @@ def registerRequestClient():
             return redirect(url_for('registerAdmin'))
         if not(clientUserExists):
             userType="Client"
-            data = Client(name=name, lastName=lastName, email=email, 
-                        username=username, password=password, userType=userType)        
+            data = Client(name=name, lastName=lastName, email=email,
+                        username=username, password=password, userType=userType)
             db_session.add(data)
             db_session.commit()
             return redirect(url_for('login'))
@@ -215,7 +219,7 @@ def loginRequest():
         isAdmin = validateLoginCredentials(db_session, username, password)
         if isAdmin is not None:
             if isAdmin:
-                idQuery = db_session.query(Administrator) 
+                idQuery = db_session.query(Administrator)
                 admin = idQuery.filter(Administrator.username == username).first()
                 session["admin"] = admin.id
             else:
@@ -263,8 +267,9 @@ def logout():
 def update():
     db_session = db.getSession(engine)
     supplies = getAdminSupplies(db_session, session["admin"])
+    categories = getUniqueCategories(supplies)
     sessionType = "adminSession"
-    return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies)
+    return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies, categories=categories)
 
 @app.route('/user/updateRequest', methods=['POST'])
 def updateRequest():
@@ -329,11 +334,11 @@ def fillForm():
     Input('category-supply','value')
 )
 def update_graph(category_supply):
-    if category_supply == 'price': 
-        fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group", 
+    if category_supply == 'price':
+        fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group",
                 labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
-    elif category_supply == 'quantity': 
-        fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group", 
+    elif category_supply == 'quantity':
+        fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group",
             labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
     return fig
 

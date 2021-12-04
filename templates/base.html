@@ -22,7 +22,7 @@
     <link href="../static/css/plugin/sidebar-menu.css" rel="stylesheet" type="text/css" />
     <link href="../static/css/plugin/animate.css" rel="stylesheet" type="text/css" />
     <link href="../static/css/jquery-ui.css" rel="stylesheet" type="text/css" />
-	<link href="../static/css/plugin/smoothproducts.css" rel="stylesheet" />	
+	<link href="../static/css/plugin/smoothproducts.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -46,26 +46,26 @@
 
         <header id="header" class="header shadow">
             <div class="header-inner">
-                <div class="logo">                    
-                    {% if sessionType == "adminSession" %}                          
+                <div class="logo">
+                    {% if sessionType == "adminSession" %}
                             <a href="/">
                             <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
                             <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                             </a>
-                    {% elif sessionType == "clientSession" %}        
+                    {% elif sessionType == "clientSession" %}
                             <a href="/">
                             <img class="logo-light" src="../static/img/logo-pizza.png" alt="Global Talent House" />
                             <img class="logo-dark" src="../static/img/logo-pizza.png" alt="Global Talent House" />
-                            </a>                        
+                            </a>
                     {% else %}
-                    <a href="/">    
+                    <a href="/">
                         <img class="logo-light" src="../static/img/gth-logo-white.png" alt="Global Talent House" />
                         <img class="logo-dark" src="../static/img/gth-logo-black.png" alt="Global Talent House" />
                     </a>
                     {% endif %}
                 </div>
 
-                <!-- <div class="side-menu-btn"> 
+                <!-- <div class="side-menu-btn">
                     <ul>
                         <li class="">
                             <a class="search-overlay-menu-btn header-icon"><i class="fa fa-search"></i></a>
@@ -80,7 +80,7 @@
                 <div class="nav-menu">
                     <ul class="nav-menu-inner">
                         <li>
-                            {% if sessionType == "adminSession" %}                                
+                            {% if sessionType == "adminSession" %}
                             <a class="menu-has-sub">CATÁLOGO<i class="fa fa-angle-down"></i></a>
                             <ul class="sub-dropdown dropdown">
                                 <li>
@@ -88,18 +88,18 @@
                                 </li>
                                 <li>
                                     <a href="/user/recipesAdmin">Recetas</a>
-                                </li>                                
+                                </li>
                             </ul>
                             <li>
                                 <a class="" href="/dash">Dashboard</a>
-                            </li>    
+                            </li>
                             <li>
                                 <a class="" href="/user">Perfil</a>
                             </li>
                             <li>
                                 <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
                             </li>
-                            {% elif sessionType == "clientSession" %}                                
+                            {% elif sessionType == "clientSession" %}
                             <li>
                                 <a class="" href="#">Catálogo</a>
                             </li>
@@ -120,13 +120,13 @@
                                 </li>
                                 <li>
                                     <a href="#">Postres Raúl</a>
-                                </li>                                
+                                </li>
                             </ul>
                             <li>
                             <a class="btn btn-md btn-black join-btn" href="/login">Accede</a>
                             </li>
                             {% endif %}
-                        </li>                        
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -142,7 +142,7 @@
           <!-- FOOTER -->
           <footer class="footer pt-60">
             <div class="container">
-                
+
                 <div class="row footer-info mb-30">
                     <div class="col-md-6 col-sm-12 col-xs-12 mb-sm-30 text-sm-left">
                         <p class="mb-xs-0">Powered by STOCKER.</p>
@@ -191,7 +191,7 @@
     <script src="../static/js/plugin/jquery.viewportchecker.js" type="text/javascript"></script>
     <script src="../static/js/plugin/jquery.stellar.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/wow.min.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.colorbox-min.js" type="text/javascript"></script>	
+    <script src="../static/js/plugin/jquery.colorbox-min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/owl.carousel.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/isotope.pkgd.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/masonry.pkgd.min.js" type="text/javascript"></script>
@@ -200,8 +200,8 @@
     <script src="../static/js/plugin/mediaelement-and-player.min.js"></script>
     <script src="../static/js/plugin/sidebar-menu.js" type="text/javascript"></script>
     <script src="../static/js/theme.js" type="text/javascript"></script>
-    <script src="../static/js/navigation.js" type="text/javascript"></script>	
-	<script src="../static/js/jquery.bootstrap-duallistbox.js"></script>	
+    <script src="../static/js/navigation.js" type="text/javascript"></script>
+	<script src="../static/js/jquery.bootstrap-duallistbox.js"></script>
 	<script>var demo1 = $('[name=category]').bootstrapDualListbox();</script>
 </body>
 </html>

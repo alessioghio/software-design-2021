@@ -17,9 +17,12 @@ def getNewProductData():
     price = float(price)
     unit = request.form['unit']
     category = request.form['category']
+    if category == "":
+        category = request.form['categoryRadio']
     description = request.form['description']
+    visibility = True if request.form.get('visibility') else False
     image = request.files['image']
-    return name, price, unit, category, description, image
+    return name, price, unit, category, description, visibility, image
 
 def getUpdateData():
     id = request.form['id']
@@ -32,6 +35,8 @@ def getUpdateData():
         quantity = int(quantity)
     unit = request.form['unit']
     category = request.form['category']
+    if category == "":
+        category = request.form['categoryRadio']
     visibility = True if request.form.get('visibility') else False
     description = request.form['description']
     image = request.files['image']
@@ -71,7 +76,7 @@ def validateLoginCredentials(db_session, username, password):
         return isAdmin
     else:
         return None
-    
+
 def userExists(db_session, table, username, email):
     usernameExists = db_session.query(table).filter(table.username == username).count() > 0
     emailExists = db_session.query(table).filter(table.email == email).count() > 0
@@ -95,6 +100,13 @@ def getProductImagePath(db_session, image, name):
     ext = ext[-1]
     return f"{supply.id}.{ext}"
 
+def getUniqueCategories(supplies):
+    categories = []
+    for supply in supplies:
+        if supply.category not in categories:
+            categories.append(supply.category)
+    return categories
+
 def getProductImagePath1(db_session, image, name):
     # Get id
     recipeQuery = db_session.query(Recipe)
@@ -104,4 +116,3 @@ def getProductImagePath1(db_session, image, name):
     ext = filename.split(".")
     ext = ext[-1]
     return f"{recipe.id}.{ext}"
-    
