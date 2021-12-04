@@ -69,7 +69,29 @@
 							<hr>
 								<!-- Contact FORM -->
 								<form class="contact-form" id="contact" role="form">
+
+									<div class="form-field-wrapper">
+										<div class="accordion-section">
+											<h6 class="accordion-title black">Tarjetas guardadas</h6>
+											<div class="accordion-content">
+												<div class="form-field-wrapper">                                         
+														<span><input class="input-sm" type="radio" name="name" value=unidad>XXXX XXXX XXXX 3795</span><br>
+														<span><input class="input-sm" type="radio" name="name" value=peso>XXXX XXXX XXXX 4884</span><br>                                          
+											</div>
+										</div>
+										</div>
+									</div>	   											
+									<div class="form-field-wrapper">	
+										<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Elegir como predeterminada</button>
+									</div>
+								</form>	
+
+								
+
+								<form class="contact-form" id="contact" role="form">
 											
+									<h4>Agregar una nueva tarjeta</h4>
+
 									<div class="form-field-wrapper">
 										<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre en la tarjeta" required>
 									</div>
@@ -79,17 +101,22 @@
 									</div>
 		
 									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-name" type="number" name="number" placeholder="Fecha de vencimiento" required>
+										<input class="input-box-m form-full" id="form-full" type="date" name="date" placeholder="Fecha de vencimiento" required>
 									</div>
 									
 									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-name" type="number" name="number" placeholder="CCV" required>
-									</div>
-		
+										<p><i class="fa fa-search left">
+										<input class="input-box form-full" id="form-name" type="number" name="number" placeholder="CCV" required>
+										</i></p>
+									</div>		
 										
-									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar cambios</button>
+									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar tarjeta</button>
 								</form>
 								<!-- END Contact FORM -->
+
+								
+
+
 						</div>
 					</div>
 				</div><!--end tab-->
