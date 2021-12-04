@@ -5750,7 +5750,7 @@ a.thumbnail.active {
 }
 
 @-o-keyframes progress-bar-stripes {
-    from;
+    from
 
 {
     background-position: 40px 0;
