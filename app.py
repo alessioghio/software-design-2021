@@ -25,7 +25,6 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
-
 dash_app,data_frame = create_dash_application(app,engine)
 
 @app.route('/')
@@ -35,14 +34,20 @@ def index():
         sessionType = "adminSession"
     elif "client" in session:
         sessionType = "clientSession"
-    return render_template('index.html', sessionType=sessionType)
+    # Get available startups
+    db_session = db.getSession(engine)
+    startups = db_session.query(Adminurl).all()
+    return render_template('index.html', sessionType=sessionType, startups=startups)
 
 @app.route('/login')
 def login():
     if "admin" in session or "client" in session:
         return redirect(url_for('user'))
     else:
-        return render_template('login.html')
+        # Get available startups
+        db_session = db.getSession(engine)
+        startups = db_session.query(Adminurl).all()
+        return render_template('login.html', startups=startups)
 
 @app.route('/registerAdmin')
 def registerAdmin():
@@ -55,14 +60,6 @@ def registerClient():
 @app.route('/success')
 def success():
     return render_template('successDummy.html')
-
-# ----- DEBUG ------ #
-
-@app.route('/home-pizza')
-def home():
-    return render_template('home-pizza.html')
-
-# ------------------ #
 
 @app.route('/error')
 def error():
@@ -132,9 +129,6 @@ def newStockRequest():
         # Get previous amount
         supplyQuery = db_session.query(Supply)
         supply = supplyQuery.filter(Supply.name == name).first()
-        print(supply.name)
-        print(supply.quantity)
-        print(supply.id)
         prevQuantity = supply.quantity if supply.quantity is not None else 0
         # update
         quantity += prevQuantity
@@ -142,7 +136,6 @@ def newStockRequest():
             filter(Supply.id == supply.id).\
             filter(Supply.admin_id == session["admin"]).\
             update({"quantity": quantity})
-
         db_session.commit()
         flash('Stock agregado.')
         return redirect(url_for('newStock'))
@@ -178,7 +171,7 @@ def newRecipeRequest():
 def registerRequestAdmin():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, lastName, email, username, password = getRegisterData()
+        name, lastName, email, username, password, startup = getRegisterData()
         clientUserExists = userExists(db_session, Client, username, email)
         adminUserExists = userExists(db_session, Administrator, username, email)
         if clientUserExists or adminUserExists:
@@ -186,9 +179,16 @@ def registerRequestAdmin():
             return redirect(url_for('registerAdmin'))
         if not(adminUserExists):
             userType="Admin"
-            data = Administrator(name=name, lastName=lastName, email=email,
+            adminClass = Administrator(name=name, lastName=lastName, email=email,
                                 username=username, password=password, userType=userType)
-            db_session.add(data)
+            db_session.add(adminClass)
+            db_session.commit()
+            # Get new admin id
+            adminQuery = db_session.query(Administrator)
+            admin = adminQuery.filter(Administrator.username == username).first()
+            print(f"ADMIN ID: {admin.id}")
+            adminStartup = Adminurl(name=startup, admin_id=admin.id)
+            db_session.add(adminStartup)
             db_session.commit()
             return redirect(url_for('login'))
 
@@ -196,7 +196,7 @@ def registerRequestAdmin():
 def registerRequestClient():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, lastName, email, username, password = getRegisterData()
+        name, lastName, email, username, password, _ = getRegisterData()
         clientUserExists = userExists(db_session, Client, username, email)
         adminUserExists = userExists(db_session, Administrator, username, email)
         if clientUserExists or adminUserExists:
@@ -239,15 +239,16 @@ def adminProfile():
 @app.route('/user/client')
 def clientProfile():
     sessionType = "clientSession"
-    return render_template('profile-pizza.html', sessionType=sessionType)
+    # Get available startups
+    db_session = db.getSession(engine)
+    startups = db_session.query(Adminurl).all()
+    return render_template('profile-pizza.html', sessionType=sessionType, startups=startups)
 
 @app.route('/user')
 def user():
     if "admin" in session:
-        # username = session["admin"]
         return redirect(url_for('adminProfile'))
     elif "client" in session:
-        # username = session["client"]
         return redirect(url_for('clientProfile'))
     else:
         return redirect(url_for('error'))
@@ -329,6 +330,26 @@ def fillForm():
                 "description": supply.description}
         return jsonify(data)
 
+@app.route('/startup/<name>')
+def startup(name):
+    db_session = db.getSession(engine)
+    startupQuery = db_session.query(Adminurl)
+    startup = startupQuery.filter(Adminurl.name == name).first()
+    # Get visible stock
+    supplies = getAdminSupplies(db_session, startup.admin_id)
+    for supply in supplies:
+        if not(supply.visibility):
+            supplies.remove(supply)
+    # Get available startups
+    startups = db_session.query(Adminurl).all()
+    if "admin" in session:
+        sessionType = "adminSession"
+    elif "client" in session:
+        sessionType = "clientSession"
+    else:
+        sessionType = "None"
+    return render_template('home-client.html', startups=startups, startupName=startup.name, supplies=supplies, os=os, sessionType=sessionType)
+
 @dash_app.callback(
     Output('tabla-supply','figure'),
     Input('category-supply','value')
@@ -341,7 +362,6 @@ def update_graph(category_supply):
         fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group",
             labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
     return fig
-
 
 if __name__ == '__main__':
     app.run()
