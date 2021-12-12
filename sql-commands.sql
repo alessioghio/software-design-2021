@@ -1,10 +1,17 @@
-CREATE TABLE IF NOT EXISTS public."adminURL"
+CREATE TABLE IF NOT EXISTS public.adminurl
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     name character varying(200) COLLATE pg_catalog."default",
     url character varying(200) COLLATE pg_catalog."default",
-    CONSTRAINT "PK_adminURL" PRIMARY KEY (id)
-)
+    admin_id bigint,
+    CONSTRAINT "PK_adminurl" PRIMARY KEY (id),
+    CONSTRAINT admin_id FOREIGN KEY (admin_id)
+        REFERENCES public.administrator (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+);
+
 
 CREATE TABLE IF NOT EXISTS public.administrator
 (
@@ -16,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public.administrator
     password character varying(100) COLLATE pg_catalog."default" NOT NULL,
     "userType" character varying(6) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT administrator_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.supply
 (
@@ -34,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.supply
         REFERENCES public.administrator (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
 CREATE TABLE IF NOT EXISTS public."shoppingCart"
 (
@@ -49,7 +56,7 @@ CREATE TABLE IF NOT EXISTS public."shoppingCart"
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.client
 (
@@ -67,7 +74,7 @@ CREATE TABLE IF NOT EXISTS public.client
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.recipe
 (
@@ -83,8 +90,7 @@ CREATE TABLE IF NOT EXISTS public.recipe
         REFERENCES public.administrator (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
-
+);
 
 CREATE TABLE IF NOT EXISTS public.transaction
 (
@@ -117,4 +123,4 @@ CREATE TABLE IF NOT EXISTS public.transaction
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);

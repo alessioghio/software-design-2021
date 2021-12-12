@@ -25,7 +25,6 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
-
 dash_app,data_frame = create_dash_application(app,engine)
 
 @app.route('/')
@@ -65,11 +64,6 @@ def success():
 @app.route('/error')
 def error():
     return render_template('errorDummy.html')
-
-@app.route('/user/catalogue')
-def catalogue():
-    sessionType = "clientSession"
-    return render_template('catalogue.html', sessionType=sessionType)
 
 @app.route('/user/sales')
 def sales():
@@ -135,9 +129,6 @@ def newStockRequest():
         # Get previous amount
         supplyQuery = db_session.query(Supply)
         supply = supplyQuery.filter(Supply.name == name).first()
-        print(supply.name)
-        print(supply.quantity)
-        print(supply.id)
         prevQuantity = supply.quantity if supply.quantity is not None else 0
         # update
         quantity += prevQuantity
@@ -145,7 +136,6 @@ def newStockRequest():
             filter(Supply.id == supply.id).\
             filter(Supply.admin_id == session["admin"]).\
             update({"quantity": quantity})
-
         db_session.commit()
         flash('Stock agregado.')
         return redirect(url_for('newStock'))
@@ -203,7 +193,7 @@ def registerRequestAdmin():
 def registerRequestClient():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, lastName, email, username, password = getRegisterData()
+        name, lastName, email, username, password, _ = getRegisterData()
         clientUserExists = userExists(db_session, Client, username, email)
         adminUserExists = userExists(db_session, Administrator, username, email)
         if clientUserExists or adminUserExists:
@@ -246,7 +236,10 @@ def adminProfile():
 @app.route('/user/client')
 def clientProfile():
     sessionType = "clientSession"
-    return render_template('profile-pizza.html', sessionType=sessionType)
+    # Get available startups
+    db_session = db.getSession(engine)
+    startups = db_session.query(Adminurl).all()
+    return render_template('profile-pizza.html', sessionType=sessionType, startups=startups)
 
 @app.route('/user')
 def user():
@@ -346,7 +339,13 @@ def startup(name):
             supplies.remove(supply)
     # Get available startups
     startups = db_session.query(Adminurl).all()
-    return render_template('home-client.html', startups=startups, startupName=startup.name, supplies=supplies, os=os)
+    if "admin" in session:
+        sessionType = "adminSession"
+    elif "client" in session:
+        sessionType = "clientSession"
+    else:
+        sessionType = "None"
+    return render_template('home-client.html', startups=startups, startupName=startup.name, supplies=supplies, os=os, sessionType=sessionType)
 
 @dash_app.callback(
     Output('tabla-supply','figure'),

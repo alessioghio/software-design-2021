@@ -9,7 +9,10 @@ def getRegisterData():
     email = request.form['email']
     username = request.form['username']
     password = request.form['password']
-    startup = request.form['startup']
+    try:
+        startup = request.form['startup']
+    except:
+        startup = None
     return name, lastName, email, username, password, startup
 
 def getNewProductData():

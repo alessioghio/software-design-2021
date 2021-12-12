@@ -100,9 +100,15 @@
                                 <a class="btn btn-md btn-black join-btn" href="/logout">Log out</a>
                             </li>
                             {% elif sessionType == "clientSession" %}
-                            <li>
-                                <a class="" href="/user/catalogue">Catálogo</a>
-                            </li>
+                            <a class="menu-has-sub">Catálogos<i class="fa fa-angle-down"></i></a>
+                            <ul class="sub-dropdown dropdown">
+                                {% for startup in startups %}
+                                <li>
+                                    <a href="{{ url_for('startup', name=startup.name) }}">{{startup.name}}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+
                             <li>
                                 <a class="" href="/user/client">Perfil</a>
                             </li>
@@ -114,10 +120,6 @@
                             <li class="">
                                 <a id="menu-sidebar-list-icon" class="header-icon"><i class="fa fa-filter"></i></a>
                             </li>
-
-
-
-
 
                             <!-- Shopping Cart -->
                             <section id="pushmenu-right" class="pushmenu pushmenu-right side-menu">
