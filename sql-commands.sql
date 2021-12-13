@@ -1,3 +1,15 @@
+CREATE TABLE IF NOT EXISTS public.administrator
+(
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    "lastName" character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    "userType" character varying(6) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT administrator_pkey PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS public.adminurl
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
@@ -10,19 +22,6 @@ CREATE TABLE IF NOT EXISTS public.adminurl
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-);
-
-
-CREATE TABLE IF NOT EXISTS public.administrator
-(
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
-    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    "lastName" character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    username character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    "userType" character varying(6) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT administrator_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.supply
