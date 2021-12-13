@@ -242,7 +242,7 @@ def clientProfile():
     # Get available startups
     db_session = db.getSession(engine)
     startups = db_session.query(Adminurl).all()
-    return render_template('profile-pizza.html', sessionType=sessionType, startups=startups)
+    return render_template('profile-client.html', sessionType=sessionType, startups=startups)
 
 @app.route('/user')
 def user():
@@ -328,6 +328,18 @@ def fillForm():
                 "unit": supply.unit,
                 "visibility": supply.visibility,
                 "description": supply.description}
+        return jsonify(data)
+
+@app.route('/fillClientData', methods=['POST'])
+def fillClientData():
+    if request.method == "POST":
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        client = clientQuery.filter(Client.id == session['client']).first()
+        data = {"name": client.name,
+                "lastName": client.lastName,
+                "email": client.email,
+                "username": client.username}
         return jsonify(data)
 
 @app.route('/startup/<name>')
