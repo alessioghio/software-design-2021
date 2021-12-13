@@ -120,3 +120,22 @@ def getProductImagePath1(db_session, image, name):
     ext = filename.split(".")
     ext = ext[-1]
     return f"{recipe.id}.{ext}"
+
+def getShoppingCartItems(db_session):
+    cart = db_session.query(ShoppingCart).all()
+    totalPrice = 0
+    products = []
+    for cartProduct in cart:
+        print(cartProduct.quantity)
+        dictElement = {}
+        supplyProduct = db_session.query(Supply).filter(Supply.id == cartProduct.supply_id).first()
+        dictElement["name"] = supplyProduct.name
+        dictElement["quantity"] = cartProduct.quantity
+        if supplyProduct.unit == "xkg":
+            dictElement["unit"] = "kg"
+        else:
+            dictElement["unit"] = "UN"
+        dictElement["price"] = supplyProduct.price
+        totalPrice += dictElement["price"]*dictElement["quantity"]
+        products.append(dictElement)
+    return products, totalPrice

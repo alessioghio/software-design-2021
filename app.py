@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 import os
+from datetime import datetime
 from models import *
 from utils import *
 import plotly.express as px
@@ -242,7 +243,10 @@ def clientProfile():
     # Get available startups
     db_session = db.getSession(engine)
     startups = db_session.query(Adminurl).all()
-    return render_template('profile-client.html', sessionType=sessionType, startups=startups)
+    # Get cart items if any
+    products, totalPrice = getShoppingCartItems(db_session)
+    return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
+                            products=products, totalPrice=totalPrice)
 
 @app.route('/user')
 def user():
@@ -354,13 +358,47 @@ def startup(name):
             supplies.remove(supply)
     # Get available startups
     startups = db_session.query(Adminurl).all()
+    # Get cart items if any
+    products, totalPrice = getShoppingCartItems(db_session)
     if "admin" in session:
         sessionType = "adminSession"
     elif "client" in session:
         sessionType = "clientSession"
     else:
         sessionType = "None"
-    return render_template('home-client.html', startups=startups, startupName=startup.name, supplies=supplies, os=os, sessionType=sessionType)
+    return render_template('home-client.html', startups=startups, startupName=startup.name, 
+                            supplies=supplies, os=os, sessionType=sessionType, products=products,
+                            totalPrice=totalPrice)
+
+@app.route('/addToShoppingCart', methods=['POST'])
+def addToShoppingCart():
+    if request.method == "POST":
+        db_session = db.getSession(engine)
+        # Get target supply
+        supply_id = request.form.get("supply_id")
+        supply_id = int(supply_id)
+        # Add to shopping cart
+        quantity = request.form.get("quantity")
+        quantity = int(quantity)
+        # If supply already exists on table, update information
+        cartQuery = db_session.query(ShoppingCart).\
+            filter(ShoppingCart.supply_id == supply_id).\
+            filter(ShoppingCart.client_id == session["client"]) 
+        if cartQuery.first() is not None:
+            cart = cartQuery.first()
+            cartQuery.update({"quantity": cart.quantity+quantity,
+                              "datetime": datetime.now()})
+        else: # create row in cart table, otherwise
+            cart = ShoppingCart(datetime=datetime.now(), client_id=session["client"],
+                                supply_id=supply_id, quantity=quantity)
+            db_session.add(cart)
+        db_session.commit()
+        data = {"datetime": cart.datetime,
+                "client_id": cart.client_id,
+                "supply_id": cart.supply_id,
+                "quantity": cart.quantity}
+        return jsonify(data)
+    
 
 @dash_app.callback(
     Output('tabla-supply','figure'),
