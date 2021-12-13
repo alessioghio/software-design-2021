@@ -1,7 +1,8 @@
 import dash
+from sqlalchemy import and_
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+#from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
-from werkzeug.utils import secure_filename
 import os
 from models import *
 from utils import *
@@ -27,10 +28,10 @@ engine = db.createEngine(ENV)
 dash_app = create_dash_application(app,engine)
 
 @app.route('/')
-def index():    
+def index():
     sessionType = "None"
     if "admin" in session:
-        sessionType = "adminSession"   
+        sessionType = "adminSession"
     elif "client" in session:
         sessionType = "clientSession"
     return render_template('index.html', sessionType=sessionType)
@@ -58,7 +59,7 @@ def success():
 
 @app.route('/home-pizza')
 def home():
-    return render_template('home-pizza.html')  
+    return render_template('home-pizza.html')
 
 # ------------------ #
 
@@ -66,39 +67,54 @@ def home():
 def error():
     return render_template('errorDummy.html')
 
+@app.route('/user/catalogue')
+def catalogue():
+    sessionType = "clientSession"
+    return render_template('catalogue.html', sessionType=sessionType)
+
 @app.route('/user/sales')
 def sales():
     sessionType = "adminSession"
-    return render_template('sales.html', sessionType=sessionType)    
+    return render_template('sales.html', sessionType=sessionType)
 
 @app.route('/user/newProduct')
 def newProduct():
+    # Get all categories
+    db_session = db.getSession(engine)
+    supplies = getAdminSupplies(db_session, session["admin"])
+    categories = getUniqueCategories(supplies)
     sessionType = "adminSession"
-    return render_template('newProduct.html', sessionType=sessionType)    
+    return render_template('newProduct.html', sessionType=sessionType, categories=categories)
+
+@app.route('/user/productsAdmin')
+def productsAdmin():
+    db_session = db.getSession(engine)
+    supplies = getAdminSupplies(db_session, session["admin"])
+    sessionType = "adminSession"
+    return render_template('productsAdmin.html', sessionType=sessionType, supplies=supplies, os=os)
+
+@app.route('/user/recipesAdmin')
+def recipesAdmin():
+    sessionType = "adminSession"
+    return render_template('recipesAdmin.html', sessionType=sessionType)
 
 @app.route('/newProductRequest', methods=['POST'])
 def newProductRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, price, unit, category, description, image = getNewProductData()
-        print(image)
+        name, price, unit, category, description, visibility, image = getNewProductData()
         if nameExists(db_session, Supply, name):
             flash('Insumo existente.')
             return redirect(url_for('newProduct'))
         else:
             # Save into db
-            data = Supply(name=name, price=price, unit=unit, visibility=False,
-                        category=category, description=description)
+            data = Supply(name=name, price=price, unit=unit, visibility=visibility,
+                        category=category, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
-            # Get id
-            supplyQuery = db_session.query(Supply)
-            supply = supplyQuery.filter(Supply.name == name).first()
-            filename = secure_filename(image.filename)
-            # get file extension
-            ext = filename.split(".")
-            ext = ext[-1]
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], f"{supply.id}.{ext}"))
+            # Save image
+            imagePath = getProductImagePath(db_session, image, name)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
             flash('Insumo creado.')
             return redirect(url_for('newProduct'))
 
@@ -106,9 +122,9 @@ def newProductRequest():
 def newStock():
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
-    supplies = supplyQuery.all()
+    supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
     sessionType = "adminSession"
-    return render_template('newStock.html', sessionType=sessionType, supplies=supplies)  
+    return render_template('newStock.html', sessionType=sessionType, supplies=supplies)
 
 @app.route('/newStockRequest', methods=['POST'])
 def newStockRequest():
@@ -128,15 +144,36 @@ def newStockRequest():
         quantity += prevQuantity
         db_session.query(Supply).\
             filter(Supply.id == supply.id).\
+            filter(Supply.admin_id == session["admin"]).\
             update({"quantity": quantity})
+
         db_session.commit()
         flash('Stock agregado.')
-        return redirect(url_for('newStock'))    
+        return redirect(url_for('newStock'))
 
 @app.route('/user/newRecipe')
 def newRecipe():
     sessionType = "adminSession"
-    return render_template('newRecipe.html', sessionType=sessionType)      
+    db_session = db.getSession(engine)
+    supplyQuery = db_session.query(Supply)
+    supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
+    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies)
+
+@app.route('/newRecipeRequest')
+def newRecipeRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name, id_supply, price, category, description = getRecipeData()
+        if nameExists(db_session, Recipe, name):
+            flash('Receta existente.')
+            return redirect(url_for('newRecipe'))
+        else:
+            # Insert data on db
+            data = Recipe(name=name, price=price, category=category, description=description)
+            db_session.add(data)
+            db_session.commit()
+            flash('Receta creada.')
+            return redirect(url_for('newRecipe'))
 
 @app.route('/registerRequestAdmin', methods=['POST'])
 def registerRequestAdmin():
@@ -150,7 +187,7 @@ def registerRequestAdmin():
             return redirect(url_for('registerAdmin'))
         if not(adminUserExists):
             userType="Admin"
-            data = Administrator(name=name, lastName=lastName, email=email, 
+            data = Administrator(name=name, lastName=lastName, email=email,
                                 username=username, password=password, userType=userType)
             db_session.add(data)
             db_session.commit()
@@ -168,8 +205,8 @@ def registerRequestClient():
             return redirect(url_for('registerAdmin'))
         if not(clientUserExists):
             userType="Client"
-            data = Client(name=name, lastName=lastName, email=email, 
-                        username=username, password=password, userType=userType)        
+            data = Client(name=name, lastName=lastName, email=email,
+                        username=username, password=password, userType=userType)
             db_session.add(data)
             db_session.commit()
             return redirect(url_for('login'))
@@ -183,9 +220,13 @@ def loginRequest():
         isAdmin = validateLoginCredentials(db_session, username, password)
         if isAdmin is not None:
             if isAdmin:
-                session["admin"] = username
+                idQuery = db_session.query(Administrator)
+                admin = idQuery.filter(Administrator.username == username).first()
+                session["admin"] = admin.id
             else:
-                session["client"] = username
+                idQuery = db_session.query(Client)
+                client = idQuery.filter(Client.username == username).first()
+                session["client"] = client.id
             return redirect(url_for('user'))
         else:
             flash('Usuario o contraseña incorrectas.')
@@ -226,10 +267,10 @@ def logout():
 @app.route('/user/updateStock')
 def update():
     db_session = db.getSession(engine)
-    supplyQuery = db_session.query(Supply)
-    supplies = supplyQuery.all()
+    supplies = getAdminSupplies(db_session, session["admin"])
+    categories = getUniqueCategories(supplies)
     sessionType = "adminSession"
-    return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies)
+    return render_template('newUpdate.html', sessionType=sessionType, supplies=supplies, categories=categories)
 
 @app.route('/user/updateRequest', methods=['POST'])
 def updateRequest():
@@ -252,8 +293,10 @@ def updateRequest():
         category = updateData[4]
         visibility = updateData[5]
         description = updateData[6]
+        image = updateData[7]
         db_session.query(Supply).\
             filter(Supply.id == id).\
+            filter(Supply.admin_id == session["admin"]).\
             update({"name": name,
                     "price": price,
                     "quantity": quantity,
@@ -262,6 +305,10 @@ def updateRequest():
                     "visibility": visibility,
                     "description": description})
         db_session.commit()
+        # Save image
+        if secure_filename(image.filename) != "":
+            imagePath = getProductImagePath(db_session, image, name)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
         flash('Información actualizada.')
         return redirect(url_for('update'))
 
@@ -288,13 +335,11 @@ def fillForm():
     Input('category-supply','value')
 )
 def update_graph(category_supply):
-    # global data_frame
-    data_frame = pd.read_sql_query('select * from "supply"', con=engine)
-    if category_supply == 'price': 
-        fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group", 
+    if category_supply == 'price':
+        fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group",
                 labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
-    elif category_supply == 'quantity': 
-        fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group", 
+    elif category_supply == 'quantity':
+        fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group",
             labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
     return fig
 

@@ -1,4 +1,4 @@
-﻿{% extends 'base-profile.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row title">
                     <h2 class="h2">Perfil</h2>
-                    
+
                 </div>
             </div>
         </section>
@@ -16,39 +16,166 @@
         <!-- End Intro Section -->
 
         <!-- Options Section -->
-        <section class="ptb-60 pt-sm-30 pb-sm-40">
-			<div class="container text-center">
-                <div class="row">
-					<h3>¿Qué hay de nuevo viejo?</h3>
-					<div class="spacer-45"></div>
-					<div class="col-xs-offset-1 col-xs-10 col-md-10 col-md-offset-1">
-						<div class="col-md-6 mb-25">
-							<div class="box-shadow" style="background:#f7f7f7;">
-								<div class="padding-20">								
-								<h5>I have an opportunity and require artists</h5>
-								<div class="spacer-15"></div>
-								<p>Become our Associate. Post the details of your event and we will help you reach the right artist from our huge database</p>
-								<div class="spacer-45"></div>
-								<a class="btn btn-md btn-black-line"  href="post-opportunity-detail.html">Learn More</a> 
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="box-shadow" style="background:#f7f7f7;">
-								<div class="padding-20">
-								<h5>I Am an artist looking for opportunities</h5>
-								<div class="spacer-15"></div>
-								<p>Register with us. Create your profile, upload your best work and get noticed by our associates. We will help you find best opportunities</p>
-								<div class="spacer-45"></div>
-								<a class="btn btn-md btn-black-line" href="registration-detail.html">Learn More</a> 								
-								</div>
-							</div>
+        <section class="ptb-60 ptb-sm-30">
+			<div class="tabs mt-15">
+			<ul>
+				<li><a href="#tabs-1">Datos personales</a></li>
+				<li><a id="cv-tab" href="#tabs-2">Métodos de pago</a></li>
+				<li><a id="cv-tab" href="#tabs-3">Compras</a></li>
+			</ul>
+
+			<div class="ui-tab-content">                        
+			
+
+
+				<!-- Datos personales -->
+				<div id="tabs-1">
+					<div class="container text-left">
+						<div class="mb-30">	
+							<h2> Datos personales</h2>	
+							<hr>
+								<!-- Contact FORM -->
+								<form class="contact-form" id="contact" role="form">
+											
+									<div class="form-field-wrapper">
+										<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre" required>
+									</div>
+
+									<div class="form-field-wrapper">
+										<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Apellido" required>
+									</div>
+		
+									<div class="form-field-wrapper">
+										<input class="input-sm form-full" id="form-email" type="email" name="form-email" placeholder="Correo" required>
+									</div>
+
+									<div class="form-field-wrapper">
+										<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre de usuario" required>
+									</div>									
+		
+										
+									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar cambios</button>
+								</form>
+								<!-- END Contact FORM -->
 						</div>
 					</div>
-				</div>
+				</div><!--end tab-->
+
+				<!-- Métodos de pago -->
+				<div id="tabs-2">
+					<div class="container text-left">
+						<div class="mb-30">	
+							<h2> Métodos de pago</h2>	
+							<hr>
+								<!-- Contact FORM -->
+								<form class="contact-form" id="contact" role="form">
+
+									<div class="form-field-wrapper">
+										<div class="accordion-section">
+											<h6 class="accordion-title black">Tarjetas guardadas</h6>
+											<div class="accordion-content">
+												<div class="form-field-wrapper">                                         
+														<span><input class="input-sm" type="radio" name="name" value=unidad>XXXX XXXX XXXX 3795</span><br>
+														<span><input class="input-sm" type="radio" name="name" value=peso>XXXX XXXX XXXX 4884</span><br>                                          
+											</div>
+										</div>
+										</div>
+									</div>	   											
+									<div class="form-field-wrapper">	
+										<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Elegir como predeterminada</button>
+									</div>
+								</form>	
+
+								
+
+								<form class="contact-form" id="contact" role="form">
+											
+									<h4>Agregar una nueva tarjeta</h4>
+
+									<div class="form-field-wrapper">
+										<input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nombre en la tarjeta" required>
+									</div>
+
+									<div class="form-field-wrapper">
+										<input class="input-sm form-full" id="form-name" type="number" name="number" placeholder="Número de tarjeta" required>
+									</div>
+		
+									<div class="form-field-wrapper">
+										<input class="input-box-m form-full" id="form-full" type="date" name="date" placeholder="Fecha de vencimiento" required>
+									</div>
+									
+									<div class="form-field-wrapper">
+										<p><i class="fa fa-search left">
+										<input class="input-box form-full" id="form-name" type="number" name="number" placeholder="CCV" required>
+										</i></p>
+									</div>		
+										
+									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar tarjeta</button>
+								</form>
+								<!-- END Contact FORM -->
+
+								
+
+
+						</div>
+					</div>
+				</div><!--end tab-->
+
+				<!-- Compras -->
+				<div id="tabs-3">
+					<div class="container text-left">
+						<div class="mb-30">	
+							<h2> Compras</h2>	
+							<hr>
+							
+							<!-- Faq Section -->
+							<section class="ptb-60 ptb-sm-60">
+								<div class="container">
+									<!-- Accordion -->
+									<div class="accordion">                   
+					
+										<div class="accordion-section">
+											<h6 class="accordion-title">Boleta de venta         BV-001</h6>
+											<div class="accordion-content">
+												<p>Venta del 24 de noviembre del 2021 por s/.69.</p>
+												<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
+											</div>
+										</div>
+					
+										<div class="accordion-section">
+											<h6 class="accordion-title">Boleta de venta         BV-002</h6>
+											<div class="accordion-content">
+												<p>Venta del 25 de noviembre del 2021 por s/.4.20.</p>
+												<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
+											</div>
+										</div>
+					
+										<div class="accordion-section">
+											<h6 class="accordion-title">Boleta de venta         BV-003</h6>
+											<div class="accordion-content">
+												<p>Venta del 30 de noviembre del 2021 por s/.3.69.</p>
+												<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
+											</div>
+										</div>
+					
+									</div>
+									<!-- End Accordion -->
+								</div>
+							</section>
+							<!-- Faq Section -->
+
+						</div>
+					</div>
+				</div><!--end tab-->
+			
+			
+			
+			</div>
 			</div>
         </section>
         <!-- End Options Section -->
+
+
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
 

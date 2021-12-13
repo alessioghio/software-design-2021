@@ -8,16 +8,16 @@
 			<div class="container">
 				<div class="row title">
 					<h2 class="h2">Actualiza tu stock</h2>
-					<!-- <p>Actualizaloh.</p> -->           
+					<!-- <p>Actualizaloh.</p> -->
 				</div>
 			</div>
 		</section>
 		<div class="clearfix"></div>
 		<!-- End Intro Section -->
-		
+
 		<!-- Sidemenu -->
 					<section id="pushmenu-right" class="pushmenu pushmenu-right side-menu">
-						
+
 					</section>
 					<!--End Sidemenu -->
 
@@ -31,12 +31,12 @@
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 						{{ message }}
 					</div>
-					{% endfor%}
-					<!-- End Flash Section -->	
+					{% endfor %}
+					<!-- End Flash Section -->
 					<h2> Modificar </h2>
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest">
+                        <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest" enctype="multipart/form-data">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
@@ -50,50 +50,57 @@
 									</div>
 								</div>
 							</div>
-								
+
                             <div class="form-field-wrapper">
-                                <input class="input-sm form-full" id="updateInput" type="text" name="name" placeholder="Nuevo nombre">
+                                <input class="input-sm form-full" type="text" name="name" placeholder="Nuevo nombre">
                             </div>
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" id="updateInput" type="number" name="price" placeholder="Cambiar precio">
+								<input class="input-sm form-full" type="number" name="price" placeholder="Cambiar precio">
 							</div>
                             <div class="form-field-wrapper">
 								<input class="input-sm form-full" type="text" name="unit" placeholder="Cambiar unidad">
 							</div>
 							<div class="form-field-wrapper">
 								<input class="input-sm form-full" type="number" name="quantity" placeholder="Cambiar cantidad">
-                                <div class="accordion-section">
-                                    <h6 class="accordion-title black">Categoría</h6>
-                                    <div class="accordion-content">
-                                        <div class="form-field-wrapper">												
-                                            <span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span>
-                                            <button class="btn btn-md btn-black" type="submit" id="peque-submit" name="submit">Seleccionar nueva</button><br>		
-                                        </div>	
-                                        <div>
-                                            <span><input class="input-sm" type="radio" name="name" value=fruta>Fruta</span><br>												
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-							<div class="form-field-wrapper">
-								<input class="input-sm form-full" type="text" name="visibility" placeholder="Cambiar visibilidad">
-							</div>	
+							</div>
+
+							<div class="accordion-section form-field-wrapper">
+								<h6 class="accordion-title black">Categoría</h6>
+								<div class="accordion-content">
+									<div class="form-field-wrapper">
+										<input class="input-sm" type="checkbox" id="newCategory">
+											<span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span><br>
+											{% for category in categories %}
+												<span><input class="input-sm" type="radio" name="categoryRadio" value="{{category}}">{{category}}</span><br>
+											{% endfor %}
+									</div>
+								</div>
+							</div>
+
+
 							<div class="form-field-wrapper">
 								<textarea class="form-full" rows="1" name="description" placeholder="Cambiar descripción"></textarea>
-							</div>				
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm" type="checkbox" name="visibility">¿Mostrar en el catálogo?</span>
+							</div>
+							<div class="form-field-wrapper">
+								<p> Añadir nueva imagen </p>
+									<input class="form-full" type="file" name="image" placeholder="Añadir imagen">
+							</div>
 							<button class="btn btn-md btn-black" type="submit" name="submit" href="updateRequest">Actualizar</button>
 						</form>
                         <!-- END Filters	 FORM -->
-						</div>					
-				</div>			
-			</div>								
+						</div>
+				</div>
+			</div>
         </section>
-		
+
         <!-- End Options Section -->
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
-		
+
 		<!-- JS -->
 		<script src="../static/js/updateInputs.js" type="text/javascript"></script>
-{% endblock %}        
+		<script src="../static/js/categoriesjs.js" type="text/javascript"></script>
+{% endblock %}

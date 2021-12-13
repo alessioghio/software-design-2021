@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <!-- CONTENT --------------------------------------------------------------------------------->
+        <!-- Intro Section -->
+            <section class="inner-intro dark-bg overlay-dark">
+                <div class="container">
+                    <div class="row title">
+                        <h2 class="h2">Catálogo</h2>
+                        <!-- <p>Registraloh.</p> -->
+                    </div>
+                </div>
+            </section>
+            <div class="clearfix"></div>
+        <!--End Intro Section -->
+
+		
+
+        <!-- Options Section -->
+        <section class="ptb-60 ptb-sm-30">
+			<div class="container text-left">
+                <div class="mb-30">	
+					<h2> Lista de recetas </h2>	
+					<hr>
+				</div>
+
+                <div class="row mtb-30">
+					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
+						<a href="#"><img alt="1" src="../static/img/portfolio/ceviche.jpeg" class="item-container"></a>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-12">
+						<a href="#"><h6>Ceviche</h6></a>
+						<p class="color">STOCK: 26</p>
+						<p>UNIDADES: un.</p>
+                        <p>CATEGORÍA: Entrada</p>
+                        <p>Utiliza x insumos.</p>
+                        <a class="btn" href="/user/updateStock">Actualizar</a>
+						</p>
+					</div>
+				</div>
+				<hr>
+
+                <div class="row mtb-30">
+					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
+						<a href="#"><img alt="1" src="../static/img/portfolio/3.jpg" class="item-container"></a>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-12">
+						<a href="#"><h6>Camote</h6></a>
+						<p class="color">STOCK: 30</p>
+						<p>UNIDADES: kg</p>
+                        <p>CATEGORÍA: Tubérculo</p>
+                        <p>Es un insumo.</p>
+                        <a class="btn" href="/user/updateStock">Actualizar</a>
+						</p>
+					</div>
+				</div>
+				<hr>
+
+
+
+				</div>
+			</div>
+
+        </section>
+
+        <!-- End Options Section -->
+
+        <!-- End CONTENT ------------------------------------------------------------------------------>
+
+
+        {% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <!-- CONTENT --------------------------------------------------------------------------------->
+        <!-- Intro Section -->
+            <section class="inner-intro dark-bg overlay-dark">
+                <div class="container">
+                    <div class="row title">
+                        <h2 class="h2">Catálogo</h2>
+                        <!-- <p>Registraloh.</p> -->
+                    </div>
+                </div>
+            </section>
+            <div class="clearfix"></div>
+        <!--End Intro Section -->
+
+        <!-- Options Section -->
+        <section class="ptb-60 ptb-sm-30">
+			<div class="container text-left">
+                <div class="mb-30">	
+					<h2> Lista de insumos </h2>	
+					<hr>
+				</div>
+
+				{% for supply in supplies %}
+                <div class="row mtb-30">
+					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
+						<a href="#"><img alt="1"
+						{% if os.path.exists("./static/productsImages/{id}.jpg".format(id=supply.id)) %}
+						src="../static/productsImages/{{supply.id}}.jpg"
+						{% else %}
+						src="../static/productsImages/{{supply.id}}.png"
+						{% endif %}
+						class="item-container">
+						</a>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-12">
+						<a href="#"><h6>{{supply.name}}</h6></a>
+						<p class="color">STOCK: {{supply.quantity}}</p>
+						<p>UNIDADES: {{supply.unit}}</p>
+                        <p>CATEGORÍA: {{supply.category}}</p>
+                        <p>Se utiliza en x recetas.</p>
+                        <a class="btn" href="/user/updateStock">Actualizar</a>
+						</p>
+					</div>
+				</div>
+				<hr>
+				{% endfor %}
+				</div>
+			</div>
+
+        </section>
+
+        <!-- End Options Section -->
+
+        <!-- End CONTENT ------------------------------------------------------------------------------>
+
+
+        {% endblock %}

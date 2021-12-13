@@ -53,6 +53,7 @@ class Supply(Manager.Base):
     unit = Column(VARCHAR(5), nullable=False)
     category = Column(VARCHAR(100), nullable=False)
     visibility = Column(Boolean, nullable=False)
+    admin_id = Column(BigInteger, ForeignKey("administrator.id"), nullable=False)
 
     def __repr__(self):
         return "<Supply(name=%s, price=%s, quantity=%s, category=%s, visibility=%s)>".format(
@@ -65,6 +66,8 @@ class Recipe(Manager.Base):
     description = Column(VARCHAR(500))
     quantity = Column(Integer)
     supply_id = Column(BigInteger)
+    price = Column(Integer, nullable=False)
+    admin_id = Column(BigInteger, ForeignKey("administrator.id"), nullable=False)
 
     def __repr__(self):
         return "<Recipe(name=%s, quantity=%s, supply_id=%s)>".format(

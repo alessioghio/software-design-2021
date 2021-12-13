@@ -5,16 +5,31 @@ function updateInputsValues(data){
         // console.log(value)
         // console.log("----")
         let input = document.getElementsByName(key);
+        // console.log(value)
         if (key == "description") {
             input[1].value = value;
-        } else{
+        } else if(key == "visibility"){
+            input[0].checked = value;
+        } else if(key == "category"){
+            var radios = document.filterForm.categoryRadio;
+            if(!(radios.constructor === RadioNodeList)){
+                radios = [radios];
+            }
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].value == value){
+                    radios[i].checked = true;
+                }
+            }
+        }else{
             input[0].value = value;
         }
-        
     }
 }
 
 var rad = document.filterForm.id;
+if(!(rad.constructor === RadioNodeList)){
+    rad = [rad];
+}
 var prev = null;
 for (var i = 0; i < rad.length; i++) {
     rad[i].addEventListener('change', function() {

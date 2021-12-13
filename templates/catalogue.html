@@ -1,33 +1,44 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-        <!-- CONTENT --------------------------------------------------------------------------------->
-		<!-- Intro Section -->
-        <section class="inner-intro dark-bg overlay-dark">
-            <div class="container">
-                <div class="row title">
-                    <h2 class="h2">Catálogo Pizza Raúl</h2>
-					<p>Bienvenido </p>
-					<div class="spacer-15"></div>
-                </div>
-            </div>
-        </section>
-        <div class="clearfix"></div>
-        <!-- End Intro Section -->
-        <!-- Options Section -->
+<!-- CONTENT --------------------------------------------------------------------------------->
+        <!-- Intro Section -->
+		<section class="inner-intro dark-bg overlay-dark">
+			<div class="container">
+				<div class="row title">
+					<h2 class="h2">Catálogo</h2>
+					<!-- <p>Ingresaloh.</p> -->          
+				</div>
+			</div>
+		</section>
+		<div class="clearfix"></div>
+		<!-- End Intro Section -->
+		
+		<!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
             <div class="container">
                <div class="row container-masonry nf-col-3">
 
                     <div class="nf-item branding coffee spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/14.jpg" title="Consequat massa quis">
-                                <img alt="1" src="../static/img/portfolio/14.jpg" class="item-container">
+                            <img alt="1" src="../static/img/portfolio/14.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">Consequat massa quis</h5>
                                         <p class="white">Branding, Design</p>
+
+
+                                        <!-- Botón añadir al carrito-->
+                                        <form class="contact-form" role="form">
+                                            <div class="form-field-wrapper">
+                                                <input class="input-box form-full" id="form-name" type="number" name="number" placeholder="Cant." required>
+                                                <button class="btn-md" type="submit" href="#"> Añadir al carrito </button>
+                                            </div>
+                                        </form>
+
+
+
                                     </div>
                                 </div>
                             </a>
@@ -136,8 +147,8 @@
 
                     <div class="nf-item design spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/23.jpg" title="But the Little Blind">
-                                <img alt="1" src="../static/img/portfolio/23.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/23.jpg" title="But the Little Blind">
+                                <img alt="1" src="img/portfolio/23.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">But the Little Blind</h5>
@@ -150,8 +161,8 @@
 
                     <div class="nf-item design spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/24.jpg" title="Even the all-powerful">
-                                <img alt="1" src="../static/img/portfolio/24.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/24.jpg" title="Even the all-powerful">
+                                <img alt="1" src="img/portfolio/24.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">Even the all-powerful</h5>
@@ -164,8 +175,8 @@
 
                     <div class="nf-item photo spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/25.jpg" title="Italic Mountains">
-                                <img alt="1" src="../static/img/portfolio/25.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/25.jpg" title="Italic Mountains">
+                                <img alt="1" src="img/portfolio/25.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">Italic Mountains</h5>
@@ -178,8 +189,8 @@
 
                     <div class="nf-item photo spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/33.jpg" title="Control about the blind">
-                                <img alt="1" src="../static/img/portfolio/33.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/33.jpg" title="Control about the blind">
+                                <img alt="1" src="img/portfolio/33.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">Control about the blind</h5>
@@ -192,8 +203,8 @@
 
                     <div class="nf-item branding coffee spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/27.jpg" title="The Big Oxmox advised">
-                                <img alt="1" src="../static/img/portfolio/27.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/27.jpg" title="The Big Oxmox advised">
+                                <img alt="1" src="img/portfolio/27.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">The Big Oxmox advised</h5>
@@ -206,8 +217,8 @@
 
                     <div class="nf-item branding coffee spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/18.jpg" title="The Big Oxmox advised">
-                                <img alt="1" src="../static/img/portfolio/18.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/18.jpg" title="The Big Oxmox advised">
+                                <img alt="1" src="img/portfolio/18.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">The Big Oxmox advised</h5>
@@ -220,8 +231,8 @@
 
                     <div class="nf-item branding design spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/4.jpg" title="The Big Oxmox advised">
-                                <img alt="1" src="../static/img/portfolio/4.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/4.jpg" title="The Big Oxmox advised">
+                                <img alt="1" src="img/portfolio/4.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">The Big Oxmox advised</h5>
@@ -234,8 +245,8 @@
 
                     <div class="nf-item branding coffee spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/30.jpg" title="The Big Oxmox advised">
-                                <img alt="1" src="../static/img/portfolio/30.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/30.jpg" title="The Big Oxmox advised">
+                                <img alt="1" src="img/portfolio/30.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">The Big Oxmox advised</h5>
@@ -248,8 +259,8 @@
 
                     <div class="nf-item branding design spacing">
                         <div class="item-box">
-                            <a class="cbox-gallary1" href="../static/img/portfolio/10.jpg" title="The Big Oxmox advised">
-                                <img alt="1" src="../static/img/portfolio/10.jpg" class="item-container">
+                            <a class="cbox-gallary1" href="img/portfolio/10.jpg" title="The Big Oxmox advised">
+                                <img alt="1" src="img/portfolio/10.jpg" class="item-container">
                                 <div class="item-mask">
                                     <div class="item-caption">
                                         <h5 class="white">The Big Oxmox advised</h5>
@@ -260,7 +271,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> 
 				<!-- Pagination Nav -->
                 <div class="pagination-nav mt-60 mt-xs-30">
                     <ul>
@@ -273,9 +284,6 @@
                 </div>
                 <!-- End Pagination Nav -->
 
-            </div>
-        </section>
-        <!-- End Work Detail Section -->
         <!-- End CONTENT ------------------------------------------------------------------------------>
 
-{% endblock %}
+{% endblock %}        
