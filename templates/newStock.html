@@ -8,55 +8,60 @@
 			<div class="container">
 				<div class="row title">
 					<h2 class="h2">Ingreso de nuevo stock</h2>
-					<p>Ingresaloh.</p>            
+					<!-- <p>Ingresaloh.</p> -->
 				</div>
 			</div>
 		</section>
 		<div class="clearfix"></div>
 		<!-- End Intro Section -->
-		
+
 		<!-- Sidemenu -->
 					<section id="pushmenu-right" class="pushmenu pushmenu-right side-menu">
-						
+
 					</section>
 					<!--End Sidemenu -->
 
         <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
 			<div class="container text-left">
-                <div class="mb-30">				
-					<h2> Ingresar </h2>						
+                <div class="mb-30">
+					<!-- Flash Section -->
+					{% for message in get_flashed_messages()%}
+						<div class="alert alert-info alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{{ message }}
+						</div>
+					{% endfor%}
+					<!-- End Flash Section -->
+					<h2> Ingresar </h2>
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" id="filters" role="form">
+                        <form action="/newStockRequest" method="POST">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
 									<div class="accordion-content">
 										<div class="form-field-wrapper">
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Papas">Papas</span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Limones">Limones<span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Chifles">Chifles<span><br>
+											{% for supply in supplies %}
+												<span><input class="input-sm" type="radio" name="name" value={{supply.name}}>{{supply.name}}</span><br>
+											{% endfor %}
 										</div>
 									</div>
 								</div>
 								</div>
 							<div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Cantidad" required>
+								<input class="input-sm form-full" type="number" name="quantity" placeholder="Cantidad" required>
 							</div>
-							<div class="form-field-wrapper">
-								<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Descripción"></textarea>
-							</div>							
-							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
+							<button class="btn btn-md btn-black" type="submit" name="submit" href="newStockRequest">Guardar</button>
 						</form>
                         <!-- END Filters	 FORM -->
-						</div>					
-				</div>			
-			</div>								
+						</div>
+				</div>
+			</div>
         </section>
-		
+
         <!-- End Options Section -->
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
 
-{% endblock %}        
+{% endblock %}

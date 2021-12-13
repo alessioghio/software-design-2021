@@ -8,67 +8,99 @@
 			<div class="container">
 				<div class="row title">
 					<h2 class="h2">Actualiza tu stock</h2>
-					<p>Actualizaloh.</p>            
+					<!-- <p>Actualizaloh.</p> -->
 				</div>
 			</div>
 		</section>
 		<div class="clearfix"></div>
 		<!-- End Intro Section -->
-		
+
 		<!-- Sidemenu -->
 					<section id="pushmenu-right" class="pushmenu pushmenu-right side-menu">
-						
+
 					</section>
 					<!--End Sidemenu -->
 
         <!-- Options Section -->
         <section class="ptb-60 ptb-sm-30">
 			<div class="container text-left">
-                <div class="mb-30">				
-					<h2> Modificar </h2>						
+                <div class="mb-30">
+					<!-- Flash Section -->
+					{% for message in get_flashed_messages()%}
+					<div class="alert alert-info alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						{{ message }}
+					</div>
+					{% endfor %}
+					<!-- End Flash Section -->
+					<h2> Modificar </h2>
 						<div class="filter-form">
 							 <!-- Filters FORM -->
-                        <form class="filters-form" id="filters" role="form">
+                        <form class="filters-form" name="filterForm" id="filters" role="form" method="POST" action="/user/updateRequest" enctype="multipart/form-data">
 							<div class="accordion mb-15">
 								<div class="accordion-section">
 									<h6 class="accordion-title black">Elegir producto</h6>
 									<div class="accordion-content">
 										<div class="form-field-wrapper">
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Papas">Papas</span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Limones">Limones<span><br>
-											<span><input class="input-sm" id="category" type="radio" name="form-category" value="Chifles">Chifles<span><br>
+											{% for supply in supplies %}
+											<!--<input type="hidden" name="id" value={{supply.id}}>-->
+											<span><input class="input-sm" id="category" type="radio" name="id" value="{{supply.id}}" required>{{supply.name}}</span><br>
+											{% endfor %}
 										</div>
 									</div>
 								</div>
-								</div>
+							</div>
+
                             <div class="form-field-wrapper">
-                                <input class="input-sm form-full" id="form-name" type="text" name="form-name" placeholder="Nuevo nombre" required>
+                                <input class="input-sm form-full" type="text" name="name" placeholder="Nuevo nombre">
                             </div>
-                            <div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-number" type="number" name="form-number" placeholder="Fijar cantidad de stock actual" required>
+							<div class="form-field-wrapper">
+								<input class="input-sm form-full" type="number" name="price" placeholder="Cambiar precio">
 							</div>
                             <div class="form-field-wrapper">
-								<input class="input-sm form-full" id="form-submit" type="text" name="form-submit" placeholder="Nuevas unidades" required>
+								<input class="input-sm form-full" type="text" name="unit" placeholder="Cambiar unidad">
 							</div>
 							<div class="form-field-wrapper">
-								<textarea class="form-full" id="form-remarks" rows="1" name="form-remarks" placeholder="Cambiar descripción"></textarea>
-							</div>						
-							<div class="form-field-wrapper">							
-								<p> Seleccionar nueva imagen </p>
-								<form class="input-sm" action="/action_page.php">									
-									<input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">									
-								  </form>
+								<input class="input-sm form-full" type="number" name="quantity" placeholder="Cambiar cantidad">
 							</div>
-							<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Actualizar</button>
+
+							<div class="accordion-section form-field-wrapper">
+								<h6 class="accordion-title black">Categoría</h6>
+								<div class="accordion-content">
+									<div class="form-field-wrapper">
+										<input class="input-sm" type="checkbox" id="newCategory">
+											<span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span><br>
+											{% for category in categories %}
+												<span><input class="input-sm" type="radio" name="categoryRadio" value="{{category}}">{{category}}</span><br>
+											{% endfor %}
+									</div>
+								</div>
+							</div>
+
+
+							<div class="form-field-wrapper">
+								<textarea class="form-full" rows="1" name="description" placeholder="Cambiar descripción"></textarea>
+							</div>
+							<div class="form-field-wrapper">
+								<input class="input-sm" type="checkbox" name="visibility">¿Mostrar en el catálogo?</span>
+							</div>
+							<div class="form-field-wrapper">
+								<p> Añadir nueva imagen </p>
+									<input class="form-full" type="file" name="image" placeholder="Añadir imagen">
+							</div>
+							<button class="btn btn-md btn-black" type="submit" name="submit" href="updateRequest">Actualizar</button>
 						</form>
                         <!-- END Filters	 FORM -->
-						</div>					
-				</div>			
-			</div>								
+						</div>
+				</div>
+			</div>
         </section>
-		
+
         <!-- End Options Section -->
 
         <!-- End CONTENT ------------------------------------------------------------------------------>
 
-{% endblock %}        
+		<!-- JS -->
+		<script src="../static/js/updateInputs.js" type="text/javascript"></script>
+		<script src="../static/js/categoriesjs.js" type="text/javascript"></script>
+{% endblock %}

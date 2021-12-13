@@ -1,0 +1,19 @@
+id,name,price,unit,quantity,category ,visibilidad
+1,Papaya,5,kg,3,Fruta,TRUE
+2,Melón,2,kg,3,Fruta,TRUE
+3,Fresa,3,kg,3,Fruta,TRUE
+4,Plátano,7,kg,3,Fruta,TRUE
+5,Frambuesa ,9,kg,5,Fruta,TRUE
+6,Piña,8,kg,5,Fruta,TRUE
+7,Sandía ,10,kg,5,Fruta,TRUE
+8,Manzana,4,kg,2,Fruta,TRUE
+9,Pera,8,kg,2,Fruta,TRUE
+10,Uvas,2,kg,2,Fruta,TRUE
+11,Apio ,5,kg,5,Verdura,TRUE
+12,Lechuga,6,kg,3,Verdura ,TRUE
+13,Brocoli,2,kg,6,Verdura,TRUE
+14,Col ,4,kg,7,Verdura,TRUE
+15,Zanahoria,5,kg,8,Verdura,TRUE
+16,Lenteja,6,kg,21,Legumbre,TRUE
+17,Frejoles,12,kg,23,Legumbre,TRUE
+18,Pallar,3,kg,26,Legumbre,TRUE

@@ -1,0 +1,61 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+
+        <!-- CONTENT --------------------------------------------------------------------------------->
+		<!-- Intro Section -->
+        <section class="inner-intro dark-bg overlay-dark">
+            <div class="container">
+                <div class="row title">
+                    <h2 class="h2">Catálogo {{startupName}}</h2>
+					<p>Bienvenido </p>
+					<div class="spacer-15"></div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <!-- End Intro Section -->
+        <!-- Options Section -->
+        <section class="ptb-60 ptb-sm-30">
+            <div class="container">
+               <div class="row container-masonry nf-col-3">
+                {% for supply in supplies %}
+                    <div class="nf-item design spacing">
+                        <div class="item-box">
+                            <a class="cbox-gallary1" href="../static/img/portfolio/34.jpg" title="{{supply.name}}">
+                                <img alt="{{supply.name}} image"
+                                {% if os.path.exists("./static/productsImages/{id}.jpg".format(id=supply.id)) %}
+                                src="../static/productsImages/{{supply.id}}.jpg"
+                                {% else %}
+                                src="../static/productsImages/{{supply.id}}.png"
+                                {% endif %}
+                                class="item-container">
+                                <div class="item-mask">
+                                    <div class="item-caption">
+                                        <h5 class="white">{{supply.name}}</h5>
+                                        <p class="white">{{supply.category}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+				<!-- Pagination Nav -->
+                <!-- <div class="pagination-nav mt-60 mt-xs-30">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                    </ul>
+                </div> -->
+                <!-- End Pagination Nav -->
+
+            </div>
+        </section>
+        <!-- End Work Detail Section -->
+        <!-- End CONTENT ------------------------------------------------------------------------------>
+
+{% endblock %}
