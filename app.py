@@ -8,7 +8,7 @@ from utils import *
 import plotly.express as px
 # from dash_application import create_dash_application # Llamar a la función que crea la página dash
 from dash.dependencies import Input, Output
-
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -24,8 +24,7 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
-
-dash_app,data_frame = create_dash_application(app,engine)
+dash_app = create_dash_application(app,engine)
 
 @app.route('/')
 def index():    
@@ -289,6 +288,8 @@ def fillForm():
     Input('category-supply','value')
 )
 def update_graph(category_supply):
+    # global data_frame
+    data_frame = pd.read_sql_query('select * from "supply"', con=engine)
     if category_supply == 'price': 
         fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group", 
                 labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})

@@ -9,6 +9,7 @@ import os
 
 # Create dash app
 def create_dash_application(flask_app,engine):
+    # global data_frame 
     # Crear la conexión entre las dos libreríás 
     # Indicar las configuraciones: 
     # - Necesita correr en un server de flask
@@ -18,10 +19,10 @@ def create_dash_application(flask_app,engine):
 
     dash_app.layout = html.Div(
         children=[
-        build_page(data_frame)
+        build_page(engine)
     ],style={'marginBottom': 0, 'marginTop': 0})
 
-    return dash_app,data_frame
+    return dash_app#,data_frame
 
 def build_preloader():
     return html.Section(
@@ -137,15 +138,6 @@ def build_dashboardtitle():
 def build_clearfix():
     return html.Div(className="clearfix")
 
-def build_graphics(data_frame): 
-    fig_pie = build_pie(data_frame)
-    return html.Div(id="fullpage",
-        children=[
-            dcc.Graph(
-                id='tabla-supply'),
-            dcc.Graph(id='pie-supply',figure=fig_pie)
-                
-        ])
 
 def build_footer(): 
     return html.Footer(
@@ -196,15 +188,52 @@ def build_footer():
 def build_scroll():
     return html.A([html.I(className="fa fa-angle-double-up")],className="scroll-top")
 
-def build_page(data_frame):
+def build_page(engine):
     return html.Div(children=[
         #build_search_overlay(),
         build_wrapper(),
         build_dashboardtitle(),
         build_clearfix(),
-        build_dash_graphics(data_frame),
+        build_dash_graphics(engine),
         build_footer(),
         build_scroll()],style={'overflowY': 'scroll', 'height': '100vh'})#style={'overflowY': 'scroll', 'height': 720})
+
+def build_dropdown_supply():
+    return html.Div([
+        dcc.Dropdown(
+            id = 'category-supply',
+            options = [{'label':'Precio','value':'price'},{'label':'Cantidad','value':'quantity'}],
+            value = "price"
+        )
+    ],style={'padding-top':'50px'})
+
+def build_dash_graphics(engine): 
+    data_frame = pd.read_sql_query('select * from "supply"', con=engine)
+    return html.Div([
+        build_dropdown_supply(),
+        build_graphics(data_frame),
+        build_table(data_frame)
+    ],style={'padding-left':'8%','padding-right':'8%','padding-top':'50px '})
+
+def build_pie(data_frame):
+    data_frame_edit = data_frame.groupby(['category']).sum()
+    categoria_frutas = data_frame_edit.index.values
+    # print(data_frame_edit)
+    # print(data_frame_edit.index.values)
+    fig_pie = px.pie(data_frame_edit,names=categoria_frutas,values='quantity')    
+    #dcc.Graph(id="pie-chart", fig=fig_pie)
+    return fig_pie
+
+def build_graphics(data_frame): 
+    # data_frame = pd.read_sql_query('select * from "supply"', con=engine)
+    fig_pie = build_pie(data_frame)
+    return html.Div(id="fullpage",
+        children=[
+            dcc.Graph(
+                id='tabla-supply'),
+            dcc.Graph(id='pie-supply',figure=fig_pie)
+                
+        ])
 
 def build_table(dataframe,max_rows = 4):
     return html.Table([
@@ -217,26 +246,3 @@ def build_table(dataframe,max_rows = 4):
             ]) for i in range(min(len(dataframe), max_rows))
         ])
     ], className="table")
-
-def build_dropdown_supply():
-    return html.Div([
-        dcc.Dropdown(
-            id = 'category-supply',
-            options = [{'label':'Precio','value':'price'},{'label':'Cantidad','value':'quantity'}],
-            value = "price"
-        )
-    ],style={'padding-top':'50px'})
-
-def build_dash_graphics(data_frame): 
-    return html.Div([
-        build_dropdown_supply(),
-        build_graphics(data_frame),
-        build_table(data_frame)
-    ],style={'padding-left':'8%','padding-right':'8%','padding-top':'50px '})
-
-def build_pie(data_frame):
-    data_frame_edit = data_frame.groupby('category')['quantity'].count()
-    # print(data_frame_edit)
-    fig_pie = px.pie(data_frame_edit,values='quantity')    
-    #dcc.Graph(id="pie-chart", fig=fig_pie)
-    return fig_pie
