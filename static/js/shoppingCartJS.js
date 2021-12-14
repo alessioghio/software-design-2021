@@ -76,8 +76,8 @@ function updateCartInfo(response){
                         </div>`
         removeForm.insertAdjacentHTML("afterbegin",newProduct);
         accordion();
-        updateTotalPrice(response);
     }
+    updateTotalPrice(response);
 }
 
 function removeFromCart(supply_id){
