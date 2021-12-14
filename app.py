@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 import os
+from datetime import datetime
 from models import *
 from utils import *
 import plotly.express as px
@@ -25,7 +26,7 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
-dash_app = create_dash_application(app,engine)
+dash_app,data_frame = create_dash_application(app,engine)
 
 @app.route('/')
 def index():
@@ -34,14 +35,20 @@ def index():
         sessionType = "adminSession"
     elif "client" in session:
         sessionType = "clientSession"
-    return render_template('index.html', sessionType=sessionType)
+    # Get available startups
+    db_session = db.getSession(engine)
+    startups = db_session.query(Adminurl).all()
+    return render_template('index.html', sessionType=sessionType, startups=startups)
 
 @app.route('/login')
 def login():
     if "admin" in session or "client" in session:
         return redirect(url_for('user'))
     else:
-        return render_template('login.html')
+        # Get available startups
+        db_session = db.getSession(engine)
+        startups = db_session.query(Adminurl).all()
+        return render_template('login.html', startups=startups)
 
 @app.route('/registerAdmin')
 def registerAdmin():
@@ -55,22 +62,9 @@ def registerClient():
 def success():
     return render_template('successDummy.html')
 
-# ----- DEBUG ------ #
-
-@app.route('/home-pizza')
-def home():
-    return render_template('home-pizza.html')
-
-# ------------------ #
-
 @app.route('/error')
 def error():
     return render_template('errorDummy.html')
-
-@app.route('/user/catalogue')
-def catalogue():
-    sessionType = "clientSession"
-    return render_template('catalogue.html', sessionType=sessionType)
 
 @app.route('/user/sales')
 def sales():
@@ -136,9 +130,6 @@ def newStockRequest():
         # Get previous amount
         supplyQuery = db_session.query(Supply)
         supply = supplyQuery.filter(Supply.name == name).first()
-        print(supply.name)
-        print(supply.quantity)
-        print(supply.id)
         prevQuantity = supply.quantity if supply.quantity is not None else 0
         # update
         quantity += prevQuantity
@@ -146,7 +137,6 @@ def newStockRequest():
             filter(Supply.id == supply.id).\
             filter(Supply.admin_id == session["admin"]).\
             update({"quantity": quantity})
-
         db_session.commit()
         flash('Stock agregado.')
         return redirect(url_for('newStock'))
@@ -163,15 +153,18 @@ def newRecipe():
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, id_supply, price, category, description = getRecipeData()
+        name, supply_id_list, price, category, visibility, description, image = getNewRecipeData()
         if nameExists(db_session, Recipe, name):
             flash('Receta existente.')
             return redirect(url_for('newRecipe'))
         else:
             # Insert data on db
-            data = Recipe(name=name, price=price, category=category, description=description)
+            data = Recipe(name=name, price=price, category=category, visibility=visibility, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
+            # Save image
+            imagePath = getProductImagePath1(db_session, image, name)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
             flash('Receta creada.')
             return redirect(url_for('newRecipe'))
 
@@ -179,7 +172,7 @@ def newRecipeRequest():
 def registerRequestAdmin():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, lastName, email, username, password = getRegisterData()
+        name, lastName, email, username, password, startup = getRegisterData()
         clientUserExists = userExists(db_session, Client, username, email)
         adminUserExists = userExists(db_session, Administrator, username, email)
         if clientUserExists or adminUserExists:
@@ -187,9 +180,16 @@ def registerRequestAdmin():
             return redirect(url_for('registerAdmin'))
         if not(adminUserExists):
             userType="Admin"
-            data = Administrator(name=name, lastName=lastName, email=email,
+            adminClass = Administrator(name=name, lastName=lastName, email=email,
                                 username=username, password=password, userType=userType)
-            db_session.add(data)
+            db_session.add(adminClass)
+            db_session.commit()
+            # Get new admin id
+            adminQuery = db_session.query(Administrator)
+            admin = adminQuery.filter(Administrator.username == username).first()
+            print(f"ADMIN ID: {admin.id}")
+            adminStartup = Adminurl(name=startup, admin_id=admin.id)
+            db_session.add(adminStartup)
             db_session.commit()
             return redirect(url_for('login'))
 
@@ -197,7 +197,7 @@ def registerRequestAdmin():
 def registerRequestClient():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, lastName, email, username, password = getRegisterData()
+        name, lastName, email, username, password, _ = getRegisterData()
         clientUserExists = userExists(db_session, Client, username, email)
         adminUserExists = userExists(db_session, Administrator, username, email)
         if clientUserExists or adminUserExists:
@@ -240,15 +240,19 @@ def adminProfile():
 @app.route('/user/client')
 def clientProfile():
     sessionType = "clientSession"
-    return render_template('profile-pizza.html', sessionType=sessionType)
+    # Get available startups
+    db_session = db.getSession(engine)
+    startups = db_session.query(Adminurl).all()
+    # Get cart items if any
+    products, totalPrice = getShoppingCartItems(db_session)
+    return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
+                            products=products, totalPrice=totalPrice)
 
 @app.route('/user')
 def user():
     if "admin" in session:
-        # username = session["admin"]
         return redirect(url_for('adminProfile'))
     elif "client" in session:
-        # username = session["client"]
         return redirect(url_for('clientProfile'))
     else:
         return redirect(url_for('error'))
@@ -328,6 +332,100 @@ def fillForm():
                 "unit": supply.unit,
                 "visibility": supply.visibility,
                 "description": supply.description}
+
+        return jsonify(data)
+
+@app.route('/fillClientData', methods=['POST'])
+def fillClientData():
+    if request.method == "POST":
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        client = clientQuery.filter(Client.id == session['client']).first()
+        data = {"name": client.name,
+                "lastName": client.lastName,
+                "email": client.email,
+                "username": client.username}
+        return jsonify(data)
+
+@app.route('/startup/<name>')
+def startup(name):
+    db_session = db.getSession(engine)
+    startupQuery = db_session.query(Adminurl)
+    startup = startupQuery.filter(Adminurl.name == name).first()
+    # Get visible stock
+    supplies = getAdminSupplies(db_session, startup.admin_id)
+    for supply in supplies:
+        if not(supply.visibility):
+            supplies.remove(supply)
+    # Get available startups
+    startups = db_session.query(Adminurl).all()
+    # Get cart items if any
+    products, totalPrice = getShoppingCartItems(db_session)
+    if "admin" in session:
+        sessionType = "adminSession"
+    elif "client" in session:
+        sessionType = "clientSession"
+    else:
+        sessionType = "None"
+    return render_template('home-client.html', startups=startups, startupName=startup.name, 
+                            supplies=supplies, os=os, sessionType=sessionType, products=products,
+                            totalPrice=totalPrice)
+
+@app.route('/addToShoppingCart', methods=['POST'])
+def addToShoppingCart():
+    if request.method == "POST":
+        db_session = db.getSession(engine)
+        # Get target supply
+        supply_id = request.form.get("supply_id")
+        supply_id = int(supply_id)
+        # Add to shopping cart
+        quantity = request.form.get("quantity")
+        quantity = int(quantity)
+        # If supply already exists on table, update information
+        cartQuery = db_session.query(ShoppingCart).\
+            filter(ShoppingCart.supply_id == supply_id).\
+            filter(ShoppingCart.client_id == session["client"]) 
+        if cartQuery.first() is not None:
+            cart = cartQuery.first()
+            cartQuery.update({"quantity": cart.quantity+quantity,
+                              "datetime": datetime.now()})
+            db_session.commit()
+            _, totalPrice = getShoppingCartItems(db_session)
+            data = {"datetime": cart.datetime,
+                "client_id": cart.client_id,
+                "supply_id": cart.supply_id,
+                "quantity": cart.quantity,
+                "totalPrice": totalPrice}
+        else: # create row in cart table, otherwise
+            cart = ShoppingCart(datetime=datetime.now(), client_id=session["client"],
+                                supply_id=supply_id, quantity=quantity)
+            db_session.add(cart)
+            db_session.commit()
+            products, totalPrice = getShoppingCartItems(db_session)
+            product = None
+            for p in products:
+                if p["supply_id"] == supply_id:
+                    product = p
+            data = {"name": product["name"],
+                    "supply_id": product["supply_id"],
+                    "quantity": product["quantity"],
+                    "unit": product["unit"],
+                    "price": product["price"],
+                    "totalPrice": totalPrice}
+        return jsonify(data)
+
+@app.route('/removeFromCart', methods=['POST'])
+def removeFromCart():
+    if request.method == "POST":
+        request.get_data()
+        supply_id = request.data.decode('UTF-8') # Javascript return binary string
+        db_session = db.getSession(engine)
+        cartQuery = db_session.query(ShoppingCart)
+        cartQuery.filter(ShoppingCart.supply_id == supply_id).delete()
+        db_session.commit()
+        _, totalPrice = getShoppingCartItems(db_session)
+        data = {"supply_id": supply_id,
+                "totalPrice": totalPrice}
         return jsonify(data)
 
 @dash_app.callback(
@@ -342,7 +440,6 @@ def update_graph(category_supply):
         fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group",
             labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
     return fig
-
 
 if __name__ == '__main__':
     app.run()

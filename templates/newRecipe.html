@@ -28,23 +28,23 @@
 
                     <div class="filter-form">
                         <!-- Filters FORM -->
-                   <form class="filters-form" id="filters" role="form" method="POST" action="/newRecipeRequest">
-                       <div class="accordion mb-15">
-                           <div class="accordion-section">
-                               <h6 class="accordion-title black">Elegir insumos</h6>
-                               <div class="accordion-content">
-                                   <div id="interlineado" class="space form-field-wrapper">
+                    <form class="filters-form" id="filters" role="form" method="POST" action="/newRecipeRequest">
+                        <div class="accordion mb-15">
+                            <div class="accordion-section">
+                                <h6 class="accordion-title black">Elegir insumos</h6>
+                                <div class="accordion-content">
+                                    <div id="interlineado" class="space form-field-wrapper">
                                        {% for supply in supplies %}
                                             <span><input class="input-sm" id="category" type="checkbox" name="supply_id" value="{{supply.id}}">{{supply.name}}</span>
                                             <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
                                         {% endfor %}
-                                   </div>
-                               </div>
-                           </div>
-                           </div>
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-field-wrapper">
-                            <input class="input-sm form-full" id="unit" type="text" name="quantity" placeholder="Cantidad" required>
+                            <input class="input-sm form-full" id="unit" type="text" name="unit" placeholder="Cantidad" required>
                         </div>
 
                        <div class="form-field-wrapper">
@@ -70,12 +70,9 @@
                        </div>
                        <div class="form-field-wrapper">
                         <p> Añadir imagen </p>
-                        <form class="input-sm" action="/action_page.php">
-                            <input class="form-full" id="myFile" type="file" name="filename" placeholder="Añadir imagen">
-                          </form>
-                        </div>
+                       </div>
 
-                       <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar</button>
+                       <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="newRecipeRequest">Guardar</button>
                    </form>
                    <!-- END Filters	 FORM -->
                    </div>

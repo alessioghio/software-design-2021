@@ -14,8 +14,7 @@ class Administrator(Manager.Base):
     userType = Column(VARCHAR(6), nullable=False)
 
     def __repr__(self):
-        return "<Administrator(name=%s, lastName=%s, email=%s, username=%s, password=%s, userType=%s)>".format(
-            self.name, self.lastName, self.email, self.username, self.password, self.userType)
+        return f"<Administrator(name={self.name}, lastName={self.lastName}, email={self.email}, username={self.username}, password={self.password}, userType={self.userType})>"
 
 class Client(Manager.Base):
     __tablename__ = 'client'
@@ -29,8 +28,7 @@ class Client(Manager.Base):
     shoppingCart_id = Column(VARCHAR(100), ForeignKey("shoppingCart.id"), unique=True)
 
     def __repr__(self):
-        return "<Client(name=%s, lastName=%s, email=%s, username=%s, password=%s, userType=%s, id_shoppingCart=%s)>".format(
-            self.name, self.lastName, self.email, self.username, self.password, self.userType, self.shoppingCart_id)
+        return f"<Administrator(name={self.name}, lastName={self.lastName}, email={self.email}, username={self.username}, password={self.password}, userType={self.userType}), id_shoppingCart={self.shoppingCart_id})>"
 
 class ShoppingCart(Manager.Base):
     __tablename__ = 'shoppingCart'
@@ -38,10 +36,10 @@ class ShoppingCart(Manager.Base):
     datetime = Column(DateTime, nullable=False)
     client_id = Column(VARCHAR(100), ForeignKey("client.id"), unique=True)
     supply_id = Column(VARCHAR(100), ForeignKey("supply.id"))
+    quantity = Column(Integer)
 
     def __repr__(self):
-        return "<ShoppingCart(datetime=%s, client_id=%s, supply_id=%s)>".format(
-            self.datetime, self.client_id, self.supply_id)
+        return f"<ShoppingCart(datetime={self.datetime}, client_id={self.client_id}, supply_id={self.supply_id}, quantity={self.quantity})>"
 
 class Supply(Manager.Base):
     __tablename__ = 'supply'
@@ -56,8 +54,7 @@ class Supply(Manager.Base):
     admin_id = Column(BigInteger, ForeignKey("administrator.id"), nullable=False)
 
     def __repr__(self):
-        return "<Supply(name=%s, price=%s, quantity=%s, category=%s, visibility=%s)>".format(
-            self.name, self.price, self.quantity, self.category, self.visibility)
+        return f"<Supply(name={self.name}, price={self.price}, quantity={self.quantity}, category={self.category}, visibility={self.visibility})>"
 
 class Recipe(Manager.Base):
     __tablename__ = 'recipe'
@@ -70,8 +67,7 @@ class Recipe(Manager.Base):
     admin_id = Column(BigInteger, ForeignKey("administrator.id"), nullable=False)
 
     def __repr__(self):
-        return "<Recipe(name=%s, quantity=%s, supply_id=%s)>".format(
-            self.name, self.quantity, self.supply_id)
+        return f"<Recipe(name={self.name}, quantity={self.quantity}, supply_id={self.supply_id})>"
 
 class Transaction(Manager.Base):
     __tablename__ = 'transaction'
@@ -85,15 +81,14 @@ class Transaction(Manager.Base):
     shoppingCart_id = Column(BigInteger, ForeignKey("shoppingCart_id"))
 
     def __repr__(self):
-        return "<Transaction(datetime=%s, unit=%s, quantity=%s, supply_id=%s, recipe_id=%s, admin_id=%s)>".format(
-            self.datetime, self.unit, self.quantity, self.supply_id, self.recipe_id, self.admin_id)
+        return f"<Transaction(datetime={self.datetime}, unit={self.unit}, quantity={self.quantity}, supply_id={self.supply_id}, recipe_id={self.recipe_id}, admin_id={self.admin_id})>"
 
-class AdminURL(Manager.Base):
-    __tablename__ = 'adminURL'
+class Adminurl(Manager.Base):
+    __tablename__ = 'adminurl'
     id = Column(BigInteger, primary_key=True, nullable=False)
     name = Column(VARCHAR(100))
     url = Column(VARCHAR(200))
+    admin_id = Column(BigInteger, ForeignKey("administrator.id"))
 
     def __repr__(self):
-        return "<AdminURL(name=%s, url=%s)>".format(
-            self.name, self.url)
+        return f"<Adminurl(name={self.name}, url={self.url}, admin_id={self.admin_id})>"
