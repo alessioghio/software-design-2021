@@ -3,7 +3,6 @@ return new Promise((resolve, reject) => {
     $.ajax({
         url: "/fillClientData",
         type: 'POST',
-        // data: JSON.stringify(this.value),
         success: function (data) {
             resolve(data)
         },

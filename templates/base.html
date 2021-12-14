@@ -136,7 +136,7 @@
                                 <h5 class="white">Carrito</h5>
                                 <div class="filter-form">
                                 <!-- Cart List -->
-                                <form class="filters-form" id="filters" role="form">
+                                <form id="removeCartForm" class="filters-form" id="filters" role="form">
                                     <!-- Products List -->
                                     {% for product in products %}
                                     <div class="accordion mb-15">
@@ -144,17 +144,16 @@
                                             <h6 class="accordion-title white text-left">{{product["name"]}}</h6>
                                             <div class="accordion-content">
                                                 <div class="form-field-wrapper">
-                                                <p hidden>{{product["supply_id"]}}</p>
-                                                <p class="white text-left">Cantidad: {{product["quantity"]}} {{product["unit"]}}</p>
-                                                <p class="white text-left">Precio: S/ {{product["price"]}}</p>
-                                                <button class="btn btn-md btn-white" type="submit" id="form-submit" name="submit">Quitar</button>
+                                                    <p hidden>{{product["supply_id"]}}</p>
+                                                    <p class="white text-left">Cantidad: {{product["quantity"]}} {{product["unit"]}}</p>
+                                                    <p class="white text-left">Precio: S/ {{product["price"]}}</p>
+                                                    <button class="btn btn-md btn-white"  type="submit" onclick="removeFromCart({{product['supply_id']}})">Quitar</button>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
                                     </div>
                                     {% endfor %}
                                     <!-- End Products List -->
-
                                 <h5 id="totalPrice" class="white">TOTAL: S/ {{totalPrice}}</h5>
 
                                 <button class="btn btn-md btn-white form-full" type="submit" id="form-submit" name="submit">Comprar</button>

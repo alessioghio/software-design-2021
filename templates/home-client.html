@@ -34,7 +34,7 @@
                                     <h5 class="white">{{supply.name}}</h5>
                                     <p class="white">{{supply.category}}</p>
                                     <!-- Botón añadir al carrito-->
-                                    <form class="contact-form" action="/addToShoppingCart" role="form" method="POST">
+                                    <form id="addCartForm" class="contact-form" action="/addToShoppingCart" role="form" method="POST">
                                         <div class="form-field-wrapper">
                                             <input id="supply_id" type="hidden" name="supplyId" value="{{supply.id}}">
                                             <input id="cartQuantity" class="input-box form-full" type="number" name="cartQuantity" placeholder="Cant." required>

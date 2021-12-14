@@ -389,19 +389,44 @@ def addToShoppingCart():
             cart = cartQuery.first()
             cartQuery.update({"quantity": cart.quantity+quantity,
                               "datetime": datetime.now()})
-        else: # create row in cart table, otherwise
-            cart = ShoppingCart(datetime=datetime.now(), client_id=session["client"],
-                                supply_id=supply_id, quantity=quantity)
-            db_session.add(cart)
-        db_session.commit()
-        _, totalPrice = getShoppingCartItems(db_session)
-        data = {"datetime": cart.datetime,
+            db_session.commit()
+            _, totalPrice = getShoppingCartItems(db_session)
+            data = {"datetime": cart.datetime,
                 "client_id": cart.client_id,
                 "supply_id": cart.supply_id,
                 "quantity": cart.quantity,
                 "totalPrice": totalPrice}
+        else: # create row in cart table, otherwise
+            cart = ShoppingCart(datetime=datetime.now(), client_id=session["client"],
+                                supply_id=supply_id, quantity=quantity)
+            db_session.add(cart)
+            db_session.commit()
+            products, totalPrice = getShoppingCartItems(db_session)
+            product = None
+            for p in products:
+                if p["supply_id"] == supply_id:
+                    product = p
+            data = {"name": product["name"],
+                    "supply_id": product["supply_id"],
+                    "quantity": product["quantity"],
+                    "unit": product["unit"],
+                    "price": product["price"],
+                    "totalPrice": totalPrice}
         return jsonify(data)
-    
+
+@app.route('/removeFromCart', methods=['POST'])
+def removeFromCart():
+    if request.method == "POST":
+        request.get_data()
+        supply_id = request.data.decode('UTF-8') # Javascript return binary string
+        db_session = db.getSession(engine)
+        cartQuery = db_session.query(ShoppingCart)
+        cartQuery.filter(ShoppingCart.supply_id == supply_id).delete()
+        db_session.commit()
+        _, totalPrice = getShoppingCartItems(db_session)
+        data = {"supply_id": supply_id,
+                "totalPrice": totalPrice}
+        return jsonify(data)
 
 @dash_app.callback(
     Output('tabla-supply','figure'),
