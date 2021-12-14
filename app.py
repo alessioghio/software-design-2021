@@ -332,6 +332,7 @@ def fillForm():
                 "unit": supply.unit,
                 "visibility": supply.visibility,
                 "description": supply.description}
+
         return jsonify(data)
 
 @app.route('/fillClientData', methods=['POST'])

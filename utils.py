@@ -126,7 +126,6 @@ def getShoppingCartItems(db_session):
     totalPrice = 0
     products = []
     for cartProduct in cart:
-        print(cartProduct.quantity)
         dictElement = {}
         supplyProduct = db_session.query(Supply).filter(Supply.id == cartProduct.supply_id).first()
         dictElement["name"] = supplyProduct.name
