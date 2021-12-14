@@ -394,10 +394,12 @@ def addToShoppingCart():
                                 supply_id=supply_id, quantity=quantity)
             db_session.add(cart)
         db_session.commit()
+        _, totalPrice = getShoppingCartItems(db_session)
         data = {"datetime": cart.datetime,
                 "client_id": cart.client_id,
                 "supply_id": cart.supply_id,
-                "quantity": cart.quantity}
+                "quantity": cart.quantity,
+                "totalPrice": totalPrice}
         return jsonify(data)
     
 

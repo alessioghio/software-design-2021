@@ -20,6 +20,26 @@ function buttonMessage(response){
     }
 }
 
+function updateCartInfo(response){
+    var elements = document.getElementsByClassName("accordion-section");
+    for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        var divs = element.children;
+        var values = divs[1].children[0].children;
+        if(values[0].innerText == String(response.supply_id)){
+            var completeString = values[1].innerText.split(' ');
+            completeString[1] = String(response.quantity);
+            var newText = completeString.join(" ");
+            values[1].innerText = newText;
+        }
+    }
+    var totalPrice = document.getElementById("totalPrice")
+    var completeString = totalPrice.innerText.split(' ');
+    completeString[2] = String(response.totalPrice);
+    var newText = completeString.join(" ");
+    totalPrice.innerText = newText;
+}
+
 $('form').on('submit', function(e){
 	// Stop the form submitting
   	e.preventDefault();
@@ -42,8 +62,6 @@ $('form').on('submit', function(e){
     })
     p.then((response) => {
         buttonMessage(response);
-        // update cart fron-end information when new data is added to backend
-        
-        // console.log(data);
+        updateCartInfo(response);
     })
 });

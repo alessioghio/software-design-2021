@@ -135,6 +135,7 @@ def getShoppingCartItems(db_session):
         else:
             dictElement["unit"] = "UN"
         dictElement["price"] = supplyProduct.price
+        dictElement["supply_id"] = supplyProduct.id
         totalPrice += dictElement["price"]*dictElement["quantity"]
         products.append(dictElement)
     return products, totalPrice
