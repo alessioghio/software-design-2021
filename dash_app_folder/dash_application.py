@@ -4,6 +4,7 @@ from dash import html
 import plotly.express as px
 import pandas as pd
 import os
+from dash import dash_table
 
 
 
@@ -207,42 +208,49 @@ def build_dropdown_supply():
         )
     ],style={'padding-top':'50px'})
 
+def build_dropdown_tables():
+    return html.Div([
+        dcc.Dropdown(
+            id = 'table-selection',
+            options = [{'label':"Clientes",'value':"client"},{'label':'Recetas','value':"recipe"},
+                       {'label':'Insumos','value':"supply"},{'label':'Transacciones','value':"transaction"}],
+            value = 'supply'
+        )
+    ],style={'padding-top':'50px'})
+
 def build_dash_graphics(engine): 
     data_frame = pd.read_sql_query('select * from "supply"', con=engine)
     return html.Div([
+        html.Div(className="row title",children=[html.H2(["Insumos"],className="h3")],style={"padding-top":"3em"}),
+        # Show Graphics from Supply
         build_dropdown_supply(),
         build_graphics(data_frame),
-        build_table(data_frame)
-    ],style={'padding-left':'8%','padding-right':'8%','padding-top':'50px '})
+        # Show Graphics from Recipe
+        html.Div(className="row title",children=[html.H2(["Recetas"],className="h3")],style={"padding-top":"3em"}),
+
+        
+        # Show Graphics from Client/Transactions
+        html.Div(className="row title",children=[html.H2(["Clientes/Ventas"],className="h3")],style={"padding-top":"3em"}),
+
+        # Show Tables from the Database
+        html.Div(className="row title",children=[html.H2(["Bases de Datos"],className="h3")],style={"padding-top":"3em"}),
+        build_dropdown_tables(),
+        dcc.Store(id='valor-medio'),
+        build_table(engine)], className= "container p-4")
 
 def build_pie(data_frame):
     data_frame_edit = data_frame.groupby(['category']).sum()
     categoria_frutas = data_frame_edit.index.values
-    # print(data_frame_edit)
-    # print(data_frame_edit.index.values)
     fig_pie = px.pie(data_frame_edit,names=categoria_frutas,values='quantity')    
-    #dcc.Graph(id="pie-chart", fig=fig_pie)
     return fig_pie
 
 def build_graphics(data_frame): 
-    # data_frame = pd.read_sql_query('select * from "supply"', con=engine)
-    fig_pie = build_pie(data_frame)
+
     return html.Div(id="fullpage",
         children=[
-            dcc.Graph(
-                id='tabla-supply'),
-            dcc.Graph(id='pie-supply',figure=fig_pie)
-                
+            html.Div([dcc.Graph(id='tabla-supply')], style={'width': '63%', 'display': 'inline-block', 'padding': '0 20'}),
+            html.Div([dcc.Graph(id='pie-supply')], style={'display': 'inline-block', 'width': '35%'})               
         ])
 
-def build_table(dataframe,max_rows = 4):
-    return html.Table([
-        html.Thead(
-            html.Tr([html.Th(col) for col in dataframe.columns])
-        ),
-        html.Tbody([
-            html.Tr([
-                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
-            ]) for i in range(min(len(dataframe), max_rows))
-        ])
-    ], className="table")
+def build_table(engine):
+    return html.Div(id='table-div',className='table-responsive')

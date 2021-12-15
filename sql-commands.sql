@@ -121,13 +121,4 @@ CREATE TABLE IF NOT EXISTS public.transaction
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-<<<<<<< HEAD
-)
-
-
-
-
-
-=======
 );
->>>>>>> main

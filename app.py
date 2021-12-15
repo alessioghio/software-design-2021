@@ -1,6 +1,8 @@
+from math import e
 import dash
 from sqlalchemy import and_
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from sqlalchemy.sql.expression import column
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 import os
@@ -11,7 +13,7 @@ import plotly.express as px
 # from dash_application import create_dash_application # Llamar a la función que crea la página dash
 from dash.dependencies import Input, Output
 import pandas as pd
-
+from dash import html
 app = Flask(__name__)
 
 ENV = 'dev'
@@ -26,7 +28,7 @@ else:
 db = Manager()
 engine = db.createEngine(ENV)
 
-dash_app,data_frame = create_dash_application(app,engine)
+dash_app = create_dash_application(app,engine)
 
 @app.route('/')
 def index():
@@ -433,13 +435,64 @@ def removeFromCart():
     Input('category-supply','value')
 )
 def update_graph(category_supply):
+    data_frame = pd.read_sql_query('select * from supply', con=engine)
     if category_supply == 'price':
         fig = px.bar(data_frame, x="name", y="price", color="category", barmode="group",
-                labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
+                labels={"name":"Productos","price":"Precio (S/.)","category":"Categoría"})
     elif category_supply == 'quantity':
         fig = px.bar(data_frame, x="name", y="quantity", color="category", barmode="group",
             labels={"name":"Productos","quantity":"Cantidad","category":"Categoría"})
     return fig
+
+@dash_app.callback(
+    Output('pie-supply','figure'),
+    Input('category-supply','value')
+)
+def update_pie(category_supply):
+    data_frame = pd.read_sql_query('select * from supply', con=engine)
+    data_frame_edit = data_frame.groupby(['category']).sum()
+    categoria_frutas = data_frame_edit.index.values
+    fig_pie = px.pie(data_frame_edit,names=categoria_frutas,values=category_supply) 
+    return fig_pie
+
+
+@dash_app.callback(
+    Output('valor-medio','data'),
+    Input('table-selection','value')
+)
+def update_tables(elements_table):
+    str_df = "select * from " + elements_table
+    data_frame = pd.read_sql_query(str_df,con=engine)
+    print(elements_table)
+    if elements_table == 'supply':
+        data_frame = data_frame.loc[:,data_frame.columns!='description']
+        data_frame = data_frame.loc[:,data_frame.columns!='visibility']
+    elif elements_table == 'client':
+        data_frame = data_frame.loc[:,data_frame.columns!='password']
+        data_frame = data_frame.loc[:,data_frame.columns!='username']
+    elif elements_table == 'recipe': 
+        data_frame = data_frame.loc[:,data_frame.columns!='description']
+
+    df_json = data_frame.to_json(date_format='iso',orient='split')
+
+    return df_json
+
+@dash_app.callback(
+    Output('table-div','children'),
+    Input('valor-medio','data')   
+)
+def update_columnstable(data_frame):
+    df_n = pd.read_json(data_frame,orient='split')
+    return html.Table([
+        html.Thead(
+            html.Tr([html.Th(col,className="th-sm") for col in df_n.columns])
+        ),
+        html.Tbody([
+            html.Tr([
+                html.Td(df_n.iloc[i][col]) for col in df_n.columns
+            ]) for i in range(len(df_n))
+        ])
+    ],className='table table-striped')
 
 if __name__ == '__main__':
     app.run()
