@@ -55,8 +55,8 @@ def getNewRecipeData():
     category = request.form["category"]
     visibility = True if request.form.get('visibility') else False
     description = request.form["description"]
-    image = request.files['image']
-    return name, supply_id_list, price, category, visibility, description, image
+    image = request.files["image"]
+    return name, supply_id_list, category, price, visibility, description, image
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
@@ -120,3 +120,21 @@ def getProductImagePath1(db_session, image, name):
     ext = filename.split(".")
     ext = ext[-1]
     return f"{recipe.id}.{ext}"
+
+def getClientData(db_session, idClient):
+    clientQuery = db_session.query(Client)
+    clientData = clientQuery.filter(Client.id == idClient).all()
+    return clientData
+
+def UpdateClientData(db_session, data, idClient):
+    # if password is correct
+    clientQuery = db_session.query(Client)
+    if clientQuery.filter(Client.id == idClient).count() > 0:
+        clientQuery.update({"name": data[0],
+                            "lastName": data[1],
+                            "email": data[2],
+                            "username": data[3] 
+                            })
+        return True
+    else:
+        return False

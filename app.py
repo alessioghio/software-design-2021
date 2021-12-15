@@ -145,19 +145,22 @@ def newRecipe():
     sessionType = "adminSession"
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
+    recipeQuery = db_session.query(Recipe)
     supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
-    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies)
+    rec_categories = recipeQuery.filter(Recipe.admin_id == session["admin"]).all()
+    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies, rec_categories=rec_categories)
 
-@app.route('/newRecipeRequest')
+@app.route('/newRecipeRequest', methods=["POST"])
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, supply_id_list, price, category, visibility, description, image = getNewRecipeData()
+        name, supply_id_list, category, price, visibility, description, image = getNewRecipeData()
         if nameExists(db_session, Recipe, name):
             flash('Receta existente.')
             return redirect(url_for('newRecipe'))
         else:
             # Insert data on db
+            print('IDs de Insumos:', supply_id_list)
             data = Recipe(name=name, price=price, category=category, visibility=visibility, description=description, admin_id=session["admin"])
             db_session.add(data)
             db_session.commit()
@@ -241,8 +244,29 @@ def clientProfile():
     sessionType = "clientSession"
     # Get available startups
     db_session = db.getSession(engine)
+    clientData = getClientData(db_session, session["client"])
+    print(clientData)
     startups = db_session.query(Adminurl).all()
-    return render_template('profile-pizza.html', sessionType=sessionType, startups=startups)
+    return render_template('profile-pizza.html', sessionType=sessionType, startups=startups, clientData = clientData)
+
+@app.route('/user/client/updateDataRequest', methods=["POST"])
+def updateDataRequest():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        name = request.form["name"]
+        lastname = request.form["lastname"]
+        email = request.form["email"]
+        username = request.form["username"]
+        #password = request.form["password"]
+        db_session.query(Client).\
+            filter(Client.id == session["client"]).\
+            update({"name": name,
+                    "lastName": lastname,
+                    "email": email,
+                    "username": username})
+        db_session.commit()
+        flash("Información actualizada.")
+        return redirect(url_for('clientProfile'))
 
 @app.route('/user')
 def user():
