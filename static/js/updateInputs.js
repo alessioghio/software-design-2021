@@ -20,6 +20,16 @@ function updateInputsValues(data){
                     radios[i].checked = true;
                 }
             }
+        } else if(key == "unit"){
+            var radios = document.filterForm.unit;
+            if(!(radios.constructor === RadioNodeList)){
+                radios = [radios];
+            }
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].value == value){
+                    radios[i].checked = true;
+                }
+            }
         }else{
             input[0].value = value;
         }

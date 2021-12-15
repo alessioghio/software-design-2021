@@ -121,20 +121,21 @@ def getProductImagePath1(db_session, image, name):
     ext = ext[-1]
     return f"{recipe.id}.{ext}"
 
-def getClientData(db_session, idClient):
-    clientQuery = db_session.query(Client)
-    clientData = clientQuery.filter(Client.id == idClient).all()
-    return clientData
-
-def UpdateClientData(db_session, data, idClient):
-    # if password is correct
-    clientQuery = db_session.query(Client)
-    if clientQuery.filter(Client.id == idClient).count() > 0:
-        clientQuery.update({"name": data[0],
-                            "lastName": data[1],
-                            "email": data[2],
-                            "username": data[3] 
-                            })
-        return True
-    else:
-        return False
+def getShoppingCartItems(db_session):
+    cart = db_session.query(ShoppingCart).all()
+    totalPrice = 0
+    products = []
+    for cartProduct in cart:
+        dictElement = {}
+        supplyProduct = db_session.query(Supply).filter(Supply.id == cartProduct.supply_id).first()
+        dictElement["name"] = supplyProduct.name
+        dictElement["quantity"] = cartProduct.quantity
+        if supplyProduct.unit == "xkg":
+            dictElement["unit"] = "kg"
+        else:
+            dictElement["unit"] = "UN"
+        dictElement["price"] = supplyProduct.price
+        dictElement["supply_id"] = supplyProduct.id
+        totalPrice += dictElement["price"]*dictElement["quantity"]
+        products.append(dictElement)
+    return products, totalPrice

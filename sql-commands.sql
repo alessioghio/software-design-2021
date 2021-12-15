@@ -48,13 +48,12 @@ CREATE TABLE IF NOT EXISTS public."shoppingCart"
     datetime date NOT NULL,
     client_id bigint,
     supply_id bigint,
+    quantity integer,
     CONSTRAINT "PK_shoppingCart" PRIMARY KEY (id),
-    CONSTRAINT "unique_shoppingCart" UNIQUE (client_id),
     CONSTRAINT supply_id FOREIGN KEY (supply_id)
         REFERENCES public.supply (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-        NOT VALID
 );
 
 CREATE TABLE IF NOT EXISTS public.client

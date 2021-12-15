@@ -36,9 +36,10 @@ class ShoppingCart(Manager.Base):
     datetime = Column(DateTime, nullable=False)
     client_id = Column(VARCHAR(100), ForeignKey("client.id"), unique=True)
     supply_id = Column(VARCHAR(100), ForeignKey("supply.id"))
+    quantity = Column(Integer)
 
     def __repr__(self):
-        return f"<ShoppingCart(datetime={self.datetime}, client_id={self.client_id}, supply_id={self.supply_id})>"
+        return f"<ShoppingCart(datetime={self.datetime}, client_id={self.client_id}, supply_id={self.supply_id}, quantity={self.quantity})>"
 
 class Supply(Manager.Base):
     __tablename__ = 'supply'
