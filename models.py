@@ -73,12 +73,9 @@ class Transaction(Manager.Base):
     __tablename__ = 'transaction'
     id = Column(BigInteger, primary_key=True, nullable=False)
     datetime = Column(Date, nullable=False)
-    unit = Column(VARCHAR(5), nullable=False)
-    quantity = Column(Integer, nullable=False)
-    supply_id = Column(BigInteger, ForeignKey("supply_id"))
-    recipe_id = Column(BigInteger, ForeignKey("recipe_id"))
-    admin_id = Column(BigInteger, ForeignKey("admin_id"))
-    shoppingCart_id = Column(BigInteger, ForeignKey("shoppingCart_id"))
+    price = Column(NUMERIC, nullable=False)
+    admin_id = Column(BigInteger, ForeignKey("administrator.id"))
+    client_id = Column(BigInteger, ForeignKey("client.id"))
 
     def __repr__(self):
         return f"<Transaction(datetime={self.datetime}, unit={self.unit}, quantity={self.quantity}, supply_id={self.supply_id}, recipe_id={self.recipe_id}, admin_id={self.admin_id})>"

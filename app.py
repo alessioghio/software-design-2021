@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 import os
+import time
 from datetime import datetime
 from models import *
 from utils import *
@@ -243,10 +244,12 @@ def clientProfile():
     # Get available startups
     db_session = db.getSession(engine)
     startups = db_session.query(Adminurl).all()
-    # Get cart items if any
+    # Get cart items, if any
     products, totalPrice = getShoppingCartItems(db_session)
+    # Get transactions, if any
+    transactions = db_session.query(Transaction).all()
     return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
-                            products=products, totalPrice=totalPrice)
+                            products=products, totalPrice=totalPrice, transactions=transactions)
 
 @app.route('/user')
 def user():
@@ -353,10 +356,11 @@ def startup(name):
     startupQuery = db_session.query(Adminurl)
     startup = startupQuery.filter(Adminurl.name == name).first()
     # Get visible stock
-    supplies = getAdminSupplies(db_session, startup.admin_id)
-    for supply in supplies:
-        if not(supply.visibility):
-            supplies.remove(supply)
+    allSupplies = getAdminSupplies(db_session, startup.admin_id)
+    supplies = []
+    for supply in allSupplies:
+        if supply.visibility and supply.quantity > 0:
+            supplies.append(supply)
     # Get available startups
     startups = db_session.query(Adminurl).all()
     # Get cart items if any
@@ -427,6 +431,32 @@ def removeFromCart():
         data = {"supply_id": supply_id,
                 "totalPrice": totalPrice}
         return jsonify(data)
+
+@app.route('/buy', methods=['POST'])
+def buy():
+    db_session = db.getSession(engine)
+    dt = datetime.now()
+    if "client" in session:
+        # Get shopping cart ids
+        cartQuery = db_session.query(ShoppingCart)
+        carts = cartQuery.filter(ShoppingCart.client_id == session['client']).all()
+        supplyQuery = db_session.query(Supply)
+        transactionPrice = 0
+        for cart in carts:
+            supply = supplyQuery.\
+                    filter(Supply.id == cart.supply_id).first()
+            transactionPrice += supply.price*cart.quantity
+            newQuantity = supply.quantity - cart.quantity
+            db_session.query(Supply).\
+                filter(Supply.id == cart.supply_id).\
+                update({"quantity": newQuantity})
+            db_session.commit()
+            cartQuery.filter(ShoppingCart.id == cart.id).delete()
+        transaction = Transaction(datetime=dt, client_id=session['client'], price=transactionPrice)
+        db_session.add(transaction)
+        db_session.commit()
+    return redirect(url_for('user'))
+
 
 @dash_app.callback(
     Output('tabla-supply','figure'),

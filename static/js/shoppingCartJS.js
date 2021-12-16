@@ -81,6 +81,7 @@ function updateCartInfo(response){
 }
 
 function removeFromCart(supply_id){
+    allowSubmit = false;
     let p = new Promise((resolve, reject) => {
         $.ajax({
             url: "/removeFromCart",
@@ -109,6 +110,8 @@ function removeFromCart(supply_id){
     })
 }
 
+var allowSubmit = false;
+
 $("[id=addCartForm]").on('submit', function(e){
 	// Stop the form submitting
   	e.preventDefault();
@@ -136,6 +139,14 @@ $("[id=addCartForm]").on('submit', function(e){
 });
 
 $("[id=removeCartForm]").on('submit', function(e){
-	// Stop the form submitting
-  	e.preventDefault();
+    console.log(allowSubmit)
+    if(!allowSubmit){
+        e.preventDefault();
+    }
 });
+
+document.getElementById("buyButton").addEventListener("click", function() {
+    allowSubmit = true;
+});
+
+

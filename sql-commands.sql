@@ -94,30 +94,16 @@ CREATE TABLE IF NOT EXISTS public.transaction
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     datetime date NOT NULL,
-    unit character varying(5) COLLATE pg_catalog."default" NOT NULL,
-    quantity integer NOT NULL,
-    supply_id bigint,
-    recipe_id bigint,
     admin_id bigint,
-    "shoppingCart_id" bigint,
+    client_id bigint,
+    price numeric,
     CONSTRAINT "PK_transactions" PRIMARY KEY (id),
     CONSTRAINT admin_id FOREIGN KEY (admin_id)
         REFERENCES public.administrator (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID,
-    CONSTRAINT recipe_id FOREIGN KEY (recipe_id)
-        REFERENCES public.recipe (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID,
-    CONSTRAINT "shoppingCart_id" FOREIGN KEY ("shoppingCart_id")
-        REFERENCES public."shoppingCart" (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID,
-    CONSTRAINT supply_id FOREIGN KEY (supply_id)
-        REFERENCES public.supply (id) MATCH SIMPLE
+        ON DELETE NO ACTION,
+    CONSTRAINT client_id FOREIGN KEY (client_id)
+        REFERENCES public.client (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
