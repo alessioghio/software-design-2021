@@ -14,6 +14,8 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
 from dash import html
+# import plotly.graph_objects as go
+
 app = Flask(__name__)
 
 ENV = 'dev'
@@ -27,6 +29,8 @@ else:
 
 db = Manager()
 engine = db.createEngine(ENV)
+
+
 
 dash_app = create_dash_application(app,engine)
 
@@ -454,6 +458,10 @@ def removeFromCart():
                 "totalPrice": totalPrice}
         return jsonify(data)
 
+# ========================================= 
+# Dash Callbacks
+# =========================================
+
 @dash_app.callback(
     Output('tabla-supply','figure'),
     Input('category-supply','value')
@@ -487,15 +495,29 @@ def update_pie(category_supply):
 def update_tables(elements_table):
     str_df = "select * from " + elements_table
     data_frame = pd.read_sql_query(str_df,con=engine)
+
+
     print(elements_table)
     if elements_table == 'supply':
         data_frame = data_frame.loc[:,data_frame.columns!='description']
         data_frame = data_frame.loc[:,data_frame.columns!='visibility']
+        data_frame = data_frame.sort_values(by=['id'])
     elif elements_table == 'client':
         data_frame = data_frame.loc[:,data_frame.columns!='password']
         data_frame = data_frame.loc[:,data_frame.columns!='username']
     elif elements_table == 'recipe': 
+        # For Recipes
+        df_supply = pd.read_sql_query("select * from supply",con=engine)
+        df_supply = df_supply.sort_values(by=['id'])
         data_frame = data_frame.loc[:,data_frame.columns!='description']
+        data_frame = data_frame.loc[:,data_frame.columns!='visibility']
+        data_frame = data_frame.loc[:,data_frame.columns!='price']
+        values = data_frame['supply_id'] -1
+        suplies = df_supply.iloc[values]['name'].values
+        data_frame['Supplies'] = suplies
+        data_frame = data_frame.loc[:,data_frame.columns!='supply_id']
+        data_frame = data_frame.sort_values(by=['id'])
+        data_frame = data_frame.reindex(columns=['id','name','Supplies','category','quantity','admin_id'])
 
     df_json = data_frame.to_json(date_format='iso',orient='split')
 
@@ -517,6 +539,36 @@ def update_columnstable(data_frame):
             ]) for i in range(len(df_n))
         ])
     ],className='table table-striped')
+
+
+@dash_app.callback(
+    Output('bar-recipes','figure'),
+    Input('type-food','value')
+)
+def update_barrecipe(type_food): 
+    data_frame = pd.read_sql_query("select * from recipe",con=engine)
+    df_supply = pd.read_sql_query("select * from supply",con=engine)
+    df_supply = df_supply.sort_values(by=['id'])
+    values = data_frame['supply_id'] - 1
+    suplies = df_supply.iloc[values]['name'].values
+    data_frame['Supplies'] = suplies
+    new_df = data_frame.loc[data_frame['category']==type_food]
+    fig  = px.bar(new_df,x='quantity',y='name',color='Supplies',orientation='h',
+            title='Cantidad por receta',
+            labels={'name':'Receta','quantity':'Cantidad (xkg o UN)'})
+    return fig
+
+@dash_app.callback(
+    Output('cost-recipes','figure'),
+    Input('type-food','value')
+)
+def update_recipescost(type_food):
+    data_frame = pd.read_sql_query("select * from recipe",con=engine)
+    new_df = data_frame.loc[data_frame['category']==type_food]
+    new_df = new_df.groupby(['name']).first() 
+    fig = px.bar(new_df, x=new_df.index.values, y="price", barmode="group",
+            labels={"name":"Productos","price":"Precio (S/.)"})
+    return fig
 
 if __name__ == '__main__':
     app.run()

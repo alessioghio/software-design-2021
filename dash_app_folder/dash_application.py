@@ -5,6 +5,7 @@ import plotly.express as px
 import pandas as pd
 import os
 from dash import dash_table
+import plotly.graph_objs as go
 
 
 
@@ -204,7 +205,8 @@ def build_dropdown_supply():
         dcc.Dropdown(
             id = 'category-supply',
             options = [{'label':'Precio','value':'price'},{'label':'Cantidad','value':'quantity'}],
-            value = "price"
+            value = "price",
+            clearable=False
         )
     ],style={'padding-top':'50px'})
 
@@ -214,7 +216,20 @@ def build_dropdown_tables():
             id = 'table-selection',
             options = [{'label':"Clientes",'value':"client"},{'label':'Recetas','value':"recipe"},
                        {'label':'Insumos','value':"supply"},{'label':'Transacciones','value':"transaction"}],
-            value = 'supply'
+            value = 'supply',
+            clearable=False
+        )
+    ],style={'padding-top':'50px'})
+
+def build_dropdown_recipes(engine): 
+    df = pd.read_sql_query("select * from recipe",con=engine)
+    categories = df['category'].drop_duplicates().values
+    return html.Div([
+        dcc.Dropdown(
+            id = 'type-food',
+            options = [{"label":x,"value":x} for x in categories],
+            value = categories[0],
+            clearable=False
         )
     ],style={'padding-top':'50px'})
 
@@ -227,8 +242,8 @@ def build_dash_graphics(engine):
         build_graphics(data_frame),
         # Show Graphics from Recipe
         html.Div(className="row title",children=[html.H2(["Recetas"],className="h3")],style={"padding-top":"3em"}),
-
-        
+        build_dropdown_recipes(engine),
+        build_graphics_recetas(),
         # Show Graphics from Client/Transactions
         html.Div(className="row title",children=[html.H2(["Clientes/Ventas"],className="h3")],style={"padding-top":"3em"}),
 
@@ -254,3 +269,11 @@ def build_graphics(data_frame):
 
 def build_table(engine):
     return html.Div(id='table-div',className='table-responsive')
+
+def build_graphics_recetas(): 
+    return html.Div([
+            html.Div([dcc.Graph(id='bar-recipes')],style={'display': 'inline-block', 'width': '54%'}),
+            html.Div([dcc.Graph(id='cost-recipes')],style={'display': 'inline-block', 'width': '44%'})
+            ])
+    
+    
