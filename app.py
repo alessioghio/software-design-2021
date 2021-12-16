@@ -19,7 +19,7 @@ from dash import html
 
 app = Flask(__name__)
 
-ENV = 'prod'
+ENV = 'dev'
 
 if ENV == 'dev':
     # Using a development configuration
@@ -564,9 +564,7 @@ def update_pie(category_supply):
 def update_tables(elements_table):
     str_df = "select * from " + elements_table
     data_frame = pd.read_sql_query(str_df,con=engine)
-
-
-    print(elements_table)
+    
     if elements_table == 'supply':
         data_frame = data_frame.loc[:,data_frame.columns!='description']
         data_frame = data_frame.loc[:,data_frame.columns!='visibility']

@@ -6,6 +6,7 @@ import pandas as pd
 import os
 from dash import dash_table
 import plotly.graph_objs as go
+from sqlalchemy.sql.expression import column
 
 
 
@@ -228,7 +229,7 @@ def build_dropdown_recipes(engine):
         dcc.Dropdown(
             id = 'type-food',
             options = [{"label":x,"value":x} for x in categories],
-            value = categories[0],
+            value = categories[0] if len(categories)!= 0 else '',
             clearable=False
         )
     ],style={'padding-top':'50px'})
@@ -244,9 +245,9 @@ def build_dash_graphics(engine):
         html.Div(className="row title",children=[html.H2(["Recetas"],className="h3")],style={"padding-top":"3em"}),
         build_dropdown_recipes(engine),
         build_graphics_recetas(),
-        # Show Graphics from Client/Transactions
-        html.Div(className="row title",children=[html.H2(["Clientes/Ventas"],className="h3")],style={"padding-top":"3em"}),
-
+        # Show Graphics from Recetas e Insumos
+        html.Div(className="row title",children=[html.H2(["Recetas e Insumos"],className="h3")],style={"padding-top":"3em"}),
+        build_recipes_quantity(engine),
         # Show Tables from the Database
         html.Div(className="row title",children=[html.H2(["Bases de Datos"],className="h3")],style={"padding-top":"3em"}),
         build_dropdown_tables(),
@@ -276,4 +277,48 @@ def build_graphics_recetas():
             html.Div([dcc.Graph(id='cost-recipes')],style={'display': 'inline-block', 'width': '44%'})
             ])
     
+def build_recipes_quantity(engine): 
+    df_recipes = pd.read_sql_query("select * from recipe",con=engine)
+    df_supply = pd.read_sql_query("select * from supply",con=engine)
+    df_supply = df_supply.sort_values(by=['id'])
+    df_short = df_recipes.groupby(['name']).first() 
+    recipes = df_short.index.values
+    values_recipes = []
+    for n in recipes: 
+        n_df = df_recipes.loc[df_recipes['name']==n]
+
+        # Cantidad requerida para la receta
+        n_cantidad = n_df.loc[:,'quantity'].values
+
     
+        # Vector de cantidad por cada insumo
+        n_supplyid = n_df.loc[:,'supply_id'] - 1
+        q_supply = df_supply.iloc[n_supplyid]['quantity'].values
+
+        # Calcular cantidad de recetas que puede hacerse
+        val_recipe = 10000
+        for i in range(len(n_cantidad)):
+            if  q_supply[i] / n_cantidad[i] >= 1: 
+                val_dum = q_supply[i] / n_cantidad[i]
+                val_dum = int((int(10*val_dum-0.5)+1) / 10.0) # Round to low
+                if val_dum <= val_recipe: 
+                    val_recipe = val_dum
+
+        values_recipes.append(val_recipe)
+    
+    df_new = pd.DataFrame(list(zip(recipes,values_recipes)),columns=['Name','Quantity'])
+
+    return html.Div([
+        dash_table.DataTable(
+            id = 'table-comb', data = df_new.to_dict('records'), 
+            columns=[{"name": i, "id": i} for i in df_new.columns],
+            style_as_list_view=True,
+                style_cell_conditional=[
+                {
+                    'if': {'Quantity': 'Name'},
+                    'textAlign': 'left'
+                 }
+                ],
+            style_cell={'fontSize':12, 'font-family':'sans-serif'}
+        )
+    ],className= 'table')
