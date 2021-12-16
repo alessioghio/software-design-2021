@@ -149,7 +149,7 @@
                                                     <p class="white text-left">Cantidad: {{product["quantity"]}} {{product["unit"]}}</p>
                                                     {# <input type="hidden" name="quantity" value="{{product['quantity']}}"> #}
                                                     <p class="white text-left">Precio: S/ {{product["price"]}}</p>
-                                                    {# <button id="removeButton" type="button" class="btn btn-md btn-white" value="{{product['supply_id']}}">Quitar</button> #}
+                                                    <input type="hidden" name="startup" value="{{startupName}}">
                                                     <button id="removeButton" type="button" class="btn btn-md btn-white" onclick="removeFromCart({{product['supply_id']}})">Quitar</button>
                                                 </div>
                                             </div>

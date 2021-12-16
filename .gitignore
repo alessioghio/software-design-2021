@@ -138,4 +138,5 @@ desktop.ini
 *.zip
 Labs/
 dbCredentials.py
-static/productImages/*
+static/productImages/*.png
+static/productImages/*.jpg

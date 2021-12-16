@@ -2,6 +2,7 @@ from flask import request
 from models import *
 from werkzeug.utils import secure_filename
 import os
+import math
 
 def getRegisterData():
     name = request.form['name']
@@ -112,7 +113,7 @@ def getUniqueCategories(supplies):
             categories.append(supply.category)
     return categories
 
-def getProductImagePath1(db_session, image, name):
+def getRecipeImagePath(db_session, image, name, admin_id):
     # Get id
     recipeQuery = db_session.query(Recipe)
     recipe = recipeQuery.filter(Recipe.name == name).first()
@@ -120,7 +121,7 @@ def getProductImagePath1(db_session, image, name):
     # get file extension
     ext = filename.split(".")
     ext = ext[-1]
-    return f"{recipe.id}.{ext}"
+    return f"{recipe.name}-{admin_id}.{ext}"
 
 def getShoppingCartItems(db_session):
     cart = db_session.query(ShoppingCart).all()
@@ -140,3 +141,31 @@ def getShoppingCartItems(db_session):
         totalPrice += dictElement["price"]*dictElement["quantity"]
         products.append(dictElement)
     return products, totalPrice
+
+def processRecipes(db_session, admin_id):
+    recipeQuery = db_session.query(Recipe)
+    recipesAll = recipeQuery.filter(Recipe.admin_id == admin_id).all()
+    recipeNames = []
+    for recipe in recipesAll:
+        if recipe.name not in recipeNames:
+            recipeNames.append(str(recipe.name))
+    supplyQuery = db_session.query(Supply)
+    recipes = []
+    recipeCategories = {}
+    for recipeName in recipeNames:
+        minStock = math.inf
+        for recipe in recipesAll:
+            if recipe.name == recipeName:
+                # Get supply object and calculate stock
+                supply = supplyQuery.filter(Supply.id == recipe.supply_id).first()
+                supplyQuantity = math.floor(float(supply.quantity)/float(recipe.quantity))
+                if supplyQuantity < minStock:
+                    minStock = supplyQuantity
+                recipeCategories[recipeName] = recipe.category
+        recipeDict = {"name": recipeName,
+                      "prices": recipe.price,
+                      "stock": minStock,
+                      "category": recipeCategories[recipeName],
+                      "admin_id": admin_id}
+        recipes.append(recipeDict)
+    return recipes

@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 import os
-import time
+import math
 from datetime import datetime
 from models import *
 from utils import *
@@ -70,7 +70,11 @@ def error():
 @app.route('/user/sales')
 def sales():
     sessionType = "adminSession"
-    return render_template('sales.html', sessionType=sessionType)
+    # Get transactions, if any
+    db_session = db.getSession(engine)
+    transactionsQuery = db_session.query(Transaction)
+    transactions = transactionsQuery.filter(Transaction.admin_id == session['admin']).all()
+    return render_template('sales.html', sessionType=sessionType, transactions=transactions)
 
 @app.route('/user/newProduct')
 def newProduct():
@@ -91,7 +95,11 @@ def productsAdmin():
 @app.route('/user/recipesAdmin')
 def recipesAdmin():
     sessionType = "adminSession"
-    return render_template('recipesAdmin.html', sessionType=sessionType)
+    # Get and process recipes
+    db_session = db.getSession(engine)
+    recipes = processRecipes(db_session, session["admin"])
+    print(recipes)
+    return render_template('recipesAdmin.html', sessionType=sessionType, recipes=recipes, os=os)
 
 @app.route('/newProductRequest', methods=['POST'])
 def newProductRequest():
@@ -154,7 +162,7 @@ def newRecipe():
     print(rec_categories)
     return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies, rec_categories=rec_categories)
 
-@app.route('/newRecipeRequest', methods=["POST"])
+@app.route('/newRecipeRequest', methods=['POST'])
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
@@ -176,8 +184,8 @@ def newRecipeRequest():
                 db_session.add(data)
                 db_session.commit()
             # Save image
-            imagePath = getProductImagePath1(db_session, image, name)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
+            imagePath = getRecipeImagePath(db_session, image, name, session['admin'])
+            image.save(os.path.join(app.config['UPLOAD_FOLDER2'], imagePath))
             flash('Receta creada.')
             return redirect(url_for('newRecipe'))
 
@@ -259,7 +267,8 @@ def clientProfile():
     # Get cart items, if any
     products, totalPrice = getShoppingCartItems(db_session)
     # Get transactions, if any
-    transactions = db_session.query(Transaction).all()
+    transactionsQuery = db_session.query(Transaction)
+    transactions = transactionsQuery.filter(Transaction.client_id == session['client']).all()
     return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
                             products=products, totalPrice=totalPrice, transactions=transactions)
 
@@ -392,10 +401,13 @@ def startup(name):
     for supply in allSupplies:
         if supply.visibility and supply.quantity > 0:
             supplies.append(supply)
-    # Get available startups
+    # Process and get recipes
+    recipes = processRecipes(db_session, startup.admin_id)
+    # Get available startups for display
     startups = db_session.query(Adminurl).all()
     # Get cart items if any
     products, totalPrice = getShoppingCartItems(db_session)
+    # Get session type for header
     if "admin" in session:
         sessionType = "adminSession"
     elif "client" in session:
@@ -404,12 +416,14 @@ def startup(name):
         sessionType = "None"
     return render_template('home-client.html', startups=startups, startupName=startup.name, 
                             supplies=supplies, os=os, sessionType=sessionType, products=products,
-                            totalPrice=totalPrice)
+                            totalPrice=totalPrice, recipes=recipes)
 
 @app.route('/addToShoppingCart', methods=['POST'])
 def addToShoppingCart():
     if request.method == "POST":
         db_session = db.getSession(engine)
+        # Get the catalogue admin id
+        startupName = request.form.get("startup")
         # Get target supply
         supply_id = request.form.get("supply_id")
         supply_id = int(supply_id)
@@ -446,7 +460,8 @@ def addToShoppingCart():
                     "quantity": product["quantity"],
                     "unit": product["unit"],
                     "price": product["price"],
-                    "totalPrice": totalPrice}
+                    "totalPrice": totalPrice,
+                    "startupName": startupName}
         return jsonify(data)
 
 @app.route('/removeFromCart', methods=['POST'])
@@ -468,6 +483,11 @@ def buy():
     db_session = db.getSession(engine)
     dt = datetime.now()
     if "client" in session:
+        # Get admin id
+        startupName = request.form['startup']
+        startupQuery = cartQuery = db_session.query(Adminurl)
+        startup = startupQuery.filter(Adminurl.name == startupName).first()
+        admin_id = startup.id
         # Get shopping cart ids
         cartQuery = db_session.query(ShoppingCart)
         carts = cartQuery.filter(ShoppingCart.client_id == session['client']).all()
@@ -483,7 +503,7 @@ def buy():
                 update({"quantity": newQuantity})
             db_session.commit()
             cartQuery.filter(ShoppingCart.id == cart.id).delete()
-        transaction = Transaction(datetime=dt, client_id=session['client'], price=transactionPrice)
+        transaction = Transaction(datetime=dt, client_id=session['client'], price=transactionPrice, admin_id=admin_id)
         db_session.add(transaction)
         db_session.commit()
     return redirect(url_for('user'))
