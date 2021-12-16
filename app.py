@@ -257,8 +257,10 @@ def clientProfile():
     startups = db_session.query(Adminurl).all()
     # Get cart items if any
     products, totalPrice = getShoppingCartItems(db_session)
+    clientQuery = db_session.query(Client)
+    clientData = clientQuery.filter(Client.id == session["client"]).all()
     return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
-                            products=products, totalPrice=totalPrice)
+                            products=products, totalPrice=totalPrice, clientData=clientData)
 
 @app.route('/user/client/updateDataRequest', methods=['POST'])
 def updateClientData():
@@ -346,6 +348,18 @@ def updateRequest():
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
         flash('Información actualizada.')
         return redirect(url_for('update'))
+
+@app.route('/user/client/addCardRequest', methods=["POST"])
+def addCardRequest():
+    if request.method == "POST":
+        number = request.form["number"]
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        clientQuery.filter(Client.id == session["client"]).\
+            update({"cardNumber": number})
+        db_session.commit()
+        flash('Tarjeta guardada.')
+        return redirect(url_for('user'))
 
 @app.route('/fillForm', methods=['POST'])
 def fillForm():
