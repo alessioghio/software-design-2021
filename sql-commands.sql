@@ -48,13 +48,12 @@ CREATE TABLE IF NOT EXISTS public."shoppingCart"
     datetime date NOT NULL,
     client_id bigint,
     supply_id bigint,
+    quantity integer,
     CONSTRAINT "PK_shoppingCart" PRIMARY KEY (id),
-    CONSTRAINT "unique_shoppingCart" UNIQUE (client_id),
     CONSTRAINT supply_id FOREIGN KEY (supply_id)
         REFERENCES public.supply (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-        NOT VALID
 );
 
 CREATE TABLE IF NOT EXISTS public.client
@@ -80,9 +79,11 @@ CREATE TABLE IF NOT EXISTS public.recipe
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     name character varying(100) COLLATE pg_catalog."default",
     quantity integer,
+    category character varying(100) NOT NULL,
     supply_id bigint,
     admin_id bigint NOT NULL,
     price integer NOT NULL,
+    visibility boolean NOT NULL,
     description character varying(500) COLLATE pg_catalog."default",
     CONSTRAINT "PK_recipe" PRIMARY KEY (id),
     CONSTRAINT admin_id FOREIGN KEY (admin_id)

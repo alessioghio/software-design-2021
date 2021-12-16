@@ -49,14 +49,15 @@ def getUpdateData():
 def getNewRecipeData():
     name = request.form["recipe-name"]
     supply_id_list = request.form.getlist('supply_id')
+    supply_quantity_list = request.form.getlist('cantidad')
     price = request.form["price"]
     if price != "":
         price = float(price)
     category = request.form["category"]
     visibility = True if request.form.get('visibility') else False
     description = request.form["description"]
-    image = request.files['image']
-    return name, supply_id_list, price, category, visibility, description, image
+    image = request.files["image"]
+    return name, supply_id_list, supply_quantity_list, category, price, visibility, description, image
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user
@@ -120,3 +121,22 @@ def getProductImagePath1(db_session, image, name):
     ext = filename.split(".")
     ext = ext[-1]
     return f"{recipe.id}.{ext}"
+
+def getShoppingCartItems(db_session):
+    cart = db_session.query(ShoppingCart).all()
+    totalPrice = 0
+    products = []
+    for cartProduct in cart:
+        dictElement = {}
+        supplyProduct = db_session.query(Supply).filter(Supply.id == cartProduct.supply_id).first()
+        dictElement["name"] = supplyProduct.name
+        dictElement["quantity"] = cartProduct.quantity
+        if supplyProduct.unit == "xkg":
+            dictElement["unit"] = "kg"
+        else:
+            dictElement["unit"] = "UN"
+        dictElement["price"] = supplyProduct.price
+        dictElement["supply_id"] = supplyProduct.id
+        totalPrice += dictElement["price"]*dictElement["quantity"]
+        products.append(dictElement)
+    return products, totalPrice

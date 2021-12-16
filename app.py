@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 #from sqlalchemy.sql.expression import and_
 from dash_app_folder.dash_application import create_dash_application
 import os
+from datetime import datetime
 from models import *
 from utils import *
 import plotly.express as px
@@ -145,22 +146,27 @@ def newRecipe():
     sessionType = "adminSession"
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
+    recipeQuery = db_session.query(Recipe)
     supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
-    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies)
+    rec_categories = recipeQuery.filter(Recipe.admin_id == session["admin"]).all()
+    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies, rec_categories=rec_categories)
 
-@app.route('/newRecipeRequest')
+@app.route('/newRecipeRequest', methods=["POST"])
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, supply_id_list, price, category, visibility, description, image = getNewRecipeData()
+        name, supply_id_list, supply_quantity_list, category, price, visibility, description, image = getNewRecipeData()
         if nameExists(db_session, Recipe, name):
             flash('Receta existente.')
             return redirect(url_for('newRecipe'))
         else:
             # Insert data on db
-            data = Recipe(name=name, price=price, category=category, visibility=visibility, description=description, admin_id=session["admin"])
-            db_session.add(data)
-            db_session.commit()
+            print('IDs de Insumos:', supply_id_list)
+            for supply_id, supply_quantity in zip(supply_id_list, supply_quantity_list):
+                data = Recipe(name=name, price=price, category=category, supply_id=supply_id, quantity=supply_quantity, 
+                                visibility=visibility, description=description, admin_id=session["admin"])
+                db_session.add(data)
+                db_session.commit()
             # Save image
             imagePath = getProductImagePath1(db_session, image, name)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
@@ -236,13 +242,35 @@ def adminProfile():
     sessionType = "adminSession"
     return render_template('profile-stocker.html', sessionType=sessionType)
 
-@app.route('/user/client')
+@app.route('/user/client', methods=["POST", "GET"])
 def clientProfile():
     sessionType = "clientSession"
     # Get available startups
     db_session = db.getSession(engine)
     startups = db_session.query(Adminurl).all()
-    return render_template('profile-pizza.html', sessionType=sessionType, startups=startups)
+    # Get cart items if any
+    products, totalPrice = getShoppingCartItems(db_session)
+    return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
+                            products=products, totalPrice=totalPrice)
+
+@app.route('/user/client/updateDataRequest', methods=['POST'])
+def updateClientData():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        name = request.form["name"]
+        lastname = request.form["lastName"]
+        email = request.form["email"]
+        username = request.form["username"]
+        
+        clientQuery.filter(Client.id == session["client"]).\
+                                update({"name": name,
+                                        "lastName": lastname,
+                                        "email": email,
+                                        "username": username})
+        db_session.commit()
+        flash('Informacion actualizada')
+        return redirect(url_for('user'))
 
 @app.route('/user')
 def user():
@@ -328,6 +356,19 @@ def fillForm():
                 "unit": supply.unit,
                 "visibility": supply.visibility,
                 "description": supply.description}
+
+        return jsonify(data)
+
+@app.route('/fillClientData', methods=['POST'])
+def fillClientData():
+    if request.method == "POST":
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        client = clientQuery.filter(Client.id == session['client']).first()
+        data = {"name": client.name,
+                "lastName": client.lastName,
+                "email": client.email,
+                "username": client.username}
         return jsonify(data)
 
 @app.route('/startup/<name>')
@@ -342,13 +383,74 @@ def startup(name):
             supplies.remove(supply)
     # Get available startups
     startups = db_session.query(Adminurl).all()
+    # Get cart items if any
+    products, totalPrice = getShoppingCartItems(db_session)
     if "admin" in session:
         sessionType = "adminSession"
     elif "client" in session:
         sessionType = "clientSession"
     else:
         sessionType = "None"
-    return render_template('home-client.html', startups=startups, startupName=startup.name, supplies=supplies, os=os, sessionType=sessionType)
+    return render_template('home-client.html', startups=startups, startupName=startup.name, 
+                            supplies=supplies, os=os, sessionType=sessionType, products=products,
+                            totalPrice=totalPrice)
+
+@app.route('/addToShoppingCart', methods=['POST'])
+def addToShoppingCart():
+    if request.method == "POST":
+        db_session = db.getSession(engine)
+        # Get target supply
+        supply_id = request.form.get("supply_id")
+        supply_id = int(supply_id)
+        # Add to shopping cart
+        quantity = request.form.get("quantity")
+        quantity = int(quantity)
+        # If supply already exists on table, update information
+        cartQuery = db_session.query(ShoppingCart).\
+            filter(ShoppingCart.supply_id == supply_id).\
+            filter(ShoppingCart.client_id == session["client"]) 
+        if cartQuery.first() is not None:
+            cart = cartQuery.first()
+            cartQuery.update({"quantity": cart.quantity+quantity,
+                              "datetime": datetime.now()})
+            db_session.commit()
+            _, totalPrice = getShoppingCartItems(db_session)
+            data = {"datetime": cart.datetime,
+                "client_id": cart.client_id,
+                "supply_id": cart.supply_id,
+                "quantity": cart.quantity,
+                "totalPrice": totalPrice}
+        else: # create row in cart table, otherwise
+            cart = ShoppingCart(datetime=datetime.now(), client_id=session["client"],
+                                supply_id=supply_id, quantity=quantity)
+            db_session.add(cart)
+            db_session.commit()
+            products, totalPrice = getShoppingCartItems(db_session)
+            product = None
+            for p in products:
+                if p["supply_id"] == supply_id:
+                    product = p
+            data = {"name": product["name"],
+                    "supply_id": product["supply_id"],
+                    "quantity": product["quantity"],
+                    "unit": product["unit"],
+                    "price": product["price"],
+                    "totalPrice": totalPrice}
+        return jsonify(data)
+
+@app.route('/removeFromCart', methods=['POST'])
+def removeFromCart():
+    if request.method == "POST":
+        request.get_data()
+        supply_id = request.data.decode('UTF-8') # Javascript return binary string
+        db_session = db.getSession(engine)
+        cartQuery = db_session.query(ShoppingCart)
+        cartQuery.filter(ShoppingCart.supply_id == supply_id).delete()
+        db_session.commit()
+        _, totalPrice = getShoppingCartItems(db_session)
+        data = {"supply_id": supply_id,
+                "totalPrice": totalPrice}
+        return jsonify(data)
 
 @dash_app.callback(
     Output('tabla-supply','figure'),

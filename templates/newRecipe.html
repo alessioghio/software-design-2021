@@ -22,13 +22,14 @@
                 <div class="mb-30">
 					<h2> Receta </h2>
 
+                    <div class="filter-form">
+                        <!-- Filters FORM -->
+                    <form class="filters-form" id="filters" role="form" method="POST" action="/newRecipeRequest" enctype="multipart/form-data">
+
                     <div class="form-field-wrapper">
                         <input class="input-sm form-full" id="form-name" type="text" name="recipe-name" placeholder="Nombre de la receta" required>
                     </div>
 
-                    <div class="filter-form">
-                        <!-- Filters FORM -->
-                    <form class="filters-form" id="filters" role="form" method="POST" action="/newRecipeRequest">
                         <div class="accordion mb-15">
                             <div class="accordion-section">
                                 <h6 class="accordion-title black">Elegir insumos</h6>
@@ -36,15 +37,11 @@
                                     <div id="interlineado" class="space form-field-wrapper">
                                        {% for supply in supplies %}
                                             <span><input class="input-sm" id="category" type="checkbox" name="supply_id" value="{{supply.id}}">{{supply.name}}</span>
-                                            <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
+                                            <span><input class="input-box" type="number" name="cantidad" placeholder="Cant." required></span><br>
                                         {% endfor %}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="form-field-wrapper">
-                            <input class="input-sm form-full" id="unit" type="text" name="unit" placeholder="Cantidad" required>
                         </div>
 
                        <div class="form-field-wrapper">
@@ -57,11 +54,13 @@
                             <div class="accordion-content">
                                 <div class="form-field-wrapper">
                                     <input class="input-sm" type="radio">
-                                        <span><input class="text" type="text" name="text" placeholder="Nueva categoría"></span><br>
+                                        <span><input class="text" type="text" name="category" placeholder="Nueva categoría"></span><br>
                                 </div>
+                                {% for category in rec_categories %}
                                 <div>
-                                    <span><input class="input-sm" type="radio" name="name" value=fruta>Verdura</span><br>
+                                    <span><input class="input-sm" type="radio" name="category" value={{category}}>{{category}}</span><br>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                         </div>
@@ -69,7 +68,11 @@
                            <textarea class="form-full" id="form-remarks" rows="1" name="description" placeholder="Descripción"></textarea>
                        </div>
                        <div class="form-field-wrapper">
+                        <input class="input-sm" type="checkbox" name="visibility" value=Visibilidad>¿Mostrar en el catálogo?</span>
+                        </div>
+                       <div class="form-field-wrapper">
                         <p> Añadir imagen </p>
+                            <input class="form-full" type="file" name="image" placeholder="Añadir imagen" required>
                        </div>
 
                        <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="newRecipeRequest">Guardar</button>

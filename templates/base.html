@@ -23,6 +23,15 @@
     <link href="../static/css/plugin/animate.css" rel="stylesheet" type="text/css" />
     <link href="../static/css/jquery-ui.css" rel="stylesheet" type="text/css" />
 	<link href="../static/css/plugin/smoothproducts.css" rel="stylesheet" />
+
+    <!-- JS -->
+    <script src="../static/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+    <script src="../static/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../static/js/plugin/jquery.easing.js" type="text/javascript"></script>
+    <script src="../static/js/plugin/jquery.flexslider.js" type="text/javascript"></script>
+    <script src="../static/js/plugin/jquery.fitvids.js" type="text/javascript"></script>
+    <script src="../static/js/plugin/jquery.viewportchecker.js" type="text/javascript"></script>
+    <script src="../static/js/plugin/jquery.stellar.min.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -126,41 +135,26 @@
                                 <a id="menu-sidebar-close-icon" class="menu-close"><i class="ion ion-android-close"></i></a>
                                 <h5 class="white">Carrito</h5>
                                 <div class="filter-form">
-                                    <!-- Cart List -->
-                                <form class="filters-form" id="filters" role="form">
-
-
+                                <!-- Cart List -->
+                                <form id="removeCartForm" class="filters-form" id="filters" role="form">
                                     <!-- Products List -->
-
+                                    {% for product in products %}
                                     <div class="accordion mb-15">
                                         <div class="accordion-section">
-                                            <h6 class="accordion-title white text-left">Papa con Camote</h6>
+                                            <h6 class="accordion-title white text-left">{{product["name"]}}</h6>
                                             <div class="accordion-content">
                                                 <div class="form-field-wrapper">
-                                                <p class="white text-left">Cantidad: 1 UN.</p>
-                                                <p class="white text-left">Precio: s/.15</p>
-                                                <button class="btn btn-md btn-white" type="submit" id="form-submit" name="submit">Quitar</button>
+                                                    <p hidden>{{product["supply_id"]}}</p>
+                                                    <p class="white text-left">Cantidad: {{product["quantity"]}} {{product["unit"]}}</p>
+                                                    <p class="white text-left">Precio: S/ {{product["price"]}}</p>
+                                                    <button class="btn btn-md btn-white"  type="submit" onclick="removeFromCart({{product['supply_id']}})">Quitar</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        </div>
                                     </div>
-
-                                    <div class="accordion mb-15">
-                                        <div class="accordion-section">
-                                            <h6 class="accordion-title white text-left">Chifles</h6>
-                                            <div class="accordion-content">
-                                                <div class="form-field-wrapper">
-                                                <p class="white text-left">Cantidad: 0.250 KG.</p>
-                                                <p class="white text-left">Precio: s/.5</p>
-                                                <button class="btn btn-md btn-white" type="submit" id="form-submit" name="submit">Quitar</button>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-
+                                    {% endfor %}
                                     <!-- End Products List -->
-
-                                <h5 class="white">TOTAL: S/. 20</h5>
+                                <h5 id="totalPrice" class="white">TOTAL: S/ {{totalPrice}}</h5>
 
                                 <button class="btn btn-md btn-white form-full" type="submit" id="form-submit" name="submit">Comprar</button>
                                 </form>
@@ -235,16 +229,8 @@
         <!-- End Scroll Top -->
 
     <!-- Site Wraper End -->
-
+    
     <!-- JS -->
-    <script src="../static/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-    <script src="../static/js/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.easing.js" type="text/javascript"></script>
-    <script src="../static/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.flexslider.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.fitvids.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.viewportchecker.js" type="text/javascript"></script>
-    <script src="../static/js/plugin/jquery.stellar.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/wow.min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/jquery.colorbox-min.js" type="text/javascript"></script>
     <script src="../static/js/plugin/owl.carousel.min.js" type="text/javascript"></script>
@@ -258,5 +244,6 @@
     <script src="../static/js/navigation.js" type="text/javascript"></script>
 	<script src="../static/js/jquery.bootstrap-duallistbox.js"></script>
 	<script>var demo1 = $('[name=category]').bootstrapDualListbox();</script>
+    <script src="../static/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>
