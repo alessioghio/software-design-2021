@@ -149,6 +149,8 @@ def newRecipe():
     recipeQuery = db_session.query(Recipe)
     supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
     rec_categories = recipeQuery.filter(Recipe.admin_id == session["admin"]).all()
+    rec_categories = getUniqueCategories(rec_categories)
+    print(rec_categories)
     return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies, rec_categories=rec_categories)
 
 @app.route('/newRecipeRequest', methods=["POST"])
@@ -156,13 +158,18 @@ def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
         name, supply_id_list, supply_quantity_list, category, price, visibility, description, image = getNewRecipeData()
+        print('Categoria:', category)
         if nameExists(db_session, Recipe, name):
             flash('Receta existente.')
             return redirect(url_for('newRecipe'))
         else:
             # Insert data on db
-            print('IDs de Insumos:', supply_id_list)
-            for supply_id, supply_quantity in zip(supply_id_list, supply_quantity_list):
+            supply_quantity=[]
+            for i in range(len(supply_quantity_list)):
+                if supply_quantity_list[i] != '0':
+                    supply_quantity.append(supply_quantity_list[i])
+            
+            for supply_id, supply_quantity in zip(supply_id_list, supply_quantity):
                 data = Recipe(name=name, price=price, category=category, supply_id=supply_id, quantity=supply_quantity, 
                                 visibility=visibility, description=description, admin_id=session["admin"])
                 db_session.add(data)
