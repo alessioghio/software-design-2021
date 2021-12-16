@@ -24,6 +24,7 @@ class Client(Manager.Base):
     email = Column(VARCHAR(100), nullable=False)
     username = Column(VARCHAR(20), nullable=False)
     password = Column(VARCHAR(30), nullable=False)
+    cardnumber=Column(VARCHAR(20))
     userType = Column(VARCHAR(6), nullable=False)
     shoppingCart_id = Column(VARCHAR(100), ForeignKey("shoppingCart.id"), unique=True)
 

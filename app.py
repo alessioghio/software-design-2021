@@ -281,6 +281,19 @@ def updateClientData():
         flash('Informacion actualizada')
         return redirect(url_for('user'))
 
+@app.route('/user/client/addCardRequest', methods=["POST", "GET"])
+def addCardRequest():
+    if request.method == "POST":
+        number = request.form["number"]
+        print('Numero:', number)
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        clientQuery.filter(Client.id == session["client"]).\
+            update({"cardnumber": number})
+        db_session.commit()
+        flash('Tarjeta guardada.')
+        return redirect(url_for('user'))
+
 @app.route('/user')
 def user():
     if "admin" in session:
@@ -348,18 +361,6 @@ def updateRequest():
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
         flash('Información actualizada.')
         return redirect(url_for('update'))
-
-@app.route('/user/client/addCardRequest', methods=["POST"])
-def addCardRequest():
-    if request.method == "POST":
-        number = request.form["number"]
-        db_session = db.getSession(engine)
-        clientQuery = db_session.query(Client)
-        clientQuery.filter(Client.id == session["client"]).\
-            update({"cardNumber": number})
-        db_session.commit()
-        flash('Tarjeta guardada.')
-        return redirect(url_for('user'))
 
 @app.route('/fillForm', methods=['POST'])
 def fillForm():

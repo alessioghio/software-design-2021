@@ -82,7 +82,7 @@
 											<div class="accordion-content">
 												<div class="form-field-wrapper">
 													{% for data in clientData %}    
-														<span><input class="input-sm" type="radio" name="card" value={{data.cardNumber}}>{{ data.cardNumber }}</span><br>                                        
+														<span><input class="input-sm" type="radio" name="card" value={{data.cardnumber}}>{{ data.cardnumber }}</span><br>                                        
 													{% endfor %}
 											</div>
 										</div>
@@ -93,7 +93,7 @@
 									</div> -->
 								</form>
 
-								<form class="contact-form" id="contact" role="form" method="POST">
+								<form class="contact-form" id="contact" role="form" method="POST" action="{{ url_for('addCardRequest') }}"">
 											
 									<h4>Agregar una nueva tarjeta</h4>
 
@@ -102,7 +102,7 @@
 									</div>
 
 									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-name" type="number" name="number" placeholder="Número de tarjeta" required>
+										<input class="input-sm form-full" id="form-name" type="text" name="number" placeholder="Número de tarjeta" required>
 									</div>
 		
 									<div class="form-field-wrapper">
@@ -114,7 +114,12 @@
 										<input class="input-box form-full" id="form-name" type="number" name="number" placeholder="CCV" required>
 										</i></p>
 									</div>
-										
+									{% for message in get_flashed_messages()%}
+									<div class="alert alert-info alert-dismissible">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											{{ message }}						
+									</div>
+									{% endfor %}	
 									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="{{ url_for('addCardRequest') }}">Guardar tarjeta</button>
 								</form>
 								<!-- END Contact FORM -->
