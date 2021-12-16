@@ -148,22 +148,27 @@ def newRecipe():
     sessionType = "adminSession"
     db_session = db.getSession(engine)
     supplyQuery = db_session.query(Supply)
+    recipeQuery = db_session.query(Recipe)
     supplies = supplyQuery.filter(Supply.admin_id == session["admin"]).all()
-    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies)
+    rec_categories = recipeQuery.filter(Recipe.admin_id == session["admin"]).all()
+    return render_template('newRecipe.html', sessionType=sessionType, supplies=supplies, rec_categories=rec_categories)
 
-@app.route('/newRecipeRequest')
+@app.route('/newRecipeRequest', methods=["POST"])
 def newRecipeRequest():
     if request.method == 'POST':
         db_session = db.getSession(engine)
-        name, supply_id_list, price, category, visibility, description, image = getNewRecipeData()
+        name, supply_id_list, supply_quantity_list, category, price, visibility, description, image = getNewRecipeData()
         if nameExists(db_session, Recipe, name):
             flash('Receta existente.')
             return redirect(url_for('newRecipe'))
         else:
             # Insert data on db
-            data = Recipe(name=name, price=price, category=category, visibility=visibility, description=description, admin_id=session["admin"])
-            db_session.add(data)
-            db_session.commit()
+            print('IDs de Insumos:', supply_id_list)
+            for supply_id, supply_quantity in zip(supply_id_list, supply_quantity_list):
+                data = Recipe(name=name, price=price, category=category, supply_id=supply_id, quantity=supply_quantity, 
+                                visibility=visibility, description=description, admin_id=session["admin"])
+                db_session.add(data)
+                db_session.commit()
             # Save image
             imagePath = getProductImagePath1(db_session, image, name)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], imagePath))
@@ -239,7 +244,7 @@ def adminProfile():
     sessionType = "adminSession"
     return render_template('profile-stocker.html', sessionType=sessionType)
 
-@app.route('/user/client')
+@app.route('/user/client', methods=["POST", "GET"])
 def clientProfile():
     sessionType = "clientSession"
     # Get available startups
@@ -249,6 +254,25 @@ def clientProfile():
     products, totalPrice = getShoppingCartItems(db_session)
     return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
                             products=products, totalPrice=totalPrice)
+
+@app.route('/user/client/updateDataRequest', methods=['POST'])
+def updateClientData():
+    if request.method == 'POST':
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        name = request.form["name"]
+        lastname = request.form["lastName"]
+        email = request.form["email"]
+        username = request.form["username"]
+        
+        clientQuery.filter(Client.id == session["client"]).\
+                                update({"name": name,
+                                        "lastName": lastname,
+                                        "email": email,
+                                        "username": username})
+        db_session.commit()
+        flash('Informacion actualizada')
+        return redirect(url_for('user'))
 
 @app.route('/user')
 def user():
