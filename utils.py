@@ -49,6 +49,7 @@ def getUpdateData():
 def getNewRecipeData():
     name = request.form["recipe-name"]
     supply_id_list = request.form.getlist('supply_id')
+    supply_quantity_list = request.form.getlist('cantidad')
     price = request.form["price"]
     if price != "":
         price = float(price)
@@ -56,7 +57,7 @@ def getNewRecipeData():
     visibility = True if request.form.get('visibility') else False
     description = request.form["description"]
     image = request.files["image"]
-    return name, supply_id_list, category, price, visibility, description, image
+    return name, supply_id_list, supply_quantity_list, category, price, visibility, description, image
 
 def validateLoginCredentials(db_session, username, password):
     # Check wether is an admin or client user

@@ -37,15 +37,11 @@
                                     <div id="interlineado" class="space form-field-wrapper">
                                        {% for supply in supplies %}
                                             <span><input class="input-sm" id="category" type="checkbox" name="supply_id" value="{{supply.id}}">{{supply.name}}</span>
-                                            <span><input class="input-box" type="number" name="cantidad" placeholder="Cant."></span><br>
+                                            <span><input class="input-box" type="number" name="cantidad" placeholder="Cant." required></span><br>
                                         {% endfor %}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="form-field-wrapper">
-                            <input class="input-sm form-full" id="unit" type="text" name="unit" placeholder="Cantidad" required>
                         </div>
 
                        <div class="form-field-wrapper">

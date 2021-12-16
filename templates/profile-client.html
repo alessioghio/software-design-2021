@@ -23,12 +23,7 @@
 				<li><a id="cv-tab" href="#tabs-2">Métodos de pago</a></li>
 				<li><a id="cv-tab" href="#tabs-3">Compras</a></li>
 			</ul>
-			{% for message in get_flashed_messages()%}
-						<div class="alert alert-info alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							{{ message }}
-						</div>
-					{% endfor%}
+			
 			<div class="ui-tab-content">                        
 			
 
@@ -37,28 +32,10 @@
 				<div id="tabs-1">
 					<div class="container text-left">
 						<div class="mb-30">	
-							<h2> Datos personales</h2>	
+							<h2> Datos personales</h2>
 							<hr>
 								<!-- Contact FORM -->
-<<<<<<< HEAD:templates/profile-pizza.html
-								<form class="contact-form" id="contact" role="form" method="POST" action="/user/client/updateDataRequest">
-									{% for data in clientData %}		
-									<div class="form-field-wrapper">
-										<span><input class="input-sm form-full" id="form-name" type="text" name="name" placeholder="Nombre" required>{{data.name}}</span><br>
-									</div>
-
-									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-name" type="text" name="lastname" placeholder="Apellido" required>{{data.lastName}}
-									</div>
-		
-									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-email" type="email" name="email" placeholder="Correo" required>{{data.email}}
-									</div>
-
-									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-name" type="text" name="username" placeholder="Nombre de usuario" required>{{data.username}}
-=======
-								<form class="contact-form" id="contact" role="form" name="clientInfoForm">
+								<form class="contact-form" id="contact" role="form" name="clientInfoForm" method="POST" action="{{ url_for('updateClientData') }}">
 											
 									<div class="form-field-wrapper">
 										<input class="input-sm form-full" id="form-name" type="text" name="name" placeholder="Nombre" required>
@@ -74,12 +51,16 @@
 
 									<div class="form-field-wrapper">
 										<input class="input-sm form-full" id="form-name" type="text" name="username" placeholder="Nombre de usuario" required>
->>>>>>> 714991c573c9fcb8a9f9201ad3879b05028ed34d:templates/profile-client.html
 									</div>									
 									
-										
-									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="/user/client/updateDataRequest">Guardar cambios</button>
+									{% for message in get_flashed_messages()%}
+									<div class="alert alert-info alert-dismissible">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											{{ message }}						
+									</div>
 									{% endfor %}
+									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="{{ url_for('updateClientData') }}">Guardar cambios</button>
+									
 								</form>
 								<!-- END Contact FORM -->
 						</div>
