@@ -285,7 +285,6 @@ def updateClientData():
 def addCardRequest():
     if request.method == "POST":
         number = request.form["number"]
-        print('Numero:', number)
         db_session = db.getSession(engine)
         clientQuery = db_session.query(Client)
         clientQuery.filter(Client.id == session["client"]).\
