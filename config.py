@@ -5,6 +5,7 @@ class Config:
     TEMPLATES_FOLDER = 'templates'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'static/productsImages'
+    UPLOAD_FOLDER2 = 'static/recipesImages'
 
 class ProdConfig(Config):
     FLASK_ENV = 'production'

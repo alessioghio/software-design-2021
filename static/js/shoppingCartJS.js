@@ -21,8 +21,8 @@ function buttonMessage(response){
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         var inputs = element.children;
-        if(inputs[0].value == response.supply_id){
-            var cartButton = inputs[2];
+        if(parseInt(inputs[0].value) == response.supply_id){
+            var cartButton = inputs[3];
             var quantityBox = inputs[1];
             cartButton.innerHTML = "✓ Agregado"
             delay(2000).then(() => {
@@ -69,6 +69,7 @@ function updateCartInfo(response){
                                         <p hidden>${response.supply_id}</p>
                                         <p class="white text-left">Cantidad: ${response.quantity} ${response.unit}</p>
                                         <p class="white text-left">Precio: S/ ${response.price}</p>
+                                        <input type="hidden" name="startup" value="${response.startupName}">
                                         <button class="btn btn-md btn-white"  type="submit" onclick="removeFromCart(${response.supply_id})">Quitar</button>
                                     </div>
                                 </div>
@@ -81,6 +82,7 @@ function updateCartInfo(response){
 }
 
 function removeFromCart(supply_id){
+    allowSubmit = false;
     let p = new Promise((resolve, reject) => {
         $.ajax({
             url: "/removeFromCart",
@@ -109,6 +111,8 @@ function removeFromCart(supply_id){
     })
 }
 
+var allowSubmit = false;
+
 $("[id=addCartForm]").on('submit', function(e){
 	// Stop the form submitting
   	e.preventDefault();
@@ -119,7 +123,8 @@ $("[id=addCartForm]").on('submit', function(e){
         type: 'POST',
         data:{
             supply_id: $(this).find("input")[0].value,
-            quantity: $(this).find("input")[1].value
+            quantity: $(this).find("input")[1].value,
+            startup: $(this).find("input")[2].value
         },
         success: function (response) {
             resolve(response)
@@ -136,6 +141,14 @@ $("[id=addCartForm]").on('submit', function(e){
 });
 
 $("[id=removeCartForm]").on('submit', function(e){
-	// Stop the form submitting
-  	e.preventDefault();
+    console.log(allowSubmit)
+    if(!allowSubmit){
+        e.preventDefault();
+    }
 });
+
+document.getElementById("buyButton").addEventListener("click", function() {
+    allowSubmit = true;
+});
+
+

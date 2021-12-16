@@ -25,23 +25,32 @@
 					<hr>
 				</div>
 
+				{% for recipe in recipes %}
                 <div class="row mtb-30">
 					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
-						<a href="#"><img alt="1" src="../static/img/portfolio/ceviche.jpeg" class="item-container"></a>
+						<a href="#"><img alt="1"
+						{% if os.path.exists("./static/recipesImages/{name}-{admin_id}.jpg".format(name=recipe["name"], admin_id=recipe["admin_id"])) %}
+						src="../static/recipesImages/{{recipe["name"]}}-{{recipe["admin_id"]}}.jpg"
+						{% else %}
+						src="../static/recipesImages/{{recipe["name"]}}-{{recipe["admin_id"]}}.png"
+						{% endif %}
+						class="item-container">
+						</a>
 					</div>
 					<div class="col-md-8 col-sm-8 col-xs-12">
-						<a href="#"><h6>Ceviche</h6></a>
-						<p class="color">STOCK: 26</p>
-						<p>UNIDADES: un.</p>
-                        <p>CATEGORÍA: Entrada</p>
-                        <p>Utiliza x insumos.</p>
-                        <a class="btn" href="/user/updateStock">Actualizar</a>
+						<a href="#"><h6>{{recipe["name"]}}</h6></a>
+						<p class="color">STOCK: {{recipe["stock"]}}</p>
+						{# <p>UNIDADES: {{recipe.}}</p> #}
+                        <p>CATEGORÍA: {{recipe["category"]}}</p>
+                        {# <p>Utiliza x insumos.</p> #}
+                        {# <a class="btn" href="/user/updateStock">Actualizar</a> #}
 						</p>
 					</div>
 				</div>
 				<hr>
+				{% endfor %}
 
-                <div class="row mtb-30">
+                {# <div class="row mtb-30">
 					<div class="item-box col-md-4 col-sm-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 mb-sm-30">
 						<a href="#"><img alt="1" src="../static/img/portfolio/3.jpg" class="item-container"></a>
 					</div>
@@ -55,7 +64,7 @@
 						</p>
 					</div>
 				</div>
-				<hr>
+				<hr> #}
 
 
 

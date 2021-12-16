@@ -136,7 +136,7 @@
                                 <h5 class="white">Carrito</h5>
                                 <div class="filter-form">
                                 <!-- Cart List -->
-                                <form id="removeCartForm" class="filters-form" id="filters" role="form">
+                                <form id="removeCartForm" class="filters-form" id="filters" role="form" action="/buy" method="POST">
                                     <!-- Products List -->
                                     {% for product in products %}
                                     <div class="accordion mb-15">
@@ -145,9 +145,12 @@
                                             <div class="accordion-content">
                                                 <div class="form-field-wrapper">
                                                     <p hidden>{{product["supply_id"]}}</p>
+                                                    {# <input type="hidden" name="supply_id" value="{{product['supply_id']}}"> #}
                                                     <p class="white text-left">Cantidad: {{product["quantity"]}} {{product["unit"]}}</p>
+                                                    {# <input type="hidden" name="quantity" value="{{product['quantity']}}"> #}
                                                     <p class="white text-left">Precio: S/ {{product["price"]}}</p>
-                                                    <button class="btn btn-md btn-white"  type="submit" onclick="removeFromCart({{product['supply_id']}})">Quitar</button>
+                                                    <input type="hidden" name="startup" value="{{startupName}}">
+                                                    <button id="removeButton" type="button" class="btn btn-md btn-white" onclick="removeFromCart({{product['supply_id']}})">Quitar</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,9 +158,14 @@
                                     {% endfor %}
                                     <!-- End Products List -->
                                 <h5 id="totalPrice" class="white">TOTAL: S/ {{totalPrice}}</h5>
-
-                                <button class="btn btn-md btn-white form-full" type="submit" id="form-submit" name="submit">Comprar</button>
+                                <button id="buyButton" class="btn btn-md btn-white form-full" type="submit" id="form-submit" name="submit">Comprar</button>
                                 </form>
+                                {% for message in get_flashed_messages() %}
+                                    <div class="alert alert-info alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        {{ message }}
+                                    </div>
+                                {% endfor%}
                                 <!-- End Cart List -->
                                 </div>
                             </section>

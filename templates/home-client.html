@@ -38,6 +38,35 @@
                                         <div class="form-field-wrapper">
                                             <input id="supply_id" type="hidden" name="supplyId" value="{{supply.id}}">
                                             <input id="cartQuantity" class="input-box form-full" type="number" name="cartQuantity" placeholder="Cant." required>
+                                            <input type="hidden" name="startup" value="{{startupName}}">
+                                            <button class="btn-md" type="submit"> Añadir al carrito </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for recipe in recipes %}
+                    <div class="nf-item design spacing">
+                        <div class="item-box">
+                            <img alt="{{recipe['name']}} image"
+                            {% if os.path.exists("./static/recipesImages/{name}-{admin_id}.jpg".format(name=recipe["name"], admin_id=recipe["admin_id"])) %}
+                            src="../static/recipesImages/{{recipe["name"]}}-{{recipe["admin_id"]}}.jpg"
+                            {% else %}
+                            src="../static/recipesImages/{{recipe["name"]}}-{{recipe["admin_id"]}}.png"
+                            {% endif %}
+                            class="item-container">
+                            <div class="item-mask">
+                                <div class="item-caption">
+                                    <h5 class="white">{{recipe["name"]}}</h5>
+                                    <p class="white">{{recipe["category"]}}</p>
+                                    <!-- Botón añadir al carrito-->
+                                    <form id="addCartForm" class="contact-form" action="/addToShoppingCart" role="form" method="POST">
+                                        <div class="form-field-wrapper">
+                                            <input id="supply_id" type="hidden" name="recipeName" value="{{recipe['name']}}">
+                                            <input id="cartQuantity" class="input-box form-full" type="number" name="cartQuantity" placeholder="Cant." required>
+                                            <input type="hidden" name="startup" value="{{startupName}}">
                                             <button class="btn-md" type="submit"> Añadir al carrito </button>
                                         </div>
                                     </form>

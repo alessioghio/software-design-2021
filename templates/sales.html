@@ -21,29 +21,15 @@
                 <!-- Accordion -->
                 <div class="accordion">
 
+                    {% for transaction in transactions %}
                     <div class="accordion-section">
-                        <h6 class="accordion-title">Boleta de venta         BV-001</h6>
+                        <h6 class="accordion-title">Boleta de venta BV-{{"{:03d}".format(transaction.id)}}</h6>
                         <div class="accordion-content">
-                            <p>Venta del 24 de noviembre del 2021 por s/.69.</p>
+                            <p>Venta del {{transaction.datetime.strftime("%d/%m/%Y")}} por S/ {{transaction.price}}.</p>
                             <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
                         </div>
                     </div>
-
-                    <div class="accordion-section">
-                        <h6 class="accordion-title">Boleta de venta         BV-002</h6>
-                        <div class="accordion-content">
-                            <p>Venta del 25 de noviembre del 2021 por s/.4.20.</p>
-                            <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
-                        </div>
-                    </div>
-
-                    <div class="accordion-section">
-                        <h6 class="accordion-title">Boleta de venta         BV-003</h6>
-                        <div class="accordion-content">
-                            <p>Venta del 30 de noviembre del 2021 por s/.3.69.</p>
-                            <button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
-                        </div>
-                    </div>
+                    {% endfor %}
 
                 </div>
                 <!-- End Accordion -->

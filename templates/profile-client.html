@@ -80,21 +80,21 @@
 										<div class="accordion-section">
 											<h6 class="accordion-title black">Tarjetas guardadas</h6>
 											<div class="accordion-content">
-												<div class="form-field-wrapper">                                         
-														<span><input class="input-sm" type="radio" name="card" value=unidad>XXXX XXXX XXXX 3795</span><br>
-														<span><input class="input-sm" type="radio" name="card" value=peso>XXXX XXXX XXXX 4884</span><br>                                          
+												<div class="form-field-wrapper">
+													{% for data in clientData %}    
+														<span><input class="input-sm" type="radio" name="card" value={{data.cardnumber}}>{{ data.cardnumber }}</span><br>                                        
+													{% endfor %}
 											</div>
 										</div>
 										</div>
 									</div>	   											
-									<div class="form-field-wrapper">	
+									<!-- <div class="form-field-wrapper">	
 										<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Elegir como predeterminada</button>
 									</div>
-								</form>	
+									</div> -->
+								</form>
 
-								
-
-								<form class="contact-form" id="contact" role="form">
+								<form class="contact-form" id="contact" role="form" method="POST" action="{{ url_for('addCardRequest') }}"">
 											
 									<h4>Agregar una nueva tarjeta</h4>
 
@@ -103,7 +103,7 @@
 									</div>
 
 									<div class="form-field-wrapper">
-										<input class="input-sm form-full" id="form-name" type="number" name="number" placeholder="Número de tarjeta" required>
+										<input class="input-sm form-full" id="form-name" type="text" name="number" placeholder="Número de tarjeta" required>
 									</div>
 		
 									<div class="form-field-wrapper">
@@ -114,9 +114,14 @@
 										<p><i class="fa fa-search left">
 										<input class="input-box form-full" id="form-name" type="number" name="number" placeholder="CCV" required>
 										</i></p>
-									</div>		
-										
-									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar tarjeta</button>
+									</div>
+									{% for message in get_flashed_messages()%}
+									<div class="alert alert-info alert-dismissible">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											{{ message }}						
+									</div>
+									{% endfor %}	
+									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="{{ url_for('addCardRequest') }}">Guardar tarjeta</button>
 								</form>
 								<!-- END Contact FORM -->
 						</div>
@@ -129,49 +134,28 @@
 						<div class="mb-30">	
 							<h2> Compras</h2>	
 							<hr>
-							
 							<!-- Faq Section -->
 							<section class="ptb-60 ptb-sm-60">
 								<div class="container">
 									<!-- Accordion -->
 									<div class="accordion">                   
-					
+										{% for transaction in transactions %}
 										<div class="accordion-section">
-											<h6 class="accordion-title">Boleta de venta         BV-001</h6>
+											<h6 class="accordion-title">Boleta de venta BV-{{"{:03d}".format(transaction.id)}}</h6>
 											<div class="accordion-content">
-												<p>Venta del 24 de noviembre del 2021 por s/.69.</p>
+												<p>Venta del {{transaction.datetime.strftime("%d/%m/%Y")}} por S/ {{transaction.price}}.</p>
 												<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
 											</div>
 										</div>
-					
-										<div class="accordion-section">
-											<h6 class="accordion-title">Boleta de venta         BV-002</h6>
-											<div class="accordion-content">
-												<p>Venta del 25 de noviembre del 2021 por s/.4.20.</p>
-												<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
-											</div>
-										</div>
-					
-										<div class="accordion-section">
-											<h6 class="accordion-title">Boleta de venta         BV-003</h6>
-											<div class="accordion-content">
-												<p>Venta del 30 de noviembre del 2021 por s/.3.69.</p>
-												<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Ver boleta</button>
-											</div>
-										</div>
-					
+										{% endfor %}					
 									</div>
 									<!-- End Accordion -->
 								</div>
 							</section>
 							<!-- Faq Section -->
-
 						</div>
 					</div>
 				</div><!--end tab-->
-			
-			
-			
 			</div>
 			</div>
         </section>

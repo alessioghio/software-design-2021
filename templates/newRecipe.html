@@ -21,7 +21,12 @@
 			<div class="container text-left">
                 <div class="mb-30">
 					<h2> Receta </h2>
-
+                    {% for message in get_flashed_messages() %}
+						<div class="alert alert-info alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{{ message }}
+						</div>
+					{% endfor%}
                     <div class="filter-form">
                         <!-- Filters FORM -->
                     <form class="filters-form" id="filters" role="form" method="POST" action="/newRecipeRequest" enctype="multipart/form-data">
@@ -37,7 +42,7 @@
                                     <div id="interlineado" class="space form-field-wrapper">
                                        {% for supply in supplies %}
                                             <span><input class="input-sm" id="category" type="checkbox" name="supply_id" value="{{supply.id}}">{{supply.name}}</span>
-                                            <span><input class="input-box" type="number" name="cantidad" placeholder="Cant." value="0"></span><br>
+                                            <span><input class="input-box" type="number" name="cantidad" placeholder="Cant." value=0></span><br>
                                         {% endfor %}
                                     </div>
                                 </div>
