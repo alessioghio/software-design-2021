@@ -15,7 +15,7 @@ from dash.dependencies import Input, Output
 
 app = Flask(__name__)
 
-ENV = 'dev'
+ENV = 'prod'
 
 if ENV == 'dev':
     # Using a development configuration
