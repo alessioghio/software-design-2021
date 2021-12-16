@@ -23,19 +23,19 @@
 				<li><a id="cv-tab" href="#tabs-2">Métodos de pago</a></li>
 				<li><a id="cv-tab" href="#tabs-3">Compras</a></li>
 			</ul>
-
+			
 			<div class="ui-tab-content">                        
 			
 
-
+				
 				<!-- Datos personales -->
 				<div id="tabs-1">
 					<div class="container text-left">
 						<div class="mb-30">	
-							<h2> Datos personales</h2>	
+							<h2> Datos personales</h2>
 							<hr>
 								<!-- Contact FORM -->
-								<form class="contact-form" id="contact" role="form" name="clientInfoForm">
+								<form class="contact-form" id="contact" role="form" name="clientInfoForm" method="POST" action="{{ url_for('updateClientData') }}">
 											
 									<div class="form-field-wrapper">
 										<input class="input-sm form-full" id="form-name" type="text" name="name" placeholder="Nombre" required>
@@ -52,9 +52,15 @@
 									<div class="form-field-wrapper">
 										<input class="input-sm form-full" id="form-name" type="text" name="username" placeholder="Nombre de usuario" required>
 									</div>									
-		
-										
-									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit">Guardar cambios</button>
+									
+									{% for message in get_flashed_messages()%}
+									<div class="alert alert-info alert-dismissible">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											{{ message }}						
+									</div>
+									{% endfor %}
+									<button class="btn btn-md btn-black" type="submit" id="form-submit" name="submit" href="{{ url_for('updateClientData') }}">Guardar cambios</button>
+									
 								</form>
 								<!-- END Contact FORM -->
 						</div>

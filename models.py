@@ -63,7 +63,9 @@ class Recipe(Manager.Base):
     description = Column(VARCHAR(500))
     quantity = Column(Integer)
     supply_id = Column(BigInteger)
+    category = Column(VARCHAR(100), nullable=False)
     price = Column(Integer, nullable=False)
+    visibility = Column(Boolean, nullable=False)
     admin_id = Column(BigInteger, ForeignKey("administrator.id"), nullable=False)
 
     def __repr__(self):
