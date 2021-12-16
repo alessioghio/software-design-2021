@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS public.client
     email character varying(100) COLLATE pg_catalog."default" NOT NULL,
     username character varying(100) COLLATE pg_catalog."default" NOT NULL,
     password character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    cardnumber character varying(20) COLLATE pg_catalog."default",
     "userType" character varying(6) COLLATE pg_catalog."default" NOT NULL,
     "shoppingCart_id" bigint,
     CONSTRAINT client_pkey PRIMARY KEY (id),

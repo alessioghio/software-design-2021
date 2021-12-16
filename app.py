@@ -269,8 +269,12 @@ def clientProfile():
     # Get transactions, if any
     transactionsQuery = db_session.query(Transaction)
     transactions = transactionsQuery.filter(Transaction.client_id == session['client']).all()
+    # Get client data
+    clientQuery = db_session.query(Client)
+    clientData = clientQuery.filter(Client.id == session["client"]).all()
     return render_template('profile-client.html', sessionType=sessionType, startups=startups, 
-                            products=products, totalPrice=totalPrice, transactions=transactions)
+                            products=products, totalPrice=totalPrice, transactions=transactions,
+                            clientData=clientData)
 
 @app.route('/user/client/updateDataRequest', methods=['POST'])
 def updateClientData():
@@ -289,6 +293,18 @@ def updateClientData():
                                         "username": username})
         db_session.commit()
         flash('Informacion actualizada')
+        return redirect(url_for('user'))
+
+@app.route('/user/client/addCardRequest', methods=["POST", "GET"])
+def addCardRequest():
+    if request.method == "POST":
+        number = request.form["number"]
+        db_session = db.getSession(engine)
+        clientQuery = db_session.query(Client)
+        clientQuery.filter(Client.id == session["client"]).\
+            update({"cardnumber": number})
+        db_session.commit()
+        flash('Tarjeta guardada.')
         return redirect(url_for('user'))
 
 @app.route('/user')
